@@ -1,0 +1,46 @@
+{
+  "name": "gitconfig-lsp",
+  "version": "1.0.0",
+  "publisher": "yy0931",
+  "description": "",
+  "main": "./src/extension.js",
+  "scripts": {
+    "prepare": "node scripts/generate-docs.js",
+    "test": "esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts && mocha dist/*.test.js"
+  },
+  "activationEvents": [
+    "onLanguage:gitconfig"
+  ],
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "gitconfig",
+        "extensions": [
+          ".gitconfig"
+        ],
+        "filenamePatterns": [
+          ".gitconfig",
+          "config.worktree"
+        ]
+      }
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.11.9",
+    "@types/vscode": "^1.60.0",
+    "chai": "^4.3.4",
+    "esbuild": "^0.14.7",
+    "mocha": "^9.1.3"
+  },
+  "dependencies": {
+    "peggy": "^1.2.0"
+  }
+}

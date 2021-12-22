@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"module": "commonJS",
+		"target": "ESNext",
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"strict": true
+	},
+	"include": ["src", "scripts", "test"]
+}
