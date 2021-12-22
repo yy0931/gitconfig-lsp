@@ -4,7 +4,7 @@ import * as parser from "./parser"
 describe("sectionHeaderParser", () => {
     const test = (l: string, r: string[] | undefined) => {
         it(JSON.stringify(l), () => {
-            assert.deepStrictEqual(parser.sectionHeaderParser.parse(l)?.map((v) => v.text), r)
+            assert.deepStrictEqual(parser.sectionHeaderParser.parse(l)?.parts.map((v) => v.text), r)
         })
     }
 
@@ -49,6 +49,7 @@ describe("variableAssignmentParser", () => {
     test("yes", ["yes", undefined])
     test("foo = bar", ["foo", "bar"])
     test(" x = y ", ["x", "y"])
+    test(" x =  y  ", ["x", "y"])
     test("\tx\t=\ty\t", ["x", "y"])
     test("x=y", ["x", "y"])
     test("X = y", ["x", "y"])
@@ -64,12 +65,31 @@ describe("gitConfigParser", () => {
 k = l  
     [m]
 `)
-    assert.deepStrictEqual(result![0].sectionHeader.map((v) => v.text), ["a", "b"])
-    assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.map((v) => v?.text)), [["c", "d"]])
+    it("0.sectionHeader", () => { assert.deepStrictEqual(result![0].sectionHeader.parts.map((v) => v.text), ["a", "b"]) })
+    it("0.variableAssignments", () => { assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.map((v) => v?.text)), [["c", "d"]]) })
 
-    assert.deepStrictEqual(result![1].sectionHeader.map((v) => v.text), ["e", "f", "g", "h"])
-    assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.map((v) => v?.text)), [["i", "j"], ["k", "l"]])
+    it("1.sectionHeader", () => { assert.deepStrictEqual(result![1].sectionHeader.parts.map((v) => v.text), ["e", "f", "g", "h"]) })
+    it("1.variableAssignments", () => { assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.map((v) => v?.text)), [["i", "j"], ["k", "l"]]) })
 
-    assert.deepStrictEqual(result![2].sectionHeader.map((v) => v.text), ["m"])
-    assert.deepStrictEqual(result![2].variableAssignments.length, 0)
+    it("2.sectionHeader", () => { assert.deepStrictEqual(result![2].sectionHeader.parts.map((v) => v.text), ["m"]) })
+    it("2.variableAssignments", () => { assert.deepStrictEqual(result![2].variableAssignments.length, 0) })
+})
+
+describe("valueParser", () => {
+    const test = (l: string, r: ReturnType<typeof parser.valueParser.parse>) => {
+        it(JSON.stringify(l), () => {
+            assert.strictEqual(parser.valueParser.parse(l), r)
+        })
+    }
+    test("yes", "true")
+    test("true", "true")
+    test("no", "false")
+    test("false", "false")
+    test("10", "integer")
+    test("-0x10k", "integer")
+    test("noboldbrightred", "color")
+    test("boldbrightgreen", "color")
+    test("boldgreen", "color")
+    test("brightboldgreen", "color")
+    test("boldgreen", "color")
 })

@@ -4,8 +4,8 @@ import path from "path"
 
 class Parser<T> {
     private readonly parser: peggy.Parser
-    constructor(startRule: string) {
-        this.parser = peggy.generate(fs.readFileSync(path.join(__dirname, "../parser.peggy")).toString(), { allowedStartRules: [startRule] })
+    constructor(filename: string, startRule: string | undefined) {
+        this.parser = peggy.generate(fs.readFileSync(path.join(__dirname, "../", filename)).toString(), startRule === undefined ? {} : { allowedStartRules: [startRule] })
     }
     parse(input: string): T | null {
         try {
@@ -30,21 +30,24 @@ class Parser<T> {
     }
 }
 
+type PeggyLocation = {
+    start: { offset: number, line: number, column: number }
+    end: { offset: number, line: number, column: number }
+}
 export type Ident = {
     text: string
-    location: {
-        start: { offset: number, line: number, column: number }
-        end: { offset: number, line: number, column: number }
-    }
+    location: PeggyLocation
 }
 
-type SectionHeader = [Ident, ...Ident[]]
+type SectionHeader = { parts: [Ident, ...Ident[]], location: PeggyLocation, subsectionLocation: PeggyLocation | null }
 type VariableAssignment = [Ident, Ident | null]
 export type File = {
     sectionHeader: SectionHeader
     variableAssignments: VariableAssignment[]
 }[]
 
-export const sectionHeaderParser = new Parser<SectionHeader>("SectionHeader")
-export const variableAssignmentParser = new Parser<VariableAssignment>("VariableAssignment")
-export const gitConfigParser = new Parser<File>("File")
+export const sectionHeaderParser = new Parser<SectionHeader>("syntax-config.peggy", "SectionHeader")
+export const variableAssignmentParser = new Parser<VariableAssignment>("syntax-config.peggy", "VariableAssignment")
+export const gitConfigParser = new Parser<File>("syntax-config.peggy", "File")
+
+export const valueParser = new Parser<"true" | "false" | "integer" | "color">("syntax-value.peggy", undefined)

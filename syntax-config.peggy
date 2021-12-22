@@ -23,29 +23,29 @@ SectionHeader
     )
     subsection:(
       [ \t]+
-      (
+      strLiteral:(
         '"'
-        head:SubsectionIdent 
-        tail:("." SubsectionIdent)* 
+        SubsectionIdent 
+        ("." SubsectionIdent)* 
         '"'
-        { return [head, ...tail.map((v) => v[1])] }
       )
+      { return { parts: [strLiteral[1], ...strLiteral[2].map((v) => v[1])], location: location() } }
     )?
     _
     "]"
     _t
     LineComment?
-  { return [...section, ...(subsection ? subsection[1] : [])] }
+  { return { parts: [...section, ...(subsection ? subsection.parts : [])], location: location(), subsectionLocation: subsection ? subsection.location : null } }
 
 // foo
 SectionIdent "identifier"
   = ident:$[a-zA-Z0-9\-]+
-  { return { text: text().toLowerCase(), range: range() } } // case-insensitive
+  { return { text: text().toLowerCase(), location: location() } } // case-insensitive
 
 // "foo"
 SubsectionIdent
   = str:("\\" escaped:. { return escaped } / [^".\\])*
-  { return { text: str.join(""), range: range() } }  // case-sensitive
+  { return { text: str.join(""), location: location() } }  // case-sensitive
 
 // ==== Variable Assignment ====
 // foo = bar
@@ -53,17 +53,24 @@ VariableAssignment
   = _t
     name:(
       ident:$[a-zA-Z0-9][a-zA-Z0-9\-]*
-      { return { text: text().toLowerCase(), range: range() } } // case-insensitive
+      { return { text: text().toLowerCase(), location: location() } } // case-insensitive
     )
-    _t
-    "="
     _t
     value:(
-      value:("\\\n" { return "" } / [^\n] { return text() } )*
-      { return { text: value.join("").trim(), range: range() } }
-    )
+      "="
+      _t
+      value:(
+        value:("\\\n" { return "" } / [^\n] { return text() } )*
+        { return { text: value.join("").trim(), location: location() } }
+      )
+      { return value }
+    )?
     LineComment?
   { return [name, value] }
+
+InvalidVariableAssignment
+  = ("\\\n" { return "" } / [^\n] { return text() } )*
+  { return { error: "invalid", location: location() } }
 
 // ==== Common ====
 _ "whitespace"
