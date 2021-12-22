@@ -39,13 +39,14 @@ describe("sectionHeaderParser", () => {
 })
 
 describe("variableAssignmentParser", () => {
-    const test = (l: string, r: string[] | undefined) => {
+    const test = (l: string, r: [string, string | undefined]) => {
         it(JSON.stringify(l), () => {
-            assert.deepStrictEqual(parser.variableAssignmentParser.parse(l)?.map((v) => v.text), r)
+            assert.deepStrictEqual(parser.variableAssignmentParser.parse(l)?.map((v) => v?.text), r)
         })
     }
 
     test("x = y", ["x", "y"])
+    test("yes", ["yes", undefined])
     test("foo = bar", ["foo", "bar"])
     test(" x = y ", ["x", "y"])
     test("\tx\t=\ty\t", ["x", "y"])
@@ -64,10 +65,10 @@ k = l
     [m]
 `)
     assert.deepStrictEqual(result![0].sectionHeader.map((v) => v.text), ["a", "b"])
-    assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.map((v) => v.text)), [["c", "d"]])
+    assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.map((v) => v?.text)), [["c", "d"]])
 
     assert.deepStrictEqual(result![1].sectionHeader.map((v) => v.text), ["e", "f", "g", "h"])
-    assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.map((v) => v.text)), [["i", "j"], ["k", "l"]])
+    assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.map((v) => v?.text)), [["i", "j"], ["k", "l"]])
 
     assert.deepStrictEqual(result![2].sectionHeader.map((v) => v.text), ["m"])
     assert.deepStrictEqual(result![2].variableAssignments.length, 0)

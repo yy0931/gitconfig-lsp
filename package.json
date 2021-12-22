@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "publisher": "yy0931",
   "description": "",
-  "main": "./src/extension.js",
+  "main": "./dist/extension.js",
   "scripts": {
-    "prepare": "node scripts/generate-docs.js",
-    "test": "esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts && mocha dist/*.test.js"
+    "generate-docs": "esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=scripts scripts/*.ts && node scripts/generate-docs.js",
+    "prepare": "npm run generate-docs",
+    "build": "esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts",
+    "test": "npm run build && mocha dist/*.test.js"
   },
   "activationEvents": [
     "onLanguage:gitconfig"

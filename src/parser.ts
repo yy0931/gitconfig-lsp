@@ -17,21 +17,34 @@ class Parser<T> {
             throw err
         }
     }
+    check(input: string): peggy.parser.SyntaxError | null {
+        try {
+            this.parser.parse(input)
+            return null
+        } catch (err) {
+            if (err instanceof (this.parser.SyntaxError as any as typeof peggy.parser.SyntaxError)) {
+                return err
+            }
+            throw err
+        }
+    }
 }
 
 export type Ident = {
     text: string
-    range: {
-        start: 9
-        end: 14
+    location: {
+        start: { offset: number, line: number, column: number }
+        end: { offset: number, line: number, column: number }
     }
 }
 
+type SectionHeader = [Ident, ...Ident[]]
+type VariableAssignment = [Ident, Ident | null]
 export type File = {
-    sectionHeader: [Ident, ...Ident[]]
-    variableAssignments: [Ident, Ident][]
+    sectionHeader: SectionHeader
+    variableAssignments: VariableAssignment[]
 }[]
 
-export const sectionHeaderParser = new Parser<[Ident, ...Ident[]]>("SectionHeader")
-export const variableAssignmentParser = new Parser<[Ident, Ident]>("VariableAssignment")
+export const sectionHeaderParser = new Parser<SectionHeader>("SectionHeader")
+export const variableAssignmentParser = new Parser<VariableAssignment>("VariableAssignment")
 export const gitConfigParser = new Parser<File>("File")
