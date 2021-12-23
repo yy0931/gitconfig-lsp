@@ -117,3 +117,12 @@ describe("gitLFSParser", () => {
         ],
     )
 })
+
+describe("refspecParser", () => {
+    it("+refs/heads/*:refs/remotes/origin/*", () => {
+        const v = parser.refspecParser.parse("+refs/heads/*:refs/remotes/origin/*")
+        assert.strictEqual(v?.src.plus, "+")
+        assert.strictEqual(v?.src.text, "refs/heads/*")
+        assert.strictEqual(v?.dst.text, "refs/remotes/origin/*")
+    })
+})

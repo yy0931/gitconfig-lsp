@@ -3,7 +3,8 @@ import { TextDocument } from 'vscode-languageserver-textdocument'
 import * as parser from "./parser"
 import docs1 from "../git/Documentation/config.json"
 import docs2 from "../git-lfs/docs/man/git-lfs-config.5.conn.json"
-import path from "path"
+import * as vscodeUri from "vscode-uri"
+import fs from "fs"
 
 const docs = { ...docs1, ...docs2 }
 
@@ -35,14 +36,15 @@ conn.onInitialize((params) => {
         capabilities: {
             textDocumentSync: lsp.TextDocumentSyncKind.Incremental,
             semanticTokensProvider: { documentSelector: [{ language: "gitconfig" }, { language: "properties" }], legend, full: true, range: false },
-            hoverProvider: {},
+            hoverProvider: true,
             completionProvider: { triggerCharacters: ["["] },
+            definitionProvider: true,
         }
     }
 })
 
 const isGitConfigFile = (textDocument: TextDocument) =>
-    textDocument.uri.endsWith(`.git${path.sep}config`) || textDocument.languageId === "gitconfig"
+    textDocument.uri.endsWith(`.git/config`) || textDocument.languageId === "gitconfig" // TODO: does this work on Windows?
 
 const toLSPPosition = (range: { readonly line: number, readonly column: number }): lsp.Position =>
     ({ line: range.line - 1, character: range.column - 1 })
@@ -197,6 +199,52 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         item.documentation = { kind: lsp.MarkupKind.Markdown, value: v.documentation }
         return [item]
     })
+})
+
+const getGitRepositoryUri = (uri: string) => {
+    const parent = vscodeUri.Utils.dirname(vscodeUri.URI.parse(uri))
+    if (vscodeUri.Utils.basename(parent) === ".git") {
+        return parent
+    } else {
+        return vscodeUri.Utils.joinPath(parent, ".git")
+    }
+}
+
+conn.onDefinition(({ textDocument: { uri }, position }): lsp.DefinitionLink[] | undefined => {
+    const textDocument = documents.get(uri)
+    if (textDocument === undefined || !isGitConfigFile(textDocument)) { return }
+    const f = parser.gitConfigParser.parse(textDocument.getText())
+    if (f === null) { return }
+
+    const link = (originSelectionRange: lsp.Range, targetUri: string): lsp.DefinitionLink[] => {
+        const targetRange: lsp.Range = { start: { line: 0, character: 0 }, end: { line: 0, character: 0 } }
+        return [{ originSelectionRange, targetUri, targetRange, targetSelectionRange: targetRange }]
+    }
+
+    for (const section of f) {
+        for (const assignment of section.variableAssignments) {
+            const value = assignment.ast?.[1]
+            if (!value) { continue }
+            const range = toLSPRange(value.location)
+            if (!containsPosition(range, position)) { continue }
+
+            // refspec
+            const v = parser.setOffset(parser.refspecParser.parse(value.text), value.location.start)
+            if (v !== null) { // +refs/heads/*:refs/remotes/origin/*
+                const dstRange = toLSPRange(v.dst.location)
+                const srcRange = toLSPRange(v.src.location)
+                if (containsPosition(dstRange, position)) {
+                    return link(dstRange, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), v.dst.text).toString())
+                } else if (containsPosition(srcRange, position)) {
+                    return link(srcRange, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), v.src.text).toString())
+                }
+            } else if (value.text.startsWith("refs/")) {  // refs/...
+                return link(range, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), value.text).toString())
+            } else if (value.text.startsWith("+refs/")) { // +refs/...
+                return link(range, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), value.text.slice("+".length)).toString())
+            }
+        }
+    }
 })
 
 documents.listen(conn)

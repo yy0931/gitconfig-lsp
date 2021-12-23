@@ -23,5 +23,5 @@ Header
 
 // `foo.bar`, `FOO_BAR` or FOO_BAR
 Key
-  = "`" @$[a-zA-Z.-<>_]+ "`"
-  / $[A-Z_]+
+  = "`" @$[a-zA-Z0-9.-<>_]+ "`"
+  / $[A-Z0-9_]+
