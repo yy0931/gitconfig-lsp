@@ -4,3 +4,4 @@ Implemented:
 - Documentation on hover
 - Syntax highlighting
 - Auto-completion
+- lfs-config man page parser
