@@ -17,6 +17,7 @@
   "engines": {
     "vscode": "^1.60.0"
   },
+  "preview": true,
   "contributes": {
     "languages": [
       {
@@ -30,6 +31,11 @@
         ]
       }
     ],
+    "configurationDefaults": {
+      "files.associations": {
+        "**/.git/config": "gitconfig"
+      }
+    },
     "semanticTokenScopes": [
       {
         "scopes": {

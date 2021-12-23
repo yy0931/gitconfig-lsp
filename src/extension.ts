@@ -162,10 +162,7 @@ export const activate = async (context: vscode.ExtensionContext) => {
             diagnosticCollection.delete(document.uri)
         }),
         vscode.languages.registerDocumentSemanticTokensProvider({ language: "gitconfig" }, documentSemanticTokensProvider, legend),
-        vscode.languages.registerDocumentSemanticTokensProvider({ scheme: "file" }, documentSemanticTokensProvider, legend),
         vscode.languages.registerHoverProvider({ language: "gitconfig" }, hoverProvider),
-        vscode.languages.registerHoverProvider({ scheme: "file" }, hoverProvider),
         vscode.languages.registerCompletionItemProvider({ language: "gitconfig" }, completionItemProvider, "["),
-        vscode.languages.registerCompletionItemProvider({ scheme: "file" }, completionItemProvider, "["),
     )
 }
