@@ -1,4 +1,6 @@
-# License
-The implementation of the extension is available under the MIT license.
+# git-config Language Server (preview)
 
-The documentation of git-config is copied from the Git project, and is licensed under GPLv2.
+Implemented:
+- Documentation on hover
+- Syntax highlighting
+- Auto-completion

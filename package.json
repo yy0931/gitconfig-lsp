@@ -1,6 +1,7 @@
 {
   "name": "gitconfig-lsp",
-  "version": "1.0.0",
+  "displayName": "git-config Language Server",
+  "version": "0.1.0",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
@@ -12,7 +13,8 @@
     "test": "npm run build && mocha dist/*.test.js"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onLanguage:gitconfig",
+    "onLanguage:properties"
   ],
   "engines": {
     "vscode": "^1.60.0"
@@ -31,11 +33,6 @@
         ]
       }
     ],
-    "configurationDefaults": {
-      "files.associations": {
-        "**/.git/config": "gitconfig"
-      }
-    },
     "semanticTokenScopes": [
       {
         "scopes": {
@@ -60,7 +57,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
+  "license": "GPLv2",
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/jsdom": "^16.2.14",

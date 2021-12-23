@@ -1,6 +1,6 @@
 import vscode from "vscode"
 import * as parser from "./parser"
-import docs from "../docs.json"
+import docs from "../git/Documentation/config.json"
 import path from "path"
 
 const toVSCodePosition = (range: { readonly line: number, readonly column: number }) => {
@@ -161,8 +161,11 @@ export const activate = async (context: vscode.ExtensionContext) => {
         vscode.workspace.onDidCloseTextDocument((document) => {
             diagnosticCollection.delete(document.uri)
         }),
+        vscode.languages.registerDocumentSemanticTokensProvider({ language: "properties" }, documentSemanticTokensProvider, legend),
         vscode.languages.registerDocumentSemanticTokensProvider({ language: "gitconfig" }, documentSemanticTokensProvider, legend),
+        vscode.languages.registerHoverProvider({ language: "properties" }, hoverProvider),
         vscode.languages.registerHoverProvider({ language: "gitconfig" }, hoverProvider),
+        vscode.languages.registerCompletionItemProvider({ language: "properties" }, completionItemProvider, "["),
         vscode.languages.registerCompletionItemProvider({ language: "gitconfig" }, completionItemProvider, "["),
     )
 }
