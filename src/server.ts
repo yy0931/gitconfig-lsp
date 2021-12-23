@@ -243,6 +243,11 @@ conn.onDefinition(({ textDocument: { uri }, position }): lsp.DefinitionLink[] | 
             } else if (value.text.startsWith("+refs/")) { // +refs/...
                 return link(range, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), value.text.slice("+".length)).toString())
             }
+
+            // hash
+            if (/^[0-9a-f]{40}$/.test(value.text)) {
+                return link(range, vscodeUri.Utils.joinPath(getGitRepositoryUri(uri), "objects", value.text.slice(0, 2), value.text.slice(2)).toString())
+            }
         }
     }
 })
