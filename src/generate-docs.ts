@@ -5,7 +5,10 @@ import assert from "assert"
 import TurndownService from "turndown"
 import path from "path"
 
-const turndown = new TurndownService()
+const turndown = new TurndownService({ headingStyle: "setext" })
+const htmlToMarkdown = (html: string) => {
+    return turndown.turndown(html).replace(/\(\/docs\/([\w\-]+)\)/g, "(https://git-scm.com/docs/$1)")
+}
 
 const querySelector = (el: Element, query: string) => {
     const x = el.querySelector(query)
@@ -36,12 +39,12 @@ const parseDl = (dl: HTMLElement) => {
             set(header, "")
         } else if (children[i]!.tagName === "DD") {
             if (header.endsWith(".*") && children[i].querySelector("div.dlist") !== null) { // <dt>foo.bar</dt><dd><p>help</p><div><div><div class="dlist"><dl>...children</dl></div></div></div></dd>
-                result[header] = { deprecated: false, documentation: [...children[i]!.querySelectorAll(":scope > p")].map((v) => turndown.turndown(v.innerHTML)).join("\n"), autocomplete: false }
+                result[header] = { deprecated: false, documentation: [...children[i]!.querySelectorAll(":scope > p")].map((v) => htmlToMarkdown(v.innerHTML)).join("\n"), autocomplete: false }
                 for (const [k, v] of Object.entries(parseDl(querySelector(children[i]!, ":scope > div > div > div.dlist > dl") as HTMLElement))) {
                     result[header.replace("*", k)] = v
                 }
             } else { // <dt>foo.bar</dt><dd>help</dd>
-                set(header, turndown.turndown(children[i].innerHTML))
+                set(header, htmlToMarkdown(children[i].innerHTML))
             }
             i++
         } else {
