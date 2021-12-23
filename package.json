@@ -21,13 +21,26 @@
   },
   "activationEvents": [
     "onLanguage:gitconfig",
-    "onLanguage:properties"
+    "onLanguage:properties",
+    "onCustomEditor:gitconfig-lsp.git-cat-file"
   ],
   "engines": {
     "vscode": "^1.60.0"
   },
   "preview": true,
   "contributes": {
+    "customEditors": [
+      {
+        "viewType": "gitconfig-lsp.git-cat-file",
+        "displayName": "git-cat-file",
+        "selector": [
+          {
+            "filenamePattern": "**/.git/objects/*/*"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
     "languages": [
       {
         "id": "gitconfig",
