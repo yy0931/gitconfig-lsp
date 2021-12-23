@@ -88,13 +88,13 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
         for (const section of f) {
             if (section.sectionHeader.ast !== null) {
                 const subsectionLocation = section.sectionHeader.ast.subsectionLocation !== null ? toLSPRange(section.sectionHeader.ast.subsectionLocation) : null
-                if (subsectionLocation !== null) {
-                    pushRange(subsectionLocation, "string")
-                }
                 for (const v of section.sectionHeader.ast.parts) {
                     const range = toLSPRange(v.location)
                     if (subsectionLocation !== null && containsRange(subsectionLocation, range)) { continue }
                     pushRange(range, "gitconfigSection")
+                }
+                if (subsectionLocation !== null) {
+                    pushRange(subsectionLocation, "string")
                 }
             }
             for (const assignment of section.variableAssignments) {
