@@ -1,7 +1,7 @@
 {
   "name": "gitconfig-lsp",
   "displayName": "git-config Language Server",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
@@ -33,7 +33,7 @@
         "id": "gitconfig",
         "extensions": [
           ".gitconfig",
-          ".fsconfig"
+          ".lfsconfig"
         ],
         "filenamePatterns": [
           ".gitconfig",
@@ -67,8 +67,10 @@
   },
   "keywords": [
     "git",
-    "config",
-    "lfs"
+    "gitconfig",
+    "lfsconfig",
+    ".gitconfig",
+    ".lfsconfig"
   ],
   "author": "",
   "license": "GPLv2",
