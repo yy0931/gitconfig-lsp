@@ -2,10 +2,10 @@ import peggy from "peggy"
 import fs from "fs"
 import path from "path"
 
-class Parser<T> {
+export class Parser<T> {
     private readonly parser: peggy.Parser
     constructor(filename: string, startRule: string | undefined) {
-        this.parser = peggy.generate(fs.readFileSync(path.join(__dirname, "../", filename)).toString(), startRule === undefined ? {} : { allowedStartRules: [startRule] })
+        this.parser = peggy.generate(fs.readFileSync(path.join(__dirname, "../grammar", filename)).toString(), startRule === undefined ? {} : { allowedStartRules: [startRule] })
     }
     parse(input: string): T | null {
         try {
@@ -16,6 +16,9 @@ class Parser<T> {
             }
             throw err
         }
+    }
+    mustParse(input: string): T {
+        return this.parser.parse(input)
     }
     check(input: string): peggy.parser.SyntaxError | null {
         try {
@@ -42,12 +45,12 @@ export type Ident = {
 type SectionHeader = { parts: [Ident, ...Ident[]], location: PeggyLocation, subsectionLocation: PeggyLocation | null }
 type VariableAssignment = [Ident, Ident | null]
 
-export const sectionHeaderParser = new Parser<SectionHeader>("syntax-config.peggy", "SectionHeader")
-export const variableAssignmentParser = new Parser<VariableAssignment>("syntax-config.peggy", "VariableAssignment")
+export const sectionHeaderParser = new Parser<SectionHeader>("config.peggy", "SectionHeader")
+export const variableAssignmentParser = new Parser<VariableAssignment>("config.peggy", "VariableAssignment")
 export const looseGitConfigParser = new Parser<{
     sectionHeader: { location: PeggyLocation }
     variableAssignments: { location: PeggyLocation }[]
-}[]>("syntax-config.peggy", "LooseGitConfig")
+}[]>("config.peggy", "LooseGitConfig")
 
 const setOffset = <T>(x: T, start: { offset: number, line: number, column: number }): T => {
     if (Array.isArray(x)) {
@@ -91,4 +94,5 @@ export const gitConfigParser = {
     },
 } as const
 
-export const valueParser = new Parser<"true" | "false" | "integer" | "color">("syntax-value.peggy", undefined)
+export const valueParser = new Parser<"true" | "false" | "integer" | "color">("value.peggy", undefined)
+export const gitLFSParser = new Parser<{ header: string[], help: string }[]>("git-lfs.peggy", undefined)

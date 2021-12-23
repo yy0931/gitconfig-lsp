@@ -1,8 +1,11 @@
 import * as lsp from 'vscode-languageserver/node'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import * as parser from "./parser"
-import docs from "../git/Documentation/config.json"
+import docs1 from "../git/Documentation/config.json"
+import docs2 from "../git-lfs/docs/man/git-lfs-config.5.conn.json"
 import path from "path"
+
+const docs = { ...docs1, ...docs2 }
 
 // a.<name> === a.b
 const matchVariable = (doc: string, code: string) => {
@@ -169,6 +172,7 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
 
     return Object.entries(docs).flatMap(([k, v]) => {
         if (!v.autocomplete) { return [] }
+        if (uri.endsWith(".lfsconfig") && !k.startsWith("lfs.") && !k.endsWith(".lfsurl")) { return [] }  // https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-config.5.ronn#lfsconfig
 
         const item: lsp.CompletionItem = { label: k, kind: lsp.CompletionItemKind.Property }
         const parts = k.split(".")

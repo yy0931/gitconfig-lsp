@@ -25,12 +25,15 @@
       {
         "id": "gitconfig",
         "extensions": [
-          ".gitconfig"
+          ".gitconfig",
+          ".fsconfig"
         ],
         "filenamePatterns": [
           ".gitconfig",
+          ".lfsconfig",
           "config.worktree"
-        ]
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "semanticTokenScopes": [
@@ -55,7 +58,11 @@
       }
     ]
   },
-  "keywords": [],
+  "keywords": [
+    "git",
+    "config",
+    "lfs"
+  ],
   "author": "",
   "license": "GPLv2",
   "devDependencies": {

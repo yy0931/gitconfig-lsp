@@ -93,3 +93,27 @@ describe("valueParser", () => {
     test("brightboldgreen", "color")
     test("boldgreen", "color")
 })
+
+describe("gitLFSParser", () => {
+    const test = (l: string, r: ReturnType<typeof parser.gitLFSParser.parse>) => {
+        it(JSON.stringify(l), () => {
+            assert.deepStrictEqual(parser.gitLFSParser.parse(l), r)
+        })
+    }
+    test(`\
+* \`key1\`
+
+  help 1
+
+  help 2
+
+* \`key2\`
+
+  help 1
+`,
+        [
+            { header: ["key1"], help: "help 1\n\nhelp 2" },
+            { header: ["key2"], help: "help 1" },
+        ],
+    )
+})
