@@ -1,7 +1,7 @@
 {
   "name": "gitconfig-lsp",
   "displayName": "git-config Language Server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
@@ -74,6 +74,9 @@
     "turndown": "^7.1.1"
   },
   "dependencies": {
-    "peggy": "^1.2.0"
+    "peggy": "^1.2.0",
+    "vscode-languageclient": "^7.0.0",
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.3"
   }
 }
