@@ -1,6 +1,6 @@
 # git-config Language Server (preview)
 
-Implemented:
+Implemented so far:
 - Documentation on hover
 - Syntax highlighting
 - Auto-completion
