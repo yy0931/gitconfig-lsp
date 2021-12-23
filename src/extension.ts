@@ -37,18 +37,21 @@ export const activate = async (context: vscode.ExtensionContext) => {
                 const f = parser.gitConfigParser.parse(document.getText())
                 if (f === null) { return }
                 for (const section of f) {
+                    if (section.sectionHeader.ast === null) { continue }
                     {
                         const range = toVSCodeRange(section.sectionHeader.location)
                         if (range.contains(position)) {
-                            const sectionName = section.sectionHeader.parts.map((v) => v.text).join(".")
+                            const sectionName = section.sectionHeader.ast.parts.map((v) => v.text).join(".")
                             const documentation = Object.entries(docs).find((v) => v[0].endsWith(".*") && matchVariable(v[0].slice(0, -".*".length), sectionName))?.[1].documentation
                             return new vscode.Hover(documentation ? new vscode.MarkdownString().appendText(sectionName).appendMarkdown(`\n\n---\n`).appendMarkdown(documentation) : new vscode.MarkdownString().appendText(sectionName), range)
                         }
                     }
-                    for (const [name, value] of section.variableAssignments) {
+                    for (const assignment of section.variableAssignments) {
+                        if (assignment.ast === null) { continue }
+                        const [name, value] = assignment.ast
                         const range = toVSCodeRange(name.location)
                         if (range.contains(position)) {
-                            const key = section.sectionHeader.parts.map((v) => v.text).join(".") + "." + name.text
+                            const key = section.sectionHeader.ast.parts.map((v) => v.text).join(".") + "." + name.text
                             const documentation = getDocument(key)?.documentation
                             return new vscode.Hover(documentation ? new vscode.MarkdownString().appendText(key).appendMarkdown(`\n\n---\n`).appendMarkdown(documentation) : new vscode.MarkdownString().appendText(key), range)
                         }
@@ -67,15 +70,14 @@ export const activate = async (context: vscode.ExtensionContext) => {
                 let currentSection: string | null = null
                 if (f !== null) {
                     for (const section of f) {
-                        const range = new vscode.Range(
-                            toVSCodePosition(section.sectionHeader.parts[0].location.start),
-                            toVSCodePosition(section.sectionHeader.parts[section.sectionHeader.parts.length - 1]!.location.end),
-                        )
+                        const range = toVSCodeRange(section.sectionHeader.location)
                         if (range.contains(position)) {
                             return [] // the cursor is in a section header
                         }
                         if (range.end.isBefore(position)) {
-                            currentSection = section.sectionHeader.parts.map((v) => v.text).join(".")
+                            currentSection =
+                                section.sectionHeader.ast === null ? null :
+                                    section.sectionHeader.ast.parts.map((v) => v.text).join(".")
                         }
                     }
                 }
@@ -117,16 +119,20 @@ export const activate = async (context: vscode.ExtensionContext) => {
             const f = parser.gitConfigParser.parse(document.getText())
             if (f !== null) {
                 for (const section of f) {
-                    const subsectionLocation = section.sectionHeader.subsectionLocation !== null ? toVSCodeRange(section.sectionHeader.subsectionLocation) : null
-                    if (subsectionLocation !== null) {
-                        edit.push(subsectionLocation, "string")
+                    if (section.sectionHeader.ast !== null) {
+                        const subsectionLocation = section.sectionHeader.ast.subsectionLocation !== null ? toVSCodeRange(section.sectionHeader.ast.subsectionLocation) : null
+                        if (subsectionLocation !== null) {
+                            edit.push(subsectionLocation, "string")
+                        }
+                        for (const v of section.sectionHeader.ast.parts) {
+                            const range = toVSCodeRange(v.location)
+                            if (subsectionLocation !== null && subsectionLocation.contains(range)) { continue }
+                            edit.push(range, "gitconfigSection")
+                        }
                     }
-                    for (const v of section.sectionHeader.parts) {
-                        const range = toVSCodeRange(v.location)
-                        if (subsectionLocation !== null && subsectionLocation.contains(range)) { continue }
-                        edit.push(range, "gitconfigSection")
-                    }
-                    for (const [name, value] of section.variableAssignments) {
+                    for (const assignment of section.variableAssignments) {
+                        if (assignment.ast === null) { continue }
+                        const [name, value] = assignment.ast
                         edit.push(toVSCodeRange(name.location), "gitconfigProperty")
                         if (value !== null) {
                             // https://git-scm.com/docs/git-config#_values
@@ -144,18 +150,14 @@ export const activate = async (context: vscode.ExtensionContext) => {
         }
     }
 
+    const check = (document: vscode.TextDocument) => {
+        if (!isGitConfigFile(document)) { diagnosticCollection.delete(document.uri); return }
+        diagnosticCollection.set(document.uri, parser.gitConfigParser.check(document.getText()).map((err) => new vscode.Diagnostic(toVSCodeRange(err.location), err.message, vscode.DiagnosticSeverity.Error)))
+    }
     context.subscriptions.push(
         diagnosticCollection,
-        vscode.workspace.onDidOpenTextDocument((document) => {
-            if (!isGitConfigFile(document)) { diagnosticCollection.delete(document.uri); return }
-            const err = parser.gitConfigParser.check(document.getText())
-            diagnosticCollection.set(document.uri, err === null ? [] : [new vscode.Diagnostic(toVSCodeRange(err.location), err.message, vscode.DiagnosticSeverity.Error)])
-        }),
-        vscode.workspace.onDidChangeTextDocument(({ document }) => {
-            if (!isGitConfigFile(document)) { diagnosticCollection.delete(document.uri); return }
-            const err = parser.gitConfigParser.check(document.getText())
-            diagnosticCollection.set(document.uri, err === null ? [] : [new vscode.Diagnostic(toVSCodeRange(err.location), err.message, vscode.DiagnosticSeverity.Error)])
-        }),
+        vscode.workspace.onDidOpenTextDocument((document) => { check(document) }),
+        vscode.workspace.onDidChangeTextDocument(({ document }) => { check(document) }),
         vscode.workspace.onDidCloseTextDocument((document) => {
             diagnosticCollection.delete(document.uri)
         }),

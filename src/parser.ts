@@ -41,13 +41,54 @@ export type Ident = {
 
 type SectionHeader = { parts: [Ident, ...Ident[]], location: PeggyLocation, subsectionLocation: PeggyLocation | null }
 type VariableAssignment = [Ident, Ident | null]
-export type File = {
-    sectionHeader: SectionHeader
-    variableAssignments: VariableAssignment[]
-}[]
 
 export const sectionHeaderParser = new Parser<SectionHeader>("syntax-config.peggy", "SectionHeader")
 export const variableAssignmentParser = new Parser<VariableAssignment>("syntax-config.peggy", "VariableAssignment")
-export const gitConfigParser = new Parser<File>("syntax-config.peggy", "File")
+export const looseGitConfigParser = new Parser<{
+    sectionHeader: { location: PeggyLocation }
+    variableAssignments: { location: PeggyLocation }[]
+}[]>("syntax-config.peggy", "LooseGitConfig")
+
+const setOffset = <T>(x: T, start: { offset: number, line: number, column: number }): T => {
+    if (Array.isArray(x)) {
+        x.forEach((v) => setOffset(v, start))
+    } else if (typeof x === "object" && x !== null) {
+        if ("offset" in x && "line" in x && "column" in x) {
+            const obj = x as any as { offset: number, line: number, column: number }
+            obj.offset += start.offset - 1
+            if (obj.line === 1) {
+                obj.column += start.column - 1
+            }
+            obj.line += start.line - 1
+        }
+        Object.values(x).forEach((v) => setOffset(v, start))
+    }
+    return x
+}
+
+export const gitConfigParser = {
+    parse: (input: string) => {
+        const f = looseGitConfigParser.parse(input)
+        if (f === null) { return null }
+        return f.map(({ sectionHeader: { location }, variableAssignments }) => ({
+            sectionHeader: {
+                location,
+                ast: setOffset(sectionHeaderParser.parse(input.slice(location.start.offset, location.end.offset)), location.start),
+            },
+            variableAssignments: variableAssignments.map(({ location }) => ({
+                location,
+                ast: setOffset(variableAssignmentParser.parse(input.slice(location.start.offset, location.end.offset)), location.start),
+            })),
+        }))
+    },
+    check: (input: string) => {
+        const f = looseGitConfigParser.parse(input)
+        if (f === null) { return [] }
+        return f.flatMap(({ sectionHeader: { location: { start, end } }, variableAssignments }) => [
+            setOffset(sectionHeaderParser.check(input.slice(start.offset, end.offset)), start),
+            ...variableAssignments.map(({ location: { start, end } }) => setOffset(variableAssignmentParser.check(input.slice(start.offset, end.offset)), start)),
+        ]).filter((v) => v !== null) as peggy.parser.SyntaxError[]
+    },
+} as const
 
 export const valueParser = new Parser<"true" | "false" | "integer" | "color">("syntax-value.peggy", undefined)

@@ -65,13 +65,13 @@ describe("gitConfigParser", () => {
 k = l  
     [m]
 `)
-    it("0.sectionHeader", () => { assert.deepStrictEqual(result![0].sectionHeader.parts.map((v) => v.text), ["a", "b"]) })
-    it("0.variableAssignments", () => { assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.map((v) => v?.text)), [["c", "d"]]) })
+    it("0.sectionHeader", () => { assert.deepStrictEqual(result![0].sectionHeader.ast?.parts.map((v) => v.text), ["a", "b"]) })
+    it("0.variableAssignments", () => { assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.ast?.map((v) => v?.text)), [["c", "d"]]) })
 
-    it("1.sectionHeader", () => { assert.deepStrictEqual(result![1].sectionHeader.parts.map((v) => v.text), ["e", "f", "g", "h"]) })
-    it("1.variableAssignments", () => { assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.map((v) => v?.text)), [["i", "j"], ["k", "l"]]) })
+    it("1.sectionHeader", () => { assert.deepStrictEqual(result![1].sectionHeader.ast?.parts.map((v) => v.text), ["e", "f", "g", "h"]) })
+    it("1.variableAssignments", () => { assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.ast?.map((v) => v?.text)), [["i", "j"], ["k", "l"]]) })
 
-    it("2.sectionHeader", () => { assert.deepStrictEqual(result![2].sectionHeader.parts.map((v) => v.text), ["m"]) })
+    it("2.sectionHeader", () => { assert.deepStrictEqual(result![2].sectionHeader.ast?.parts.map((v) => v.text), ["m"]) })
     it("2.variableAssignments", () => { assert.deepStrictEqual(result![2].variableAssignments.length, 0) })
 })
 

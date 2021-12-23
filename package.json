@@ -33,10 +33,21 @@
     "semanticTokenScopes": [
       {
         "scopes": {
-          "gitconfigBool": ["constant.language.boolean.gitconfig"],
-          "gitconfigColor": ["support.constant.color.gitconfig"],
-          "gitconfigProperty": ["variable.other.constant.object.gitconfig", "variable.other.constant", "variable.other.enummember"],
-          "gitconfigSection": ["entity.name.tag.gitconfig", "meta.selector.gitconfig"]
+          "gitconfigBool": [
+            "constant.language.boolean.gitconfig"
+          ],
+          "gitconfigColor": [
+            "support.constant.color.gitconfig"
+          ],
+          "gitconfigProperty": [
+            "variable.other.constant.object.gitconfig",
+            "variable.other.constant",
+            "variable.other.enummember"
+          ],
+          "gitconfigSection": [
+            "entity.name.tag.gitconfig",
+            "meta.selector.gitconfig"
+          ]
         }
       }
     ]
