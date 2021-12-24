@@ -5,3 +5,4 @@ Implemented so far:
 - Syntax highlighting
 - Auto-completion
 - lfs-config man page parser
+- Custom editors for .git/index, .git/objects/, .git/refs/
