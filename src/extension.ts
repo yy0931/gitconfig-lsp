@@ -50,7 +50,7 @@ type DocumentLink = vscode.DocumentLink | vscode.DocumentLink & { uri: vscode.Ur
 
 export const activate = (context: vscode.ExtensionContext) => {
     const renderWebview = (webview: vscode.Webview, repo: vscode.Uri, view: { title: string, code: string, language: string }) => {
-        const extensionUri = webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, "webview/prism.css")).toString()
+        const extensionUri = webview.asWebviewUri(context.extensionUri).toString()
         webview.options = webpackOptions
         webview.html = mustache.render(fs.readFileSync(vscode.Uri.joinPath(context.extensionUri, "webview/custom-editor.html").fsPath).toString(), { extensionUri, ...view })
         webview.onDidReceiveMessage((hash: string) => { openObject(repo, hash) })
