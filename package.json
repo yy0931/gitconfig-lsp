@@ -89,7 +89,8 @@
           "**/.git/ORIG_HEAD",
           "**/.git/HEAD",
           "**/.git/FETCH_HEAD",
-          "**/.git/packed-refs"
+          "**/.git/packed-refs",
+          "**/.git/shallow"
         ]
       }
     ],
