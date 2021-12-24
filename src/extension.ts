@@ -3,6 +3,7 @@ import vscode from 'vscode'
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node'
 import { execFileSync } from "child_process"
 import fs from "fs"
+import mustache from "mustache"
 
 const escapeHTML = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;")
 const git = (cwd: vscode.Uri, ...args: string[]) => {
@@ -48,6 +49,13 @@ const openObject = (repo: vscode.Uri, hash: string) => {
 type DocumentLink = vscode.DocumentLink | vscode.DocumentLink & { uri: vscode.Uri, hash: string }
 
 export const activate = (context: vscode.ExtensionContext) => {
+    const renderWebview = (webview: vscode.Webview, repo: vscode.Uri, view: { title: string, code: string, language: string }) => {
+        const extensionUri = webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, "webview/prism.css")).toString()
+        webview.options = webpackOptions
+        webview.html = mustache.render(fs.readFileSync(vscode.Uri.joinPath(context.extensionUri, "webview/custom-editor.html").fsPath).toString(), { extensionUri, ...view })
+        webview.onDidReceiveMessage((hash: string) => { openObject(repo, hash) })
+    }
+
     const webpackOptions: vscode.WebviewOptions = {
         enableScripts: true,
         localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, "webview")],
@@ -78,32 +86,13 @@ export const activate = (context: vscode.ExtensionContext) => {
                 try {
                     const hash = document.uri.query || document.uri.path.split("/").slice(-2).join("")
                     const content = escapeHTML(git(document.uri, "cat-file", "-p", hash))
-                    webviewPanel.webview.options = webpackOptions
                     switch (git(document.uri, "cat-file", "-t", hash).trim()) {
                         case "commit":
                         case "tree":
-                            webviewPanel.webview.html = (await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, "webview/custom-editor.html"))).toString()
-                                .replace(`{{title}}`, hash)
-                                .replace(`{{code}}`, content.replace(hashPattern, (x) => `<a href="#">${x}</a>`))
-                            webviewPanel.webview.onDidReceiveMessage((hash: string) => { openObject(document.uri, hash) })
+                            renderWebview(webviewPanel.webview, document.uri, { title: hash, code: content.replace(hashPattern, (x) => `<a href="#">${x}</a>`), language: "" })
                             break
                         default:// "blob"
-                            webviewPanel.webview.html = `\
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>git cat-file</title>
-    <link href="${webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, "webview/prism.css"))}" rel="stylesheet" />
-</head>
-<body>
-    <pre><code class="language-txt">${content}</code></pre>
-    <script src="${webviewPanel.webview.asWebviewUri(vscode.Uri.joinPath(context.extensionUri, "webview/prism.js"))}"></script>
-</body>
-</html>
-`
+                            renderWebview(webviewPanel.webview, document.uri, { title: hash, code: content, language: "language-txt" })
                     }
                 } catch (err: any) {
                     vscode.window.showErrorMessage(err.stack)
@@ -118,11 +107,11 @@ export const activate = (context: vscode.ExtensionContext) => {
             },
             async resolveCustomEditor(document, webviewPanel) {
                 try {
-                    webviewPanel.webview.options = webpackOptions
-                    webviewPanel.webview.html = webviewPanel.webview.html = (await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, "webview/custom-editor.html"))).toString()
-                        .replace(`{{title}}`, path.basename(document.uri.path))
-                        .replace(`{{code}}`, git(document.uri, "ls-files", "--stage").replace(hashPattern, (x) => `<a href="#">${x}</a>`))
-                    webviewPanel.webview.onDidReceiveMessage((hash: string) => { openObject(document.uri, hash) })
+                    renderWebview(webviewPanel.webview, document.uri, {
+                        title: path.basename(document.uri.path),
+                        code: git(document.uri, "ls-files", "--stage").replace(hashPattern, (x) => `<a href="#">${x}</a>`),
+                        language: "",
+                    })
                 } catch (err: any) {
                     vscode.window.showErrorMessage(err.stack)
                     throw err
@@ -136,11 +125,11 @@ export const activate = (context: vscode.ExtensionContext) => {
             },
             async resolveCustomEditor(document, webviewPanel) {
                 try {
-                    webviewPanel.webview.options = webpackOptions
-                    webviewPanel.webview.html = webviewPanel.webview.html = (await vscode.workspace.fs.readFile(vscode.Uri.joinPath(context.extensionUri, "webview/custom-editor.html"))).toString()
-                        .replace(`{{title}}`, path.basename(document.uri.path))
-                        .replace(`{{code}}`, git(document.uri, "verify-pack", "-v", document.uri.fsPath).replace(hashPattern, (x) => `<a href="#">${x}</a>`))
-                    webviewPanel.webview.onDidReceiveMessage((hash: string) => { openObject(document.uri, hash) })
+                    renderWebview(webviewPanel.webview, document.uri, {
+                        title: path.basename(document.uri.path),
+                        code: git(document.uri, "verify-pack", "-v", document.uri.fsPath).replace(hashPattern, (x) => `<a href="#">${x}</a>`),
+                        language: "",
+                    })
                 } catch (err: any) {
                     vscode.window.showErrorMessage(err.stack)
                     throw err
