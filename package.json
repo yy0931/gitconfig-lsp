@@ -22,7 +22,10 @@
   "activationEvents": [
     "onLanguage:gitconfig",
     "onLanguage:properties",
-    "onCustomEditor:gitconfig-lsp.git-cat-file"
+    "onLanguage:git-internals",
+    "onCustomEditor:gitconfig-lsp.cat-file",
+    "onCustomEditor:gitconfig-lsp.ls-files--stage",
+    "onCustomEditor:gitconfig-lsp.verify-pack-v"
   ],
   "engines": {
     "vscode": "^1.60.0"
@@ -31,11 +34,34 @@
   "contributes": {
     "customEditors": [
       {
-        "viewType": "gitconfig-lsp.git-cat-file",
-        "displayName": "git-cat-file",
+        "viewType": "gitconfig-lsp.cat-file",
+        "displayName": "git cat-file",
         "selector": [
           {
-            "filenamePattern": "**/.git/objects/*/*"
+            "filenamePattern": "**/.git/objects/??/??????????????????????????????????????"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "gitconfig-lsp.ls-files--stage",
+        "displayName": "git ls-files --stage",
+        "selector": [
+          {
+            "filenamePattern": "**/.git/index"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "gitconfig-lsp.verify-pack-v",
+        "displayName": "git verify-pack -v",
+        "selector": [
+          {
+            "filenamePattern": "**/.git/objects/pack/pack-*.idx"
+          },
+          {
+            "filenamePattern": "**/.git/objects/pack/pack-*.pack"
           }
         ],
         "priority": "default"
@@ -54,6 +80,24 @@
           "config.worktree"
         ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "git-internals",
+        "filenamePatterns": [
+          "**/.git/logs/**/*",
+          "**/.git/refs/**/*",
+          "**/.git/ORIG_HEAD",
+          "**/.git/HEAD",
+          "**/.git/FETCH_HEAD",
+          "**/.git/packed-refs"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "git-internals",
+        "scopeName": "source.git-internals",
+        "path": "./syntaxes/git-internals.tmLanguage.json"
       }
     ],
     "semanticTokenScopes": [

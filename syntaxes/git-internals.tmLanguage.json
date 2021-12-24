@@ -1,0 +1,10 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "git-internals",
+    "scopeName": "source.git-internals",
+    "patterns": [
+        { "name": "variable.other.constant.hash.git-internals", "match": "(?<![\\da-f])[\\da-f]{40}(?![\\da-f])" },
+        { "name": "string.email.git-internals", "match": "<[^>@]+@[^>]+>" },
+        { "name": "variable.other.constant.refs.git-internals", "match": "refs(/[^ \\n\\t/]+)+" }
+    ]
+}
