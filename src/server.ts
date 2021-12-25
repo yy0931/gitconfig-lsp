@@ -4,9 +4,12 @@ import * as parser from "./parser"
 import docs1 from "../git/Documentation/config.json"
 import docs2 from "../git-lfs/docs/man/git-lfs-config.5.conn.json"
 import * as vscodeUri from "vscode-uri"
-import fs from "fs"
+import { Documentation } from './generate-docs'
 
-const docs = { ...docs1, ...docs2 }
+const docs: Documentation = {
+    ...docs1,
+    ...docs2,
+}
 
 // a.<name> === a.b
 const matchVariable = (doc: string, code: string) => {

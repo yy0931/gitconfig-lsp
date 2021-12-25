@@ -126,3 +126,62 @@ describe("refspecParser", () => {
         assert.strictEqual(v?.dst.text, "refs/remotes/origin/*")
     })
 })
+
+describe("gitSourceParser", () => {
+    it("bool", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+	if (strcmp(var, "foo.bar") == 0) {
+		x = git_config_bool(var, value);
+		return 0;
+	}
+`), { name: "foo.bar", type: "bool" })
+    })
+    it("int", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+		if (strcmp(var, "foo.bar") == 0) {
+			x = git_config_int(var, value);
+			return 0;
+		}
+`), { name: "foo.bar", type: "int" })
+    })
+    it("pathname", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+		if (strcmp(var, "foo.bar") == 0) {
+			x = git_config_pathname(var, value);
+			return 0;
+		}
+`), { name: "foo.bar", type: "pathname" })
+    })
+    it("string", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+        if (strcmp(var, "foo.bar") == 0)
+            return git_config_string(&x, var, value);
+`), { name: "foo.bar", type: "string" })
+    })
+    it("x->y =", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+        if (strcmp(var, "foo.bar") == 0) {
+            x->y = git_config_bool(var, value);
+            return 0;
+        }
+`), { name: "foo.bar", type: "bool" })
+    })
+    it("!strcmp", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+        if (!strcmp(var, "foo.bar")) {
+            x = git_config_bool(var, value);
+            return 0;
+        }
+`), { name: "foo.bar", type: "bool" })
+    })
+    it("uint", () => {
+        assert.deepStrictEqual(parser.gitSourceParser.parse(`\
+        if (strcmp(var, "foo.bar") == 0) {
+            x = git_config_int(var, value);
+            if (x < 0)
+                return -1;
+            return 0;
+        }
+`), { name: "foo.bar", type: "uint" })
+    })
+})

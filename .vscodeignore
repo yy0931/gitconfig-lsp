@@ -2,3 +2,4 @@ dist/*.test.js
 dist/*.test.js.map
 src/
 .vscode/
+git-src/

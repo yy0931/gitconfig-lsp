@@ -5,6 +5,8 @@ import assert from "assert"
 import TurndownService from "turndown"
 import path from "path"
 import * as parser from "./parser"
+import { execFileSync } from "child_process"
+import glob from "glob"
 
 const turndown = new TurndownService({ headingStyle: "setext" })
 const htmlToMarkdown = (html: string) => {
@@ -21,7 +23,7 @@ const querySelector = (el: Element, query: string) => {
 
 export type Documentation = Record<string, { deprecated: boolean, documentation: string, autocomplete: boolean }>
 
-const parseGitDocumentation = async () => {
+const generateGitDocumentation = async () => {
     const parseDl = (dl: HTMLElement) => {
         const result: Documentation = {}
 
@@ -67,7 +69,7 @@ const parseGitDocumentation = async () => {
     }
 }
 
-const parseGitLFSDocumentation = async () => {
+const generateGitLFSDocumentation = async () => {
     const markdown = await fetch("https://raw.githubusercontent.com/git-lfs/git-lfs/main/docs/man/git-lfs-config.5.ronn").then((res) => res.text())
     const result: Documentation = {}
 
@@ -94,5 +96,38 @@ const parseGitLFSDocumentation = async () => {
     fs.writeFileSync(path.join(__dirname, "../git-lfs/docs/man/git-lfs-config.5.conn.json"), JSON.stringify(result, null, "    "))
 }
 
-parseGitDocumentation().catch(console.error)
-parseGitLFSDocumentation().catch(console.error)
+const generateTypeSignatures = () => {
+    if (!fs.existsSync(path.join(__dirname, "../git-src"))) {
+        execFileSync("git", ["clone", "--depth", "1", "https://github.com/git/git", "git-src"], { stdio: "inherit" })
+    }
+    if (fs.existsSync(path.join(__dirname, "../git-src/.git"))) {
+        fs.rmSync(path.join(__dirname, "../git-src/.git"), { recursive: true })
+    }
+
+    const result: Record<string, parser.ConfigType> = {}
+    let pass = 0
+    let fail = 0
+    for (const f of glob.sync("git-src/**/*.c")) {
+        const content = fs.readFileSync(f).toString()
+        for (const m of content.matchAll(/strcmp\(var, "/g)) {
+            if (m.index === undefined) { continue }
+            const slice = content.slice(content.lastIndexOf("\n", m.index) + 1)
+            const f = parser.gitSourceParser.parse(slice)
+            if (f === null) {
+                fail++
+                console.warn(`parse error: ${content.slice(m.index, content.indexOf("\n", m.index))}`)
+                continue
+            }
+            pass++
+            result[f.name] = f.type
+            console.log(f)
+        }
+    }
+
+    fs.writeFileSync(path.join(__dirname, "../git/types.json"), JSON.stringify(result, null, "    "))
+    console.log(`coverage: ${Math.round(pass / (pass + fail) * 100)}%`)
+}
+
+generateGitDocumentation().catch(console.error)
+generateGitLFSDocumentation().catch(console.error)
+generateTypeSignatures()
