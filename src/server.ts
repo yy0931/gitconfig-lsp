@@ -161,6 +161,7 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
     const text = textDocument.getText()
     const f = parser.gitConfigParser.parse(text)
     let currentSection: string | null = null
+
     if (f !== null) {
         for (const section of f) {
             const range = toLSPRange(section.sectionHeader.location)
@@ -168,13 +169,24 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
                 return [] // the cursor is in a section header
             }
             if (isBefore(range.end, position)) {
-                currentSection =
-                    section.sectionHeader.ast === null ? null :
-                        section.sectionHeader.ast.parts.map((v) => v.text).join(".")
+                if (section.sectionHeader.ast === null) {
+                    currentSection = null
+                } else {
+                    currentSection = section.sectionHeader.ast.parts.map((v) => v.text).join(".")
+                }
+            }
+            for (const assignment of section.variableAssignments) {
+                if (assignment.ast === null) { continue }
+                const [_key, value] = assignment.ast
+                if (value === null) { continue }
+                if (containsPosition(toLSPRange(value.location), position)) {
+                    return [] // the cursor is on a value
+                }
             }
         }
     }
 
+    // the cursor is neither in a section header nor on a value
     return Object.entries(docs).flatMap(([k, v]) => {
         if (!v.autocomplete) { return [] }
         if (uri.endsWith(".lfsconfig") && !k.startsWith("lfs.") && !k.endsWith(".lfsurl")) { return [] }  // https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-config.5.ronn#lfsconfig
