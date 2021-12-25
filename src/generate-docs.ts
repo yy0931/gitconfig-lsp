@@ -65,6 +65,8 @@ const generateGitDocumentation = async () => {
         for (const dl of querySelector(dom.window.document.body, "#_variables")!.parentElement!.querySelectorAll<HTMLDivElement>(":scope > div.dlist > dl")) {
             result = { ...result, ...parseDl(dl) }
         }
+        result["include.path"] = result["includeIf.<condition>.path"] = { autocomplete: true, deprecated: false, documentation: dom.window.document.querySelector("#_includes")!.parentElement!.textContent!.trim() }
+
         fs.writeFileSync(path.join(__dirname, "../git/Documentation/config.json"), JSON.stringify(result, null, "    "))
     }
 }
