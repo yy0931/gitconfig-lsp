@@ -3,3 +3,4 @@ dist/*.test.js.map
 src/
 .vscode/
 git-src/
+tsconfig.json
