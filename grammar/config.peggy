@@ -1,25 +1,26 @@
 // ==== File ====
 LooseGitConfig =
+  headerComments:LineComments
   sections:(
-    _s LooseSectionHeader
-    (_s LooseVariableAssignment)*
+    sectionHeader:LooseSectionHeader
+    comments1:LineComments
+    variableAssignments:(
+      assignment:LooseVariableAssignment comments2:LineComments
+      { return { assignment, comments: comments2 } }
+    )*
+    { return { sectionHeader, comments: comments1, variableAssignments: variableAssignments } }
   )*
-  _s
-  { return sections.map((v) => ({ sectionHeader: v[1], variableAssignments: v[2].map((v) => v[1])})) }
-
-_s "whitespace" = [\n \t]*
+  { return { headerComments, sections } }
 
 // ==== Section Header ====
 // [foo.bar "foo.bar"]
-// SectionHeader ⊂ LooseSectionHeader
+// L(SectionHeader) ⊂ L(LooseSectionHeader)
 LooseSectionHeader =
   _t
   "["
-  [^"\]]*  // section
-  ('"' ("\\" . / [^"\\])* '"')?  // subsection
+  [^"\]\n]*  // section
+  ('"' ("\\" . / [^"\\\n])* '"')?  // subsection
   "]"
-  _t
-  LineComment?
   { return { location: location() } }
 
 SectionHeader =
@@ -44,8 +45,6 @@ SectionHeader =
   )?
   _
   "]"
-  _t
-  LineComment?
   { return { parts: [...section, ...(subsection ? subsection.parts : [])], location: location(), subsectionLocation: subsection ? subsection.location : null } }
 
 // foo
@@ -55,16 +54,20 @@ SectionIdent "identifier" =
 
 // "foo"
 SubsectionIdent =
-  str:("\\" escaped:. { return escaped } / [^".\\])*
+  str:("\\" escaped:. { return escaped } / [^".\\\n])*
   { return { text: str.join(""), location: location() } }  // case-sensitive
 
 // ==== Variable Assignment ====
 // foo = bar
-// VariableAssignment ⊂ LooseVariableAssignment
+// L(VariableAssignment) ⊂ L(LooseVariableAssignment)
 LooseVariableAssignment =
   _t
-  [^\[] ("\\\n" / [^\n])*
-  LineComment?
+  [^\[]
+  (
+      "\\\n" { return "" }
+    / [^\n";#]
+    / '"' ("\\" . / [^"\\\n])* '"'
+  )*
   { return { location: location() } }
 
 VariableAssignment =
@@ -78,15 +81,24 @@ VariableAssignment =
     "="
     _t
     value:(
-      value:("\\\n" { return "" } / [^\n] { return text() })*
+      value:(
+          "\\\n" { return "" }
+        / [^\n";#]
+        / '"' @$("\\" escaped:. { return escaped } / [^"\\\n])* '"'
+      )*
       { return { text: value.join("").trim(), location: location() } }
     )
     { return value }
   )?
-  LineComment?
-  { return [name, value] }
+  { return { name, value } }
 
 // ==== Common ====
 _ "whitespace" = [ ]*
 _t "whitespace" = [ \t]*
-LineComment = [;#][^\n\r]+
+_s "whitespace" = [\n \t]*
+
+LineComment = text:$([;#][^\n\r]*)
+  { return { text, location: location() } }
+
+LineComments = _s comments:(LineComment _s (@LineComment _s)*)?
+  { return comments === null ? [] : [comments[0], ...comments[2]] }

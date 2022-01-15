@@ -29,7 +29,7 @@ const conn = lsp.createConnection(lsp.ProposedFeatures.all)
 const documents: lsp.TextDocuments<TextDocument> = new lsp.TextDocuments(TextDocument)
 
 const legend: lsp.SemanticTokensLegend = {
-    tokenTypes: ["gitconfigSection", "number", "gitconfigProperty", "gitconfigBool", "gitconfigColor", "string"],
+    tokenTypes: ["gitconfigSection", "number", "gitconfigProperty", "gitconfigBool", "gitconfigColor", "string", "comment"],
     tokenModifiers: [],
 }
 const tokenTypeMap = new Map<string, number>([...legend.tokenTypes.values()].map((v, i) => [v, i]))
@@ -93,7 +93,10 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
 
     const f = parser.gitConfigParser.parse(text)
     if (f !== null) {
-        for (const section of f) {
+        for (const comment of f.headerComments) {
+            pushRange(toLSPRange(comment.location), "comment")
+        }
+        for (const section of f.sections) {
             if (section.sectionHeader.ast !== null) {
                 const subsectionLocation = section.sectionHeader.ast.subsectionLocation !== null ? toLSPRange(section.sectionHeader.ast.subsectionLocation) : null
                 for (const v of section.sectionHeader.ast.parts) {
@@ -104,10 +107,13 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
                 if (subsectionLocation !== null) {
                     pushRange(subsectionLocation, "string")
                 }
+                for (const comment of section.comments) {
+                    pushRange(toLSPRange(comment.location), "comment")
+                }
             }
             for (const assignment of section.variableAssignments) {
                 if (assignment.ast === null) { continue }
-                const [name, value] = assignment.ast
+                const { name, value } = assignment.ast
                 pushRange(toLSPRange(name.location), "gitconfigProperty")
                 if (value !== null) {
                     // https://git-scm.com/docs/git-config#_values
@@ -117,6 +123,9 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
                         case "integer": pushRange(toLSPRange(value.location), "number"); break
                         default: pushRange(toLSPRange(value.location), "string"); break
                     }
+                }
+                for (const comment of assignment.comments) {
+                    pushRange(toLSPRange(comment.location), "comment")
                 }
             }
         }
@@ -132,7 +141,7 @@ conn.onHover(({ position, textDocument: { uri } }) => {
     const f = parser.gitConfigParser.parse(textDocument.getText())
     if (f === null) { return }
     const newHover = (value: string, range: lsp.Range): lsp.Hover => ({ contents: { kind: lsp.MarkupKind.Markdown, value }, range })
-    for (const section of f) {
+    for (const section of f.sections) {
         if (section.sectionHeader.ast === null) { continue }
         {
             const range = toLSPRange(section.sectionHeader.location)
@@ -144,7 +153,7 @@ conn.onHover(({ position, textDocument: { uri } }) => {
         }
         for (const assignment of section.variableAssignments) {
             if (assignment.ast === null) { continue }
-            const [name, value] = assignment.ast
+            const { name } = assignment.ast
             const range = toLSPRange(name.location)
             if (containsPosition(range, position)) {
                 const key = section.sectionHeader.ast.parts.map((v) => v.text).join(".") + "." + name.text
@@ -163,7 +172,7 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
     let currentSection: string | null = null
 
     if (f !== null) {
-        for (const section of f) {
+        for (const section of f.sections) {
             const range = toLSPRange(section.sectionHeader.location)
             if (containsPosition(range, position)) {
                 return [] // the cursor is in a section header
@@ -177,7 +186,7 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
             }
             for (const assignment of section.variableAssignments) {
                 if (assignment.ast === null) { continue }
-                const [_key, value] = assignment.ast
+                const { value } = assignment.ast
                 if (value === null) { continue }
                 if (containsPosition(toLSPRange(value.location), position)) {
                     return [] // the cursor is on a value
@@ -236,10 +245,11 @@ conn.onDefinition(({ textDocument: { uri }, position }): lsp.DefinitionLink[] | 
         return [{ originSelectionRange, targetUri, targetRange, targetSelectionRange: targetRange }]
     }
 
-    for (const section of f) {
+    for (const section of f.sections) {
         for (const assignment of section.variableAssignments) {
-            const value = assignment.ast?.[1]
-            if (!value) { continue }
+            if (assignment.ast === null) { continue }
+            const { value } = assignment.ast
+            if (value === null) { continue }
             const range = toLSPRange(value.location)
             if (!containsPosition(range, position)) { continue }
 

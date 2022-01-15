@@ -20,12 +20,6 @@ describe("sectionHeaderParser", () => {
         test(`[foo "bar" ]`, ["foo", "bar"])
         test(`[foo"bar"]`, undefined)
         test(`[ foo "bar"]`, ["foo", "bar"])
-        test(`  [foo "bar"]  `, ["foo", "bar"])
-        test(`\t[foo "bar"]\t`, ["foo", "bar"])
-    })
-    describe("line comments", () => {
-        test(`[foo "bar"] # foo`, ["foo", "bar"])
-        test(`[foo "bar"] ; foo`, ["foo", "bar"])
     })
     describe("escape sequences", () => {
         test(`[a "a\\""]`, ["a", `a"`])
@@ -36,12 +30,17 @@ describe("sectionHeaderParser", () => {
         test("[A.B]", ["a", "b"])
         test(`[A "B"]`, ["a", "B"])
     })
+    describe("newline characters", () => {
+        test(`[a\nb]`, undefined)
+        test(`[a "b\n"]`, undefined)
+    })
 })
 
 describe("variableAssignmentParser", () => {
-    const test = (l: string, r: [string, string | undefined]) => {
+    const test = (l: string, r: [string, string | undefined] | null) => {
         it(JSON.stringify(l), () => {
-            assert.deepStrictEqual(parser.variableAssignmentParser.parse(l)?.map((v) => v?.text), r)
+            const m = parser.variableAssignmentParser.parse(l)
+            assert.deepStrictEqual(m === null ? null : [m.name.text, m.value?.text], r)
         })
     }
 
@@ -54,25 +53,55 @@ describe("variableAssignmentParser", () => {
     test("x=y", ["x", "y"])
     test("X = y", ["x", "y"])
     test("X = y\\\nz", ["x", "yz"])
+    test(`X = "y # z"`, ["x", "y # z"])
+    test(`x = "a\nb"`, null)
+})
+
+describe("looseGitConfigParser", () => {
+    it("test case 1", () => {
+        const x = parser.looseGitConfigParser.parse(`
+# a
+# b
+[c] # d
+e # f
+# g`)
+        if (x === null) {
+            assert.fail()
+        }
+
+        const test = (l: { location: parser.PeggyLocation }, start: number, end: number) => {
+            assert.strictEqual(l.location.start.offset, start)
+            assert.strictEqual(l.location.end.offset, end)
+        }
+
+        test(x.headerComments[0], 1, 4)
+        test(x.headerComments[1], 5, 8)
+        test(x.sections[0].sectionHeader, 9, 12)
+        test(x.sections[0].comments[0], 13, 16)
+        test(x.sections[0].variableAssignments[0].assignment, 17, 19)
+        test(x.sections[0].variableAssignments[0].comments[0], 19, 22)
+    })
 })
 
 describe("gitConfigParser", () => {
     const result = parser.gitConfigParser.parse(`
 \t 
-[a.b] c = d
+[a.b] c = d # comment
 [e.f "g.h"]
     i = j
+# comment
+# comment
 k = l  
     [m]
 `)
-    it("0.sectionHeader", () => { assert.deepStrictEqual(result![0].sectionHeader.ast?.parts.map((v) => v.text), ["a", "b"]) })
-    it("0.variableAssignments", () => { assert.deepStrictEqual(result![0].variableAssignments.map((v) => v.ast?.map((v) => v?.text)), [["c", "d"]]) })
+    it("0.sectionHeader", () => { assert.deepStrictEqual(result!.sections[0].sectionHeader.ast?.parts.map((v) => v.text), ["a", "b"]) })
+    it("0.variableAssignments", () => { assert.deepStrictEqual(result!.sections[0].variableAssignments.map((v) => [v.ast?.name?.text, v.ast?.value?.text]), [["c", "d"]]) })
 
-    it("1.sectionHeader", () => { assert.deepStrictEqual(result![1].sectionHeader.ast?.parts.map((v) => v.text), ["e", "f", "g", "h"]) })
-    it("1.variableAssignments", () => { assert.deepStrictEqual(result![1].variableAssignments.map((v) => v.ast?.map((v) => v?.text)), [["i", "j"], ["k", "l"]]) })
+    it("1.sectionHeader", () => { assert.deepStrictEqual(result!.sections[1].sectionHeader.ast?.parts.map((v) => v.text), ["e", "f", "g", "h"]) })
+    it("1.variableAssignments", () => { assert.deepStrictEqual(result!.sections[1].variableAssignments.map((v) => [v.ast?.name?.text, v.ast?.value?.text]), [["i", "j"], ["k", "l"]]) })
 
-    it("2.sectionHeader", () => { assert.deepStrictEqual(result![2].sectionHeader.ast?.parts.map((v) => v.text), ["m"]) })
-    it("2.variableAssignments", () => { assert.deepStrictEqual(result![2].variableAssignments.length, 0) })
+    it("2.sectionHeader", () => { assert.deepStrictEqual(result!.sections[2].sectionHeader.ast?.parts.map((v) => v.text), ["m"]) })
+    it("2.variableAssignments", () => { assert.deepStrictEqual(result!.sections[2].variableAssignments.length, 0) })
 })
 
 describe("valueParser", () => {
