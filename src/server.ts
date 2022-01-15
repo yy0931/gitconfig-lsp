@@ -206,6 +206,15 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         let i = 1
         let sectionHeader = ""
         if (currentSection === null || !matchVariable(k.split(".").slice(0, -1).join("."), currentSection)) {
+            item.additionalTextEdits = [
+                {
+                    newText: "",
+                    range: {
+                        start: { line: position.line, character: 0 },
+                        end: position,
+                    }
+                }
+            ]
             if (parts.length >= 3) {
                 sectionHeader += `[${parts[0]} "${parts.slice(1, -1).join(".").replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`)}"]\n\t`
             } else {
