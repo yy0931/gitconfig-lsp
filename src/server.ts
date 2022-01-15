@@ -204,9 +204,15 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         const parts = k.split(".")
 
         let i = 1
-        const sectionHeader = currentSection === parts.slice(0, -1).join(".") ? "" :
-            (`[${parts[0]}${parts.length >= 3 ? ` "${parts.slice(1, -1).join(".").replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`)}"` : ""}]\n\t`)
-                .replace(/<([^>]+)>/g, (_, m) => `\${${i++}:${m}}`)
+        let sectionHeader = ""
+        if (currentSection === null || !matchVariable(k.split(".").slice(0, -1).join("."), currentSection)) {
+            if (parts.length >= 3) {
+                sectionHeader += `[${parts[0]} "${parts.slice(1, -1).join(".").replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`)}"]\n\t`
+            } else {
+                sectionHeader += `[${parts[0]}]\n\t`
+            }
+            sectionHeader = sectionHeader.replace(/<([^>]+)>/g, (_, m) => `\${${i++}:${m}}`)
+        }
 
         let variable = parts[parts.length - 1]
         if (variable === "*") {
