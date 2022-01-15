@@ -18,8 +18,8 @@ LooseGitConfig =
 LooseSectionHeader =
   _t
   "["
-  [^"\]\n]*  // section
-  ('"' ("\\" . / [^"\\\n])* '"')?  // subsection
+  [^"\]\r\n]*  // section
+  ('"' ("\\" . / [^"\\\r\n])* '"')?  // subsection
   "]"
   { return { location: location() } }
 
@@ -54,7 +54,7 @@ SectionIdent "identifier" =
 
 // "foo"
 SubsectionIdent =
-  str:("\\" escaped:. { return escaped } / [^".\\\n])*
+  str:("\\" escaped:. { return escaped } / [^".\\\r\n])*
   { return { text: str.join(""), location: location() } }  // case-sensitive
 
 // ==== Variable Assignment ====
@@ -64,9 +64,9 @@ LooseVariableAssignment =
   _t
   [^\[]
   (
-      "\\\n" { return "" }
-    / [^\n";#]
-    / '"' ("\\" . / [^"\\\n])* '"'
+      ("\\\r\n" / "\\\n") { return "" }
+    / [^\r\n";#]
+    / '"' ("\\\r\n" / "\\" . / [^"\\\r\n])* '"'
   )*
   { return { location: location() } }
 
@@ -82,9 +82,9 @@ VariableAssignment =
     _t
     value:(
       value:(
-          "\\\n" { return "" }
-        / [^\n";#]
-        / '"' @$("\\" escaped:. { return escaped } / [^"\\\n])* '"'
+          ("\\\r\n" / "\\\n") { return "" }
+        / [^\r\n";#]
+        / '"' @$("\\\r\n" { return "" } / "\\" escaped:. { return escaped } / [^"\\\r\n])* '"'
       )*
       { return { text: value.join("").trim(), location: location() } }
     )
@@ -95,9 +95,10 @@ VariableAssignment =
 // ==== Common ====
 _ "whitespace" = [ ]*
 _t "whitespace" = [ \t]*
-_s "whitespace" = [\n \t]*
+_s "whitespace" = [\r\n \t]*
+newline = "\r\n" / "\n"
 
-LineComment = text:$([;#][^\n\r]*)
+LineComment = text:$([;#][^\r\n\r]*)
   { return { text, location: location() } }
 
 LineComments = _s comments:(LineComment _s (@LineComment _s)*)?
