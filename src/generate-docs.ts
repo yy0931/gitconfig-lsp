@@ -81,6 +81,9 @@ const generateGitLFSDocumentation = async () => {
             if (buf !== null) {
                 for (const { header, help } of parser.gitLFSParser.mustParse(buf.trimEnd() + "\n")) {
                     for (const key of header) {
+                        if (/^[A-Z_]+$/.test(key)) { // environment variables
+                            continue
+                        }
                         result[key] = { documentation: help, autocomplete: true, deprecated: false }
                     }
                 }
