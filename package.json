@@ -1,7 +1,7 @@
 {
   "name": "gitconfig-lsp",
   "displayName": "git-config Language Server",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
