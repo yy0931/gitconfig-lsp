@@ -63,11 +63,7 @@ SubsectionIdent =
 LooseVariableAssignment =
   _t
   [^\[]
-  (
-      ("\\\r\n" / "\\\n") { return "" }
-    / [^\r\n";#]
-    / '"' ("\\\r\n" / "\\" . / [^"\\\r\n])* '"'
-  )*
+  Value
   { return { location: location() } }
 
 VariableAssignment =
@@ -80,17 +76,25 @@ VariableAssignment =
   value:(
     "="
     _t
-    value:(
-      value:(
-          ("\\\r\n" / "\\\n") { return "" }
-        / [^\r\n";#]
-        / '"' @$("\\\r\n" { return "" } / "\\" escaped:. { return escaped } / [^"\\\r\n])* '"'
-      )*
-      { return { text: value.join("").trim(), location: location() } }
-    )
-    { return value }
+    @Value
   )?
   { return { name, value } }
+
+Value = value:(
+    "\\\r\n" { return "" }
+  / "\\\n"   { return "" }
+  / '\\"'    { return '"' }
+  / [^\r\n";#]
+  / '"'
+    str:$(
+        "\\\r\n" { return "" }
+      / "\\" escaped:. { return escaped }
+      / [^"\\\r\n]
+    )*
+    '"'
+    { return str }
+)*
+  { return { text: value.join("").trim(), location: location() } }
 
 // ==== Common ====
 _ "whitespace" = [ ]*

@@ -55,6 +55,9 @@ describe("variableAssignmentParser", () => {
     test("X = y\\\nz", ["x", "yz"])
     test(`X = "y # z"`, ["x", "y # z"])
     test(`x = "a\nb"`, null)
+    test(`x = a"b`, null)
+    test(`x = a "b" c`, ["x", `a b c`])
+    test(`x = a \\"b\\" c`, ["x", `a "b" c`])
 })
 
 describe("looseGitConfigParser", () => {
