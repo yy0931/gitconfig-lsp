@@ -107,7 +107,7 @@ export const gitConfigParser = {
     },
 } as const
 
-export const valueParser = new Parser<"true" | "false" | "integer" | "color">("value.peggy", undefined)
+export const valueParser = new Parser<{ type: "true" | "false" | "integer" } | { type: "color", fore: Token | null, back: Token | null }>("value.peggy", undefined)
 export const gitLFSParser = new Parser<{ header: string[], help: string }[]>("git-lfs.peggy", undefined)
 export const refspecParser = new Parser<{ src: Token & { plus: "+" | null }, dst: Token }>("refspec.peggy", undefined)
 export type ConfigType = "bool" | "int" | "uint" | "pathname" | "string"

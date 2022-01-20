@@ -108,9 +108,9 @@ k = l
 })
 
 describe("valueParser", () => {
-    const test = (l: string, r: ReturnType<typeof parser.valueParser.parse>) => {
+    const test = (l: string, r: NonNullable<ReturnType<typeof parser.valueParser.parse>>["type"] | null) => {
         it(JSON.stringify(l), () => {
-            assert.strictEqual(parser.valueParser.parse(l), r)
+            assert.strictEqual(parser.valueParser.parse(l)?.type ?? null, r)
         })
     }
     test("yes", "true")
@@ -119,11 +119,45 @@ describe("valueParser", () => {
     test("false", "false")
     test("10", "integer")
     test("-0x10k", "integer")
-    test("noboldbrightred", "color")
-    test("boldbrightgreen", "color")
-    test("boldgreen", "color")
-    test("brightboldgreen", "color")
-    test("boldgreen", "color")
+
+    for (const fore of ["green", "brightgreen"]) {
+        test(`${fore}`, "color")
+        test(`bold ${fore}`, "color")
+        test(`nobold ${fore}`, "color")
+        test(`no-bold ${fore}`, "color")
+        test(`${fore} bold`, "color")
+        test(`${fore} nobold`, "color")
+        test(`${fore} no-bold`, "color")
+    }
+    for (const back of ["green", "brightgreen"]) {
+        test(`red ${back}`, "color")
+        test(`red ${back} bold`, "color")
+        test(`bold red ${back}`, "color")
+        test(`red ${back} bold no-bold`, "color")  // interpreted as `no-bold red ${back}`
+    }
+    test(`#ff0000`, "color")
+    test(`#FF0000`, "color")
+    test(`#ff0000 bold`, "color")
+    test(`#ff0000 #00ff00 bold`, "color")
+
+    test(`red red red`, null)
+
+    it("location of basic colors", () => {
+        const x = parser.valueParser.parse("red dim brightred")
+        if (x?.type !== "color") { assert.fail() }
+        assert.strictEqual(x.fore!.location.start.offset, 0)
+        assert.strictEqual(x.fore!.location.end.offset, 3)
+        assert.strictEqual(x.back!.location.start.offset, 8)
+        assert.strictEqual(x.back!.location.end.offset, 17)
+    })
+    it("location of hex colors", () => {
+        const x = parser.valueParser.parse("#ff0000 dim #00ff00")
+        if (x?.type !== "color") { assert.fail() }
+        assert.strictEqual(x.fore!.location.start.offset, 0)
+        assert.strictEqual(x.fore!.location.end.offset, 7)
+        assert.strictEqual(x.back!.location.start.offset, 12)
+        assert.strictEqual(x.back!.location.end.offset, 19)
+    })
 })
 
 describe("gitLFSParser", () => {

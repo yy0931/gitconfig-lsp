@@ -113,7 +113,7 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
                 pushRange(toLSPRange(name.location), "gitconfigProperty")
                 if (value !== null) {
                     // https://git-scm.com/docs/git-config#_values
-                    switch (parser.valueParser.parse(value.text)) {
+                    switch (parser.valueParser.parse(value.text)?.type) {
                         case "true": case "false": pushRange(toLSPRange(value.location), "gitconfigBool"); break
                         case "color": pushRange(toLSPRange(value.location), "gitconfigColor"); break
                         case "integer": pushRange(toLSPRange(value.location), "number"); break
