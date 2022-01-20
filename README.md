@@ -1,7 +1,8 @@
 # git-config Language Server (preview)
 
-Implemented so far:
-- Documentation on hover
-- Syntax highlighting
-- Auto-completion
-- lfs-config man page parser
+![screenshot](./screenshot.png)
+
+## Features
+- [x] Documentation on hover
+- [x] Syntax highlighting
+- [x] Auto-completion
