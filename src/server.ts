@@ -11,18 +11,14 @@ const docs: Documentation = {
     ...docs2,
 }
 
-// a.<name> === a.b
+// matchVariable('a.<name>, 'a.b') === true
+// matchVariable('a.*', 'a.b') === true
+// matchVariable('a.fooBar', 'a.foobar') === true
 const matchVariable = (doc: string, code: string) => {
     const l = doc.toLowerCase().split(".")
     const r = code.split(".")
-    return l.length === r.length && l.every((v, i) => v.startsWith("<") || r[i].startsWith("<") || v === r[i])
-}
-
-const getDocument = (key: string) => {
-    for (const [k, v] of Object.entries(docs)) {
-        if (matchVariable(k, key)) { return v }
-    }
-    return null
+    return l.length === r.length &&
+        l.every((li, i) => li.startsWith("<") || li === "*" || li === r[i])
 }
 
 const conn = lsp.createConnection(lsp.ProposedFeatures.all)
@@ -133,7 +129,7 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
     return builder.build()
 })
 
-const escapeMarkdown = (s: string) => s.replace(/\*/g, "\\&").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+const escapeMarkdown = (s: string) => s.replace(/\*/g, "\\*").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 conn.onHover(({ position, textDocument: { uri } }) => {
     const textDocument = documents.get(uri)
@@ -147,8 +143,9 @@ conn.onHover(({ position, textDocument: { uri } }) => {
             const range = toLSPRange(section.sectionHeader.location)
             if (containsPosition(range, position)) {
                 const sectionName = section.sectionHeader.ast.parts.map((v) => v.text).join(".")
-                const documentation = Object.entries(docs).find((v) => v[0].endsWith(".*") && matchVariable(v[0].slice(0, -".*".length), sectionName))?.[1].documentation
-                return newHover(documentation ? `${escapeMarkdown(sectionName)}\n\n---\n${documentation}` : escapeMarkdown(sectionName), range)
+                const documentation = Object.entries(docs).find((v) => v[0].endsWith(".*") && matchVariable(v[0].slice(0, -".*".length), sectionName))
+                if (documentation === undefined) { return }
+                return newHover(`${escapeMarkdown(documentation[0])}\n\n---\n${documentation[1].documentation}`, range)
             }
         }
         for (const assignment of section.variableAssignments) {
@@ -157,8 +154,11 @@ conn.onHover(({ position, textDocument: { uri } }) => {
             const range = toLSPRange(name.location)
             if (containsPosition(range, position)) {
                 const key = section.sectionHeader.ast.parts.map((v) => v.text).join(".") + "." + name.text
-                const documentation = getDocument(key)?.documentation
-                return newHover(documentation ? `${escapeMarkdown(key)}\n\n---\n${documentation}` : escapeMarkdown(key), range)
+                for (const [k, v] of Object.entries(docs)) {
+                    if (matchVariable(k, key)) {
+                        return newHover(`${escapeMarkdown(k)}\n\n---\n${v.documentation}`, range)
+                    }
+                }
             }
         }
     }
