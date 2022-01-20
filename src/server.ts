@@ -174,8 +174,8 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
     if (f !== null) {
         for (const section of f.sections) {
             const range = toLSPRange(section.sectionHeader.location)
-            if (containsPosition(range, position)) {
-                return [] // the cursor is in a section header
+            if (containsPosition(range, position)) { // if the cursor is on a section header
+                return []
             }
             if (isBefore(range.end, position)) {
                 if (section.sectionHeader.ast === null) {
@@ -188,8 +188,18 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
                 if (assignment.ast === null) { continue }
                 const { value } = assignment.ast
                 if (value === null) { continue }
-                if (containsPosition(toLSPRange(value.location), position)) {
-                    return [] // the cursor is on a value
+                if (containsPosition(toLSPRange(value.location), position)) {  // if the cursor is on a value
+                    if (section.sectionHeader.ast?.parts[0].text === "color") { // color.*.*
+                        const items: lsp.CompletionItem[] = [{ label: "normal", kind: lsp.CompletionItemKind.Color }]
+                        for (const label of ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"].flatMap((v) => [v, `bright${v}`])) {
+                            items.push({ label, kind: lsp.CompletionItemKind.Color })
+                        }
+                        for (const label of ["bold", "dim", "ul", "blink", "reverse", "italic", "strike"].flatMap((v) => [v, `no${v}`, `no-${v}`])) {
+                            items.push({ label, kind: lsp.CompletionItemKind.Keyword })
+                        }
+                        return items
+                    }
+                    return []
                 }
             }
         }
