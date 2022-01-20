@@ -21,52 +21,13 @@
   },
   "activationEvents": [
     "onLanguage:gitconfig",
-    "onLanguage:properties",
-    "onLanguage:git-internals",
-    "onCustomEditor:gitconfig-lsp.cat-file",
-    "onCustomEditor:gitconfig-lsp.ls-files--stage",
-    "onCustomEditor:gitconfig-lsp.verify-pack-v"
+    "onLanguage:properties"
   ],
   "engines": {
     "vscode": "^1.60.0"
   },
   "preview": true,
   "contributes": {
-    "customEditors": [
-      {
-        "viewType": "gitconfig-lsp.cat-file",
-        "displayName": "git cat-file",
-        "selector": [
-          {
-            "filenamePattern": "**/.git/objects/??/??????????????????????????????????????"
-          }
-        ],
-        "priority": "default"
-      },
-      {
-        "viewType": "gitconfig-lsp.ls-files--stage",
-        "displayName": "git ls-files --stage",
-        "selector": [
-          {
-            "filenamePattern": "**/.git/index"
-          }
-        ],
-        "priority": "default"
-      },
-      {
-        "viewType": "gitconfig-lsp.verify-pack-v",
-        "displayName": "git verify-pack -v",
-        "selector": [
-          {
-            "filenamePattern": "**/.git/objects/pack/pack-*.idx"
-          },
-          {
-            "filenamePattern": "**/.git/objects/pack/pack-*.pack"
-          }
-        ],
-        "priority": "default"
-      }
-    ],
     "languages": [
       {
         "id": "gitconfig",
@@ -80,25 +41,6 @@
           "config.worktree"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
-        "id": "git-internals",
-        "filenamePatterns": [
-          "**/.git/logs/**/*",
-          "**/.git/refs/**/*",
-          "**/.git/ORIG_HEAD",
-          "**/.git/HEAD",
-          "**/.git/FETCH_HEAD",
-          "**/.git/packed-refs",
-          "**/.git/shallow"
-        ]
-      }
-    ],
-    "grammars": [
-      {
-        "language": "git-internals",
-        "scopeName": "source.git-internals",
-        "path": "./syntaxes/git-internals.tmLanguage.json"
       }
     ],
     "semanticTokenScopes": [
@@ -137,7 +79,6 @@
     "@types/glob": "^7.2.0",
     "@types/jsdom": "^16.2.14",
     "@types/mocha": "^9.0.0",
-    "@types/mustache": "^4.1.2",
     "@types/node": "^17.0.8",
     "@types/node-fetch": "^2.5.12",
     "@types/turndown": "^5.0.1",
@@ -151,7 +92,6 @@
   },
   "dependencies": {
     "glob": "^7.2.0",
-    "mustache": "^4.2.0",
     "peggy": "^1.2.0",
     "vscode-languageclient": "^7.0.0",
     "vscode-languageserver": "^7.0.0",
