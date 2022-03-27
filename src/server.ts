@@ -43,7 +43,7 @@ conn.onInitialize((params) => {
 })
 
 const isGitConfigFile = (textDocument: TextDocument) =>
-    textDocument.uri.endsWith(`.git/config`) || textDocument.languageId === "gitconfig" // TODO: does this work on Windows?
+    textDocument.uri.endsWith(`.git/config`) || textDocument.languageId === "gitconfig"
 
 const toLSPPosition = (range: { readonly line: number, readonly column: number }): lsp.Position =>
     ({ line: range.line - 1, character: range.column - 1 })
