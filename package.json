@@ -25,7 +25,6 @@
   "engines": {
     "vscode": "^1.60.0"
   },
-  "preview": true,
   "contributes": {
     "languages": [
       {

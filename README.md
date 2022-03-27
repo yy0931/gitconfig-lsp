@@ -1,4 +1,4 @@
-# git-config Language Server (preview)
+# git-config Language Server
 
 ![screenshot](./screenshot.png)
 
