@@ -13,10 +13,9 @@
     "url": "https://github.com/yy0931/gitconfig-lsp/issues"
   },
   "scripts": {
-    "build": "esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts",
-    "generate-docs": "npm run build && node dist/generate-docs.js",
-    "prepare": "npm run generate-docs",
-    "vscode:prepublish": "npm run generate-docs",
+    "generate-docs": "ts-node generate-docs.ts",
+    "build": "npm run generate-docs && esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts",
+    "vscode:prepublish": "npm run build",
     "test": "npm run build && mocha dist/*.test.js"
   },
   "activationEvents": [
@@ -88,6 +87,7 @@
     "jsdom": "^19.0.0",
     "mocha": "^9.1.4",
     "node-fetch": "^2.6.6",
+    "ts-node": "^10.7.0",
     "turndown": "^7.1.1"
   },
   "dependencies": {

@@ -1,7 +1,5 @@
 node_modules/
 dist/
-git/Documentation/*.json
-git-lfs/docs/man/*.json
 *.vsix
 git-src/
 git/types.json

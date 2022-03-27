@@ -4,7 +4,7 @@ import * as parser from "./parser"
 import docs1 from "../git/Documentation/config.json"
 import docs2 from "../git-lfs/docs/man/git-lfs-config.5.conn.json"
 import * as vscodeUri from "vscode-uri"
-import { Documentation } from './generate-docs'
+import type { Documentation } from '../generate-docs'
 
 const docs: Documentation = {
     ...docs1,

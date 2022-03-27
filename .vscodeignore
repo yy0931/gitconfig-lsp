@@ -5,3 +5,4 @@ src/
 git-src/
 tsconfig.json
 **/.gitkeep
+generate-docs.ts

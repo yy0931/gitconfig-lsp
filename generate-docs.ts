@@ -4,7 +4,7 @@ import jsdom from "jsdom"
 import assert from "assert"
 import TurndownService from "turndown"
 import path from "path"
-import * as parser from "./parser"
+import * as parser from "./src/parser"
 
 const turndown = new TurndownService({ headingStyle: "setext" })
 const htmlToMarkdown = (html: string) => {
@@ -65,7 +65,7 @@ const generateGitDocumentation = async () => {
         }
         result["include.path"] = result["includeIf.<condition>.path"] = { autocomplete: true, deprecated: false, documentation: dom.window.document.querySelector("#_includes")!.parentElement!.textContent!.trim() }
 
-        fs.writeFileSync(path.join(__dirname, "../git/Documentation/config.json"), JSON.stringify(result, null, "    "))
+        fs.writeFileSync(path.join(__dirname, "git/Documentation/config.json"), JSON.stringify(result, null, "    "))
     }
 }
 
@@ -96,7 +96,7 @@ const generateGitLFSDocumentation = async () => {
             }
         }
     }
-    fs.writeFileSync(path.join(__dirname, "../git-lfs/docs/man/git-lfs-config.5.conn.json"), JSON.stringify(result, null, "    "))
+    fs.writeFileSync(path.join(__dirname, "git-lfs/docs/man/git-lfs-config.5.conn.json"), JSON.stringify(result, null, "    "))
 }
 
 generateGitDocumentation().catch(console.error)
