@@ -6,3 +6,5 @@ git-src/
 tsconfig.json
 **/.gitkeep
 generate-docs.ts
+.github/
+.gitignore
