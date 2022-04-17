@@ -2619,6 +2619,11 @@
         "documentation": "When set to true, _git reset_ will default to the _\\--quiet_ option.",
         "autocomplete": true
     },
+    "safe.directory": {
+        "deprecated": false,
+        "documentation": "These config entries specify Git-tracked directories that are considered safe even if they are owned by someone other than the current user. By default, Git will refuse to even parse a Git config of a repository owned by someone else, let alone run its hooks, and this config setting allows users to specify exceptions, e.g. for intentionally shared repositories (see the `--shared` option in [git-init\\[1\\]](https://git-scm.com/docs/git-init)).\n\nThis is a multi-valued setting, i.e. you can add more than one directory via `git config --add`. To reset the list of safe directories (e.g. to override any such directories specified in the system config), add a `safe.directory` entry with an empty value.\n\nThis config setting is only respected when specified in a system or global config, not when it is specified in a repository config or via the command line option `-c safe.directory=<path>`.\n\nThe value of this setting is interpolated, i.e. `~/<path>` expands to a path relative to the home directory and `%(prefix)/<path>` expands to a path relative to Git’s (runtime) prefix.\n\nTo completely opt-out of this security check, set `safe.directory` to the string `*`. This will allow all repositories to be treated as if their directory was listed in the `safe.directory` list. If `safe.directory=*` is set in system config and you want to re-enable this protection, then initialize your list with an empty value before listing the repositories that you deem safe.",
+        "autocomplete": true
+    },
     "sendemail.identity": {
         "deprecated": false,
         "documentation": "A configuration identity. When given, causes values in the _sendemail.<identity>_ subsection to take precedence over values in the _sendemail_ section. The default identity is the value of `sendemail.identity`.",
