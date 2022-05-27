@@ -150,12 +150,12 @@
         "deprecated": false
     },
     "lfs.fetchinclude": {
-        "documentation": "When fetching, only download objects which match any entry on thiscomma-separated list of paths/filenames. Wildcard matching is as pergit-ignore(1). See git-lfs-fetch(1) for examples.",
+        "documentation": "When fetching, only download objects which match any entry on thiscomma-separated list of paths/filenames. Wildcard matching is as pergitignore(5). See git-lfs-fetch(1) for examples.",
         "autocomplete": true,
         "deprecated": false
     },
     "lfs.fetchexclude": {
-        "documentation": "When fetching, do not download objects which match any item on thiscomma-separated list of paths/filenames. Wildcard matching is as pergit-ignore(1). See git-lfs-fetch(1) for examples.",
+        "documentation": "When fetching, do not download objects which match any item on thiscomma-separated list of paths/filenames. Wildcard matching is as pergitignore(5). See git-lfs-fetch(1) for examples.",
         "autocomplete": true,
         "deprecated": false
     },

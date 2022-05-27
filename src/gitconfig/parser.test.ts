@@ -1,4 +1,5 @@
 import { assert } from "chai"
+import type { PeggyLocation } from "../parser-base"
 import * as parser from "./parser"
 
 describe("sectionHeaderParser", () => {
@@ -72,7 +73,7 @@ e # f
             assert.fail()
         }
 
-        const test = (l: { location: parser.PeggyLocation }, start: number, end: number) => {
+        const test = (l: { location: PeggyLocation }, start: number, end: number) => {
             assert.strictEqual(l.location.start.offset, start)
             assert.strictEqual(l.location.end.offset, end)
         }

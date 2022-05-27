@@ -14,12 +14,13 @@
   },
   "scripts": {
     "generate-docs": "ts-node generate-docs.ts",
-    "build": "npm run generate-docs && esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist src/*.ts",
+    "build": "npm run generate-docs && esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist $(find src \\( -name '*.ts' \\))",
     "vscode:prepublish": "npm run build",
-    "test": "npm run build && mocha dist/*.test.js"
+    "test": "npm run build && mocha dist/**/*.test.js"
   },
   "activationEvents": [
     "onLanguage:gitconfig",
+    "onLanguage:gitattributes",
     "onLanguage:properties"
   ],
   "engines": {
@@ -38,7 +39,14 @@
           ".lfsconfig",
           "config.worktree"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configurations/gitconfig.json"
+      },
+      {
+        "id": "gitattributes",
+        "extensions": [
+          ".gitattributes"
+        ],
+        "configuration": "./language-configurations/gitattributes.json"
       }
     ],
     "semanticTokenScopes": [

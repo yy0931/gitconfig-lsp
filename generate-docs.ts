@@ -4,7 +4,7 @@ import jsdom from "jsdom"
 import assert from "assert"
 import TurndownService from "turndown"
 import path from "path"
-import * as parser from "./src/parser"
+import * as parser from "./src/gitconfig/parser"
 
 const turndown = new TurndownService({ headingStyle: "setext" })
 const htmlToMarkdown = (html: string) => {
@@ -19,11 +19,11 @@ const querySelector = (el: Element, query: string) => {
     return x
 }
 
-export type Documentation = Record<string, { deprecated: boolean, documentation: string, autocomplete: boolean }>
+export type GitconfigDocumentation = Record<string, { deprecated: boolean, documentation: string, autocomplete: boolean }>
 
 const generateGitDocumentation = async () => {
     const parseDl = (dl: HTMLElement) => {
-        const result: Documentation = {}
+        const result: GitconfigDocumentation = {}
 
         const set = (key: string, documentation: string) => {
             if (key.endsWith(" (deprecated)")) {
@@ -59,19 +59,19 @@ const generateGitDocumentation = async () => {
 
     {
         const dom = new jsdom.JSDOM(await fetch("https://git-scm.com/docs/git-config").then((res) => res.text()))
-        let result: Documentation = {}
+        let result: GitconfigDocumentation = {}
         for (const dl of querySelector(dom.window.document.body, "#_variables")!.parentElement!.querySelectorAll<HTMLDivElement>(":scope > div.dlist > dl")) {
             result = { ...result, ...parseDl(dl) }
         }
         result["include.path"] = result["includeIf.<condition>.path"] = { autocomplete: true, deprecated: false, documentation: dom.window.document.querySelector("#_includes")!.parentElement!.textContent!.trim() }
 
-        fs.writeFileSync(path.join(__dirname, "git/Documentation/config.json"), JSON.stringify(result, null, "    "))
+        fs.writeFileSync(path.join(__dirname, "git/Documentation/gitconfig.json"), JSON.stringify(result, null, "    "))
     }
 }
 
 const generateGitLFSDocumentation = async () => {
     const markdown = await fetch("https://raw.githubusercontent.com/git-lfs/git-lfs/main/docs/man/git-lfs-config.5.ronn").then((res) => res.text())
-    const result: Documentation = {}
+    const result: GitconfigDocumentation = {}
 
     let buf = null
     for (const line of markdown.split("\n")) {
@@ -99,5 +99,22 @@ const generateGitLFSDocumentation = async () => {
     fs.writeFileSync(path.join(__dirname, "git-lfs/docs/man/git-lfs-config.5.conn.json"), JSON.stringify(result, null, "    "))
 }
 
+export type GitattributesDocumentation = { title: string, documentation: string }[]
+
+const generateGitattributesDocumentation = async () => {
+    const dom = new jsdom.JSDOM(await fetch("https://git-scm.com/docs/gitattributes").then((res) => res.text()))
+    const result: GitattributesDocumentation = []
+    for (const section of dom.window.document.querySelectorAll(".sect3")) {
+        if (section.children[0].tagName !== "H4") { throw new Error("parse error: " + section.children[0].innerHTML) }
+        if (section.children[0].children[1]?.tagName === "CODE") {
+            result.push({ title: section.children[0].children[1].textContent!, documentation: new TurndownService({ headingStyle: "setext" }).turndown([...section.children].slice(1).map((e) => e.innerHTML).join("")) })
+        } else {
+            result[result.length - 1].documentation += "\n\n" + new TurndownService({ headingStyle: "setext" }).turndown(section.innerHTML)
+        }
+    }
+    fs.writeFileSync(path.join(__dirname, "git/Documentation/gitattributes.json"), JSON.stringify(result, null, "    "))
+}
+
 generateGitDocumentation().catch(console.error)
 generateGitLFSDocumentation().catch(console.error)
+generateGitattributesDocumentation().catch(console.error)

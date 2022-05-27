@@ -1,12 +1,14 @@
 import * as lsp from 'vscode-languageserver/node'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import * as parser from "./parser"
-import docs1 from "../git/Documentation/config.json"
-import docs2 from "../git-lfs/docs/man/git-lfs-config.5.conn.json"
+import docs1 from "../../git/Documentation/gitconfig.json"
+import docs2 from "../../git-lfs/docs/man/git-lfs-config.5.conn.json"
 import * as vscodeUri from "vscode-uri"
-import type { Documentation } from '../generate-docs'
+import type { GitconfigDocumentation } from '../../generate-docs'
+import { setOffset } from '../parser-base'
+import { toLSPRange, containsRange, containsPosition, isBefore, escapeMarkdown, EasySemanticTokensBuilder } from '../server-base'
 
-const docs: Documentation = {
+const docs: GitconfigDocumentation = {
     ...docs1,
     ...docs2,
 }
@@ -45,12 +47,6 @@ conn.onInitialize((params) => {
 const isGitConfigFile = (textDocument: TextDocument) =>
     textDocument.uri.endsWith(`.git/config`) || textDocument.languageId === "gitconfig"
 
-const toLSPPosition = (range: { readonly line: number, readonly column: number }): lsp.Position =>
-    ({ line: range.line - 1, character: range.column - 1 })
-
-const toLSPRange = (range: { start: { readonly line: number, readonly column: number }, end: { readonly line: number, readonly column: number } }): lsp.Range =>
-    ({ start: toLSPPosition(range.start), end: toLSPPosition(range.end) })
-
 const check = (textDocument: TextDocument) => {
     if (!isGitConfigFile(textDocument)) {
         conn.sendDiagnostics({ uri: textDocument.uri, diagnostics: [] })
@@ -66,31 +62,16 @@ const check = (textDocument: TextDocument) => {
 documents.onDidOpen(({ document }) => { check(document) })
 documents.onDidChangeContent(({ document }) => { check(document) })
 
-const isBefore = (self: lsp.Position, other: lsp.Position) => self.line < other.line || other.line === self.line && self.character < other.character;
-const containsPosition = (self: lsp.Range, other: lsp.Position) => !isBefore(other, self.start) && !isBefore(self.end, other)
-const containsRange = (a: lsp.Range, b: lsp.Range) => containsPosition(a, b.start) && containsPosition(a, b.end)
-
 conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
     const textDocument = documents.get(uri)
-    const builder = new lsp.SemanticTokensBuilder()
-    if (textDocument === undefined || !isGitConfigFile(textDocument)) { return builder.build() }
+    if (textDocument === undefined || !isGitConfigFile(textDocument)) { return new lsp.SemanticTokensBuilder().build() }
     const text = textDocument.getText()
-    const lines = text.split("\n")
-
-    const pushRange = (range: lsp.Range, tokenTypeName: string, tokenModifiers: number = 0) => {
-        const tokenType = tokenTypeMap.get(tokenTypeName)
-        if (tokenType === undefined) { throw new Error(`Undeclared token type ${tokenTypeName}`) }
-        let character = range.start.character
-        for (let line = range.start.line; line <= range.end.line; line++) {
-            builder.push(line, character, Math.max(0, (line === range.end.line ? range.end.character : (lines[line]?.length ?? 0)) - character), tokenType, tokenModifiers)
-            character = 0
-        }
-    }
+    const builder = new EasySemanticTokensBuilder(text.split("\n"), tokenTypeMap)
 
     const f = parser.gitConfigParser.parse(text)
     if (f !== null) {
         for (const comment of f.headerComments) {
-            pushRange(toLSPRange(comment.location), "comment")
+            builder.push(toLSPRange(comment.location), "comment")
         }
         for (const section of f.sections) {
             if (section.sectionHeader.ast !== null) {
@@ -98,38 +79,36 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
                 for (const v of section.sectionHeader.ast.parts) {
                     const range = toLSPRange(v.location)
                     if (subsectionLocation !== null && containsRange(subsectionLocation, range)) { continue }
-                    pushRange(range, "gitconfigSection")
+                    builder.push(range, "gitconfigSection")
                 }
                 if (subsectionLocation !== null) {
-                    pushRange(subsectionLocation, "string")
+                    builder.push(subsectionLocation, "string")
                 }
                 for (const comment of section.comments) {
-                    pushRange(toLSPRange(comment.location), "comment")
+                    builder.push(toLSPRange(comment.location), "comment")
                 }
             }
             for (const assignment of section.variableAssignments) {
                 if (assignment.ast === null) { continue }
                 const { name, value } = assignment.ast
-                pushRange(toLSPRange(name.location), "gitconfigProperty")
+                builder.push(toLSPRange(name.location), "gitconfigProperty")
                 if (value !== null) {
                     // https://git-scm.com/docs/git-config#_values
                     switch (parser.valueParser.parse(value.text)?.type) {
-                        case "true": case "false": pushRange(toLSPRange(value.location), "gitconfigBool"); break
-                        case "color": pushRange(toLSPRange(value.location), "gitconfigColor"); break
-                        case "integer": pushRange(toLSPRange(value.location), "number"); break
-                        default: pushRange(toLSPRange(value.location), "string"); break
+                        case "true": case "false": builder.push(toLSPRange(value.location), "gitconfigBool"); break
+                        case "color": builder.push(toLSPRange(value.location), "gitconfigColor"); break
+                        case "integer": builder.push(toLSPRange(value.location), "number"); break
+                        default: builder.push(toLSPRange(value.location), "string"); break
                     }
                 }
                 for (const comment of assignment.comments) {
-                    pushRange(toLSPRange(comment.location), "comment")
+                    builder.push(toLSPRange(comment.location), "comment")
                 }
             }
         }
     }
     return builder.build()
 })
-
-const escapeMarkdown = (s: string) => s.replace(/\*/g, "\\*").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 conn.onHover(({ position, textDocument: { uri } }) => {
     const textDocument = documents.get(uri)
@@ -279,7 +258,7 @@ conn.onDefinition(({ textDocument: { uri }, position }): lsp.DefinitionLink[] | 
             if (!containsPosition(range, position)) { continue }
 
             // refspec
-            const v = parser.setOffset(parser.refspecParser.parse(value.text), value.location.start)
+            const v = setOffset(parser.refspecParser.parse(value.text), value.location.start)
             if (v !== null) { // +refs/heads/*:refs/remotes/origin/*
                 const dstRange = toLSPRange(v.dst.location)
                 const srcRange = toLSPRange(v.src.location)
