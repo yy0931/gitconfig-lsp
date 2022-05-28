@@ -73,10 +73,9 @@
   },
   "keywords": [
     "git",
-    "gitconfig",
-    "lfsconfig",
     ".gitconfig",
-    ".lfsconfig"
+    ".lfsconfig",
+    ".gitattributes"
   ],
   "author": "",
   "license": "GPLv2",
