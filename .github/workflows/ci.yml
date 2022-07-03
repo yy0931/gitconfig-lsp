@@ -1,21 +1,7 @@
 name: CI
 on:
   push:
-  schedule:
-    - cron: 1 2 3 * *  # run monthly
 jobs:
-  check_updates:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-      - run: npm ci -D
-      - run: |
-          npm run generate-docs
-          git diff --name-only --exit-code git
-          git diff --name-only --exit-code git-lfs
   test:
     runs-on: ubuntu-latest
     steps:

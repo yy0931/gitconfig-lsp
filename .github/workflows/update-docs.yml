@@ -1,0 +1,22 @@
+name: Update the documentation
+on:
+  push:
+  schedule:
+    - cron: 1 2 3 * *  # run monthly
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - run: npm ci -D
+      - run: |
+          npm run generate-docs
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Update the documentation
+          delete-branch: true
+          title: Update the documentation
