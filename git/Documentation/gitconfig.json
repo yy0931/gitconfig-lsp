@@ -406,7 +406,7 @@
     },
     "core.fsyncMethod": {
         "deprecated": false,
-        "documentation": "A value indicating the strategy Git will use to harden repository data using fsync and related primitives.\n\n*   `fsync` uses the fsync() system call or platform equivalents.\n    \n*   `writeout-only` issues pagecache writeback requests, but depending on the filesystem and storage hardware, data added to the repository may not be durable in the event of a system crash. This is the default mode on macOS.",
+        "documentation": "A value indicating the strategy Git will use to harden repository data using fsync and related primitives.\n\n*   `fsync` uses the fsync() system call or platform equivalents.\n    \n*   `writeout-only` issues pagecache writeback requests, but depending on the filesystem and storage hardware, data added to the repository may not be durable in the event of a system crash. This is the default mode on macOS.\n    \n*   `batch` enables a mode that uses writeout-only flushes to stage multiple updates in the disk writeback cache and then does a single full fsync of a dummy file to trigger the disk cache flush at the end of the operation.\n    \n    Currently `batch` mode only applies to loose-object files. Other repository data is made durable as if `fsync` was specified. This mode is expected to be as safe as `fsync` on macOS for repos stored on HFS+ or APFS filesystems and on Windows for repos stored on NTFS or ReFS filesystems.",
         "autocomplete": true
     },
     "core.fsyncObjectFiles": {
@@ -461,7 +461,7 @@
     },
     "core.sparseCheckoutCone": {
         "deprecated": false,
-        "documentation": "Enables the \"cone mode\" of the sparse checkout feature. When the sparse-checkout file contains a limited set of patterns, then this mode provides significant performance advantages. See [git-sparse-checkout\\[1\\]](https://git-scm.com/docs/git-sparse-checkout) for more information.",
+        "documentation": "Enables the \"cone mode\" of the sparse checkout feature. When the sparse-checkout file contains a limited set of patterns, this mode provides significant performance advantages. The \"non cone mode\" can be requested to allow specifying a more flexible patterns by setting this variable to _false_. See [git-sparse-checkout\\[1\\]](https://git-scm.com/docs/git-sparse-checkout) for more information.",
         "autocomplete": true
     },
     "core.abbrev": {
@@ -481,7 +481,7 @@
     },
     "add.interactive.useBuiltin": {
         "deprecated": false,
-        "documentation": "\\[EXPERIMENTAL\\] Set to `true` to use the experimental built-in implementation of the interactive version of [git-add\\[1\\]](https://git-scm.com/docs/git-add) instead of the Perl script version. Is `false` by default.",
+        "documentation": "Set to `false` to fall back to the original Perl implementation of the interactive version of [git-add\\[1\\]](https://git-scm.com/docs/git-add) instead of the built-in version. Is `true` by default.",
         "autocomplete": true
     },
     "alias.*": {
@@ -551,7 +551,7 @@
     },
     "branch.autoSetupMerge": {
         "deprecated": false,
-        "documentation": "Tells _git branch_, _git switch_ and _git checkout_ to set up new branches so that [git-pull\\[1\\]](https://git-scm.com/docs/git-pull) will appropriately merge from the starting point branch. Note that even if this option is not set, this behavior can be chosen per-branch using the `--track` and `--no-track` options. The valid settings are: `false` — no automatic setup is done; `true` — automatic setup is done when the starting point is a remote-tracking branch; `always` — automatic setup is done when the starting point is either a local branch or remote-tracking branch; `inherit` — if the starting point has a tracking configuration, it is copied to the new branch. This option defaults to true.",
+        "documentation": "Tells _git branch_, _git switch_ and _git checkout_ to set up new branches so that [git-pull\\[1\\]](https://git-scm.com/docs/git-pull) will appropriately merge from the starting point branch. Note that even if this option is not set, this behavior can be chosen per-branch using the `--track` and `--no-track` options. The valid settings are: `false` — no automatic setup is done; `true` — automatic setup is done when the starting point is a remote-tracking branch; `always` — automatic setup is done when the starting point is either a local branch or remote-tracking branch; `inherit` — if the starting point has a tracking configuration, it is copied to the new branch; `simple` — automatic setup is done only when the starting point is a remote-tracking branch and the new branch has the same name as the remote branch. This option defaults to true.",
         "autocomplete": true
     },
     "branch.autoSetupRebase": {
@@ -566,7 +566,7 @@
     },
     "branch.<name>.remote": {
         "deprecated": false,
-        "documentation": "When on branch <name>, it tells _git fetch_ and _git push_ which remote to fetch from/push to. The remote to push to may be overridden with `remote.pushDefault` (for all branches). The remote to push to, for the current branch, may be further overridden by `branch.<name>.pushRemote`. If no remote is configured, or if you are not on any branch, it defaults to `origin` for fetching and `remote.pushDefault` for pushing. Additionally, `.` (a period) is the current local repository (a dot-repository), see `branch.<name>.merge`'s final note below.",
+        "documentation": "When on branch <name>, it tells _git fetch_ and _git push_ which remote to fetch from/push to. The remote to push to may be overridden with `remote.pushDefault` (for all branches). The remote to push to, for the current branch, may be further overridden by `branch.<name>.pushRemote`. If no remote is configured, or if you are not on any branch and there is more than one remote defined in the repository, it defaults to `origin` for fetching and `remote.pushDefault` for pushing. Additionally, `.` (a period) is the current local repository (a dot-repository), see `branch.<name>.merge`'s final note below.",
         "autocomplete": true
     },
     "branch.<name>.pushRemote": {
@@ -1279,9 +1279,14 @@
         "documentation": "Running `git pack-refs` in a repository renders it unclonable by Git versions prior to 1.5.1.2 over dumb transports such as HTTP. This variable determines whether _git gc_ runs `git pack-refs`. This can be set to `notbare` to enable it within all non-bare repos or it can be set to a boolean value. The default is `true`.",
         "autocomplete": true
     },
+    "gc.cruftPacks": {
+        "deprecated": false,
+        "documentation": "Store unreachable objects in a cruft pack (see [git-repack\\[1\\]](https://git-scm.com/docs/git-repack)) instead of as loose objects. The default is `false`.",
+        "autocomplete": true
+    },
     "gc.pruneExpire": {
         "deprecated": false,
-        "documentation": "When _git gc_ is run, it will call _prune --expire 2.weeks.ago_. Override the grace period with this config variable. The value \"now\" may be used to disable this grace period and always prune unreachable objects immediately, or \"never\" may be used to suppress pruning. This feature helps prevent corruption when _git gc_ runs concurrently with another process writing to the repository; see the \"NOTES\" section of [git-gc\\[1\\]](https://git-scm.com/docs/git-gc).",
+        "documentation": "When _git gc_ is run, it will call _prune --expire 2.weeks.ago_ (and _repack --cruft --cruft-expiration 2.weeks.ago_ if using cruft packs via `gc.cruftPacks` or `--cruft`). Override the grace period with this config variable. The value \"now\" may be used to disable this grace period and always prune unreachable objects immediately, or \"never\" may be used to suppress pruning. This feature helps prevent corruption when _git gc_ runs concurrently with another process writing to the repository; see the \"NOTES\" section of [git-gc\\[1\\]](https://git-scm.com/docs/git-gc).",
         "autocomplete": true
     },
     "gc.worktreePruneExpire": {
@@ -1481,7 +1486,7 @@
     },
     "gpg.ssh.defaultKeyCommand": {
         "deprecated": false,
-        "documentation": "This command that will be run when user.signingkey is not set and a ssh signature is requested. On successful exit a valid ssh public key is expected in the first line of its output. To automatically use the first available key from your ssh-agent set this to \"ssh-add -L\".",
+        "documentation": "This command that will be run when user.signingkey is not set and a ssh signature is requested. On successful exit a valid ssh public key prefixed with `key::` is expected in the first line of its output. This allows for a script doing a dynamic lookup of the correct public key when it is impractical to statically configure `user.signingKey`. For example when keys or SSH Certificates are rotated frequently or selection of the right key depends on external factors unknown to git.",
         "autocomplete": true
     },
     "gpg.ssh.allowedSignersFile": {
@@ -1684,6 +1689,11 @@
         "documentation": "Use the specified HTTP protocol version when communicating with a server. If you want to force the default. The available and default version depend on libcurl. Currently the possible values of this option are:\n\n*   HTTP/2\n    \n*   HTTP/1.1",
         "autocomplete": true
     },
+    "http.curloptResolve": {
+        "deprecated": false,
+        "documentation": "Hostname resolution information that will be used first by libcurl when sending HTTP requests. This information should be in one of the following formats:\n\n*   \\[+\\]HOST:PORT:ADDRESS\\[,ADDRESS\\]\n    \n*   \\-HOST:PORT\n    \n\nThe first format redirects all requests to the given `HOST:PORT` to the provided `ADDRESS`(s). The second format clears all previous config values for that `HOST:PORT` combination. To allow easy overriding of all the settings inherited from the system config, an empty value will reset all resolution information to the empty list.",
+        "autocomplete": true
+    },
     "http.sslVersion": {
         "deprecated": false,
         "documentation": "The SSL version to use when negotiating an SSL connection, if you want to force the default. The available and default version depend on whether libcurl was built against NSS or OpenSSL and the particular configuration of the crypto library in use. Internally this sets the _CURLOPT\\_SSL\\_VERSION_ option; see the libcurl documentation for more details on the format of this option and for the ssl version supported. Currently the possible values of this option are:\n\n*   sslv2\n    \n*   sslv3\n    \n*   tlsv1\n    \n*   tlsv1.0\n    \n*   tlsv1.1\n    \n*   tlsv1.2\n    \n*   tlsv1.3\n    \n\nCan be overridden by the `GIT_SSL_VERSION` environment variable. To force git to use libcurl’s default ssl version and ignore any explicit http.sslversion option, set `GIT_SSL_VERSION` to the empty string.",
@@ -1739,7 +1749,7 @@
         "documentation": "As of cURL v7.60.0, the Secure Channel backend can use the certificate bundle provided via `http.sslCAInfo`, but that would override the Windows Certificate Store. Since this is not desirable by default, Git will tell cURL not to use that bundle by default when the `schannel` backend was configured via `http.sslBackend`, unless `http.schannelUseSSLCAInfo` overrides this behavior.",
         "autocomplete": true
     },
-    "http.pinnedpubkey": {
+    "http.pinnedPubkey": {
         "deprecated": false,
         "documentation": "Public key of the https service. It may either be the filename of a PEM or DER encoded public key file or a string starting with _sha256//_ followed by the base64 encoded sha256 hash of the public key. See also libcurl _CURLOPT\\_PINNEDPUBLICKEY_. git will exit with an error if this option is set but not supported by cURL.",
         "autocomplete": true
@@ -2159,6 +2169,11 @@
         "documentation": "When the `--auto-merge` is given, meld will merge all non-conflicting parts automatically, highlight the conflicting parts and wait for user decision. Setting `mergetool.meld.useAutoMerge` to `true` tells Git to unconditionally use the `--auto-merge` option with `meld`. Setting this value to `auto` makes git detect whether `--auto-merge` is supported and will only use `--auto-merge` when available. A value of `false` avoids using `--auto-merge` altogether, and is the default value.",
         "autocomplete": true
     },
+    "mergetool.vimdiff.layout": {
+        "deprecated": false,
+        "documentation": "The vimdiff backend uses this variable to control how its split windows look like. Applies even if you are using Neovim (`nvim`) or gVim (`gvim`) as the merge tool. See BACKEND SPECIFIC HINTS section in [git-mergetool\\[1\\]](https://git-scm.com/docs/git-mergetool). for details.",
+        "autocomplete": true
+    },
     "mergetool.hideResolved": {
         "deprecated": false,
         "documentation": "During a merge Git will automatically resolve as many conflicts as possible and write the _MERGED_ file containing conflict markers around any conflicts that it cannot resolve; _LOCAL_ and _REMOTE_ normally represent the versions of the file from before Git’s conflict resolution. This flag causes _LOCAL_ and _REMOTE_ to be overwriten so that only the unresolved conflicts are presented to the merge tool. Can be configured per-tool via the `mergetool.<tool>.hideResolved` configuration variable. Defaults to `false`.",
@@ -2347,6 +2362,11 @@
     "pull.twohead": {
         "deprecated": false,
         "documentation": "The default merge strategy to use when pulling a single branch.",
+        "autocomplete": true
+    },
+    "push.autoSetupRemote": {
+        "deprecated": false,
+        "documentation": "If set to \"true\" assume `--set-upstream` on default push when no upstream tracking exists for the current branch; this option takes effect with push.default options _simple_, _upstream_, and _current_. It is useful if by default you want new branches to be pushed to the default remote (like the behavior of _push.default=current_) and you also want the upstream tracking to be set. Workflows most likely to benefit from this option are _simple_ central workflows where all branches are expected to have the same name on the remote.",
         "autocomplete": true
     },
     "push.default": {
@@ -2644,6 +2664,26 @@
         "documentation": "If set to false, [git-repack\\[1\\]](https://git-scm.com/docs/git-repack) will not run [git-update-server-info\\[1\\]](https://git-scm.com/docs/git-update-server-info). Defaults to true. Can be overridden when true by the `-n` option of [git-repack\\[1\\]](https://git-scm.com/docs/git-repack).",
         "autocomplete": true
     },
+    "repack.cruftWindow": {
+        "deprecated": false,
+        "documentation": "",
+        "autocomplete": true
+    },
+    "repack.cruftWindowMemory": {
+        "deprecated": false,
+        "documentation": "",
+        "autocomplete": true
+    },
+    "repack.cruftDepth": {
+        "deprecated": false,
+        "documentation": "",
+        "autocomplete": true
+    },
+    "repack.cruftThreads": {
+        "deprecated": false,
+        "documentation": "Parameters used by [git-pack-objects\\[1\\]](https://git-scm.com/docs/git-pack-objects) when generating a cruft pack and the respective parameters are not given over the command line. See similarly named `pack.*` configuration variables for defaults and meaning.",
+        "autocomplete": true
+    },
     "rerere.autoUpdate": {
         "deprecated": false,
         "documentation": "When set to true, `git-rerere` updates the index with the resulting contents after it cleanly resolves conflicts using previously recorded resolution. Defaults to false.",
@@ -2654,9 +2694,14 @@
         "documentation": "Activate recording of resolved conflicts, so that identical conflict hunks can be resolved automatically, should they be encountered again. By default, [git-rerere\\[1\\]](https://git-scm.com/docs/git-rerere) is enabled if there is an `rr-cache` directory under the `$GIT_DIR`, e.g. if \"rerere\" was previously used in the repository.",
         "autocomplete": true
     },
+    "revert.reference": {
+        "deprecated": false,
+        "documentation": "Setting this variable to true makes `git revert` behave as if the `--reference` option is given.",
+        "autocomplete": true
+    },
     "safe.directory": {
         "deprecated": false,
-        "documentation": "These config entries specify Git-tracked directories that are considered safe even if they are owned by someone other than the current user. By default, Git will refuse to even parse a Git config of a repository owned by someone else, let alone run its hooks, and this config setting allows users to specify exceptions, e.g. for intentionally shared repositories (see the `--shared` option in [git-init\\[1\\]](https://git-scm.com/docs/git-init)).\n\nThis is a multi-valued setting, i.e. you can add more than one directory via `git config --add`. To reset the list of safe directories (e.g. to override any such directories specified in the system config), add a `safe.directory` entry with an empty value.\n\nThis config setting is only respected when specified in a system or global config, not when it is specified in a repository config or via the command line option `-c safe.directory=<path>`.\n\nThe value of this setting is interpolated, i.e. `~/<path>` expands to a path relative to the home directory and `%(prefix)/<path>` expands to a path relative to Git’s (runtime) prefix.\n\nTo completely opt-out of this security check, set `safe.directory` to the string `*`. This will allow all repositories to be treated as if their directory was listed in the `safe.directory` list. If `safe.directory=*` is set in system config and you want to re-enable this protection, then initialize your list with an empty value before listing the repositories that you deem safe.",
+        "documentation": "These config entries specify Git-tracked directories that are considered safe even if they are owned by someone other than the current user. By default, Git will refuse to even parse a Git config of a repository owned by someone else, let alone run its hooks, and this config setting allows users to specify exceptions, e.g. for intentionally shared repositories (see the `--shared` option in [git-init\\[1\\]](https://git-scm.com/docs/git-init)).\n\nThis is a multi-valued setting, i.e. you can add more than one directory via `git config --add`. To reset the list of safe directories (e.g. to override any such directories specified in the system config), add a `safe.directory` entry with an empty value.\n\nThis config setting is only respected when specified in a system or global config, not when it is specified in a repository config, via the command line option `-c safe.directory=<path>`, or in environment variables.\n\nThe value of this setting is interpolated, i.e. `~/<path>` expands to a path relative to the home directory and `%(prefix)/<path>` expands to a path relative to Git’s (runtime) prefix.\n\nTo completely opt-out of this security check, set `safe.directory` to the string `*`. This will allow all repositories to be treated as if their directory was listed in the `safe.directory` list. If `safe.directory=*` is set in system config and you want to re-enable this protection, then initialize your list with an empty value before listing the repositories that you deem safe.\n\nAs explained, Git only allows you to access repositories owned by yourself, i.e. the user who is running Git, by default. When Git is running as _root_ in a non Windows platform that provides sudo, however, git checks the SUDO\\_UID environment variable that sudo creates and will allow access to the uid recorded as its value in addition to the id from _root_. This is to make it easy to perform a common sequence during installation \"make && sudo make install\". A git process running under _sudo_ runs as _root_ but the _sudo_ command exports the environment variable to record which id the original user has. If that is not what you would prefer and want git to only trust repositories that are owned by root instead, then you can remove the `SUDO_UID` variable from root’s environment before invoking git.",
         "autocomplete": true
     },
     "sendemail.identity": {
@@ -3057,6 +3102,11 @@
     "trace2.maxFiles": {
         "deprecated": false,
         "documentation": "Integer. When writing trace files to a target directory, do not write additional traces if we would exceed this many files. Instead, write a sentinel file that will block further tracing to this directory. Defaults to 0, which disables this check.",
+        "autocomplete": true
+    },
+    "transfer.credentialsInUrl": {
+        "deprecated": false,
+        "documentation": "A configured URL can contain plaintext credentials in the form `<protocol>://<user>:<password>@<domain>/<path>`. You may want to warn or forbid the use of such configuration (in favor of using [git-credential\\[1\\]](https://git-scm.com/docs/git-credential)). This will be used on [git-clone\\[1\\]](https://git-scm.com/docs/git-clone), [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch), [git-push\\[1\\]](https://git-scm.com/docs/git-push), and any other direct use of the configured URL.\n\nNote that this is currently limited to detecting credentials in `remote.<name>.url` configuration, it won’t detect credentials in `remote.<name>.pushurl` configuration.\n\nYou might want to enable this to prevent inadvertent credentials exposure, e.g. because:\n\n*   The OS or system where you’re running git may not provide way way or otherwise allow you to configure the permissions of the configuration file where the username and/or password are stored.\n    \n*   Even if it does, having such data stored \"at rest\" might expose you in other ways, e.g. a backup process might copy the data to another system.\n    \n*   The git programs will pass the full URL to one another as arguments on the command-line, meaning the credentials will be exposed to other users on OS’s or systems that allow other users to see the full process list of other users. On linux the \"hidepid\" setting documented in procfs(5) allows for configuring this behavior.\n    \n    If such concerns don’t apply to you then you probably don’t need to be concerned about credentials exposure due to storing that sensitive data in git’s configuration files. If you do want to use this, set `transfer.credentialsInUrl` to one of these values:\n    \n*   `allow` (default): Git will proceed with its activity without warning.\n    \n*   `warn`: Git will write a warning message to `stderr` when parsing a URL with a plaintext credential.\n    \n*   `die`: Git will write a failure message to `stderr` when parsing a URL with a plaintext credential.",
         "autocomplete": true
     },
     "transfer.fsckObjects": {
