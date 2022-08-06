@@ -24,9 +24,25 @@ conn.onInitialize((params) => {
             hoverProvider: true,
             completionProvider: { triggerCharacters: [" ", "-", "!"] },
             documentFormattingProvider: true,
+            workspace: {
+                workspaceFolders: {
+                    supported: true
+                }
+            }
         }
     }
 })
+
+const documentSettings = new Map<string, Thenable<unknown>>()
+conn.onInitialized(() => { conn.client.register(lsp.DidChangeConfigurationNotification.type, undefined) })
+conn.onDidChangeConfiguration((change) => { documentSettings.clear() })
+documents.onDidClose((e) => { documentSettings.delete(e.document.uri) })
+const getConfiguration = async (uri: string): Promise<any> => {
+    if (documentSettings.has(uri)) { return documentSettings.get(uri) }
+    const result = await conn.workspace.getConfiguration({ section: "gitconfig-lsp", scopeUri: uri })
+    documentSettings.set(uri, result)
+    return result
+}
 
 const isGitattributesFile = (textDocument: TextDocument) =>
     textDocument.uri.endsWith(`.gitattributes`) || textDocument.languageId === "gitattributes"
@@ -75,7 +91,7 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
     return builder.build()
 })
 
-conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] | null => {
+conn.onDocumentFormatting(async ({ options, textDocument: { uri } }): Promise<lsp.TextEdit[] | null> => {
     const textDocument = documents.get(uri)
     if (textDocument === undefined || !isGitattributesFile(textDocument)) { return null }
     const text = textDocument.getText()
@@ -88,8 +104,18 @@ conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] |
             edits.push(...replaceWhitespaceLeft(toLSPPosition(line.pattern.location.start).offset, "", text, textDocument))
 
             if (line.attrs.length > 0) {
+                let tabSize = (await getConfiguration(uri) as any).format.gitattributes.tabSize
+                if (typeof tabSize !== "number") { tabSize = 11 }
+                let hardTab = (await getConfiguration(uri) as any).format.gitattributes.hardTab
+                if (typeof hardTab !== "boolean") { hardTab = false }
+                let hardTabWidth = (await getConfiguration(uri) as any).format.gitattributes.hardTabWidth
+                if (typeof hardTabWidth !== "number") { hardTabWidth = 4 }
+
+                const tab = hardTab ?
+                    "\t".repeat(Math.max(1, tabSize as number - Math.floor(toLSPPosition(line.pattern.location.end).character / hardTabWidth as number))) :
+                    " ".repeat(Math.max(1, tabSize as number - toLSPPosition(line.pattern.location.end).character))
                 // `key attrs` -> `key    attrs`
-                edits.push(...replaceWhitespaceLeft(toLSPPosition((line.attrs[0].operator ?? line.attrs[0].key).location.start).offset, " ".repeat(Math.max(1, 11 - toLSPPosition(line.pattern.location.end).character)), text, textDocument))
+                edits.push(...replaceWhitespaceLeft(toLSPPosition((line.attrs[0].operator ?? line.attrs[0].key).location.start).offset, tab, text, textDocument))
                 // `key    attrs  ` -> `key    attrs`
                 edits.push(...replaceWhitespaceRight(toLSPPosition((line.attrs[line.attrs.length - 1].value ?? line.attrs[line.attrs.length - 1].key).location.end).offset, "", text, textDocument))
             }
@@ -99,6 +125,7 @@ conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] |
             const _: "comment" = line.type
         }
     }
+
     return edits
 })
 

@@ -1,7 +1,7 @@
 {
   "name": "gitconfig-lsp",
   "displayName": "git-config Language Server",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
@@ -73,7 +73,30 @@
           ]
         }
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "git-config Language Server",
+      "properties": {
+        "gitconfig-lsp.format.gitattributes.tabSize": {
+          "type": "number",
+          "scope": "resource",
+          "default": 11,
+          "markdownDescription": "Maximum number of whitespace characters (when `gitconfig-lsp.format.gitattributes.hardTab` is false) or tab characters (when `gitconfig-lsp.format.gitattributes.hardTab` is true) between a key and attributes."
+        },
+        "gitconfig-lsp.format.gitattributes.hardTab": {
+          "type": "boolean",
+          "scope": "resource",
+          "default": false
+        },
+        "gitconfig-lsp.format.gitattributes.hardTabWidth": {
+          "type": "number",
+          "scope": "resource",
+          "default": 4,
+          "markdownDescription": "The number of spaces a hard tab is equal to."
+        }
+      }
+    }
   },
   "keywords": [
     "git",
