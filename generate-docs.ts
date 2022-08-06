@@ -70,7 +70,12 @@ const generateGitDocumentation = async () => {
 }
 
 const generateGitLFSDocumentation = async () => {
-    const markdown = await fetch("https://raw.githubusercontent.com/git-lfs/git-lfs/main/docs/man/git-lfs-config.5.ronn").then((res) => res.text())
+    // TODO:
+    // const dom = new jsdom.JSDOM(await fetch("https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-config.adoc").then((res) => res.text()))
+    // ...
+    return
+
+    const markdown = await fetch("https://raw.githubusercontent.com/git-lfs/git-lfs/main/docs/man/git-lfs-config.adoc").then((res) => res.text())
     const result: GitconfigDocumentation = {}
 
     let buf = null
