@@ -3,7 +3,7 @@ import { TextDocument } from 'vscode-languageserver-textdocument'
 import * as parser from "./parser"
 import _docs from "../../git/Documentation/gitattributes.json"
 import type { GitattributesDocumentation } from '../../generate-docs'
-import { toLSPRange, containsPosition, escapeMarkdown, EasySemanticTokensBuilder, isBefore, isBeforeOrEqual } from '../server-base'
+import { toLSPRange, containsPosition, escapeMarkdown, EasySemanticTokensBuilder, isBefore, isBeforeOrEqual, replaceWhitespaceLeft, toLSPPosition, replaceWhitespaceRight } from '../server-base'
 
 const docs: GitattributesDocumentation = _docs
 
@@ -23,6 +23,7 @@ conn.onInitialize((params) => {
             semanticTokensProvider: { documentSelector: [{ language: "gitattributes" }, { language: "properties" }], legend, full: true, range: false },
             hoverProvider: true,
             completionProvider: { triggerCharacters: [" ", "-", "!"] },
+            documentFormattingProvider: true,
         }
     }
 })
@@ -72,6 +73,33 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
     }
 
     return builder.build()
+})
+
+conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] | null => {
+    const textDocument = documents.get(uri)
+    if (textDocument === undefined || !isGitattributesFile(textDocument)) { return null }
+    const text = textDocument.getText()
+    const f = parser.GitattributesParser.parse(textDocument.getText())
+    if (f === null) { return null }
+    const edits: lsp.TextEdit[] = []
+    for (const line of f) {
+        if (line.type === "pattern") {
+            // `  key    attrs` -> `key    attrs`
+            edits.push(...replaceWhitespaceLeft(toLSPPosition(line.pattern.location.start).offset, "", text, textDocument))
+
+            if (line.attrs.length > 0) {
+                // `key attrs` -> `key    attrs`
+                edits.push(...replaceWhitespaceLeft(toLSPPosition((line.attrs[0].operator ?? line.attrs[0].key).location.start).offset, " ".repeat(Math.max(1, 11 - toLSPPosition(line.pattern.location.end).character)), text, textDocument))
+                // `key    attrs  ` -> `key    attrs`
+                edits.push(...replaceWhitespaceRight(toLSPPosition((line.attrs[line.attrs.length - 1].value ?? line.attrs[line.attrs.length - 1].key).location.end).offset, "", text, textDocument))
+            }
+        } else if (line.type === "macro") {
+            edits.push(...replaceWhitespaceLeft(toLSPPosition(line.location.start).offset, "", text, textDocument))
+        } else {
+            const _: "comment" = line.type
+        }
+    }
+    return edits
 })
 
 conn.onHover(({ position, textDocument: { uri } }) => {

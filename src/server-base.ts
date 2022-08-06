@@ -1,4 +1,5 @@
 import * as lsp from 'vscode-languageserver/node'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
 
 export const toLSPPosition = (range: { readonly line: number, readonly column: number, readonly offset: number }): lsp.Position & { offset: number } =>
     ({ line: range.line - 1, character: range.column - 1, offset: range.offset })
@@ -31,4 +32,24 @@ export class EasySemanticTokensBuilder {
     build() {
         return this.builder.build()
     }
+}
+
+/** Equivalent to `text = text.slice(0, offset).replace(/[ \t]+$/g, "") + replacement + text.slice(offset)` */
+export const replaceWhitespaceLeft = (offset: number, replacement: string, text: string, textDocument: TextDocument): lsp.TextEdit[] => {
+    const space = /[ \t]*$/.exec(text.slice(0, offset))! // TODO: This regexp pattern is known to be slow; /[ \t]+$/.exec(" ".repeat(100000) + "a")
+    if (space[0] === replacement) { return [] }
+    return [{
+        range: { start: textDocument.positionAt(space.index), end: textDocument.positionAt(offset) },
+        newText: replacement,
+    }]
+}
+
+/** Equivalent to `text = text.slice(0, offset) + replacement + text.slice(offset).replace(/^[ \t]+/g, "")` */
+export const replaceWhitespaceRight = (offset: number, replacement: string, text: string, textDocument: TextDocument): lsp.TextEdit[] => {
+    const space = /^[ \t]*/.exec(text.slice(offset))!
+    if (space[0] === replacement) { return [] }
+    return [{
+        range: { start: textDocument.positionAt(offset), end: textDocument.positionAt(offset + space[0].length) },
+        newText: replacement,
+    }]
 }

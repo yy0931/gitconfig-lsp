@@ -6,7 +6,7 @@ import docs2 from "../../git-lfs/docs/man/git-lfs-config.5.conn.json"
 import * as vscodeUri from "vscode-uri"
 import type { GitconfigDocumentation } from '../../generate-docs'
 import { setOffset } from '../parser-base'
-import { toLSPRange, containsRange, containsPosition, isBefore, escapeMarkdown, EasySemanticTokensBuilder, toLSPPosition } from '../server-base'
+import { toLSPRange, containsRange, containsPosition, isBefore, escapeMarkdown, EasySemanticTokensBuilder, toLSPPosition, replaceWhitespaceLeft, replaceWhitespaceRight } from '../server-base'
 
 const docs: GitconfigDocumentation = {
     ...docs1,
@@ -122,53 +122,31 @@ conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] |
 
     const edits: lsp.TextEdit[] = []
 
-    /** Equivalent to `text = text.slice(0, offset).replace(/[ \t]+$/g, "") + replacement + text.slice(offset)` */
-    const replaceWhitespaceLeft = (offset: number, replacement: string) => {
-        const space = /[ \t]*$/.exec(text.slice(0, offset))! // TODO: This regexp pattern is known to be slow; /[ \t]+$/.exec(" ".repeat(100000) + "a")
-        if (space[0] !== replacement) {
-            edits.push({
-                range: { start: textDocument.positionAt(space.index), end: textDocument.positionAt(offset) },
-                newText: replacement,
-            })
-        }
-    }
-    /** Equivalent to `text = text.slice(0, offset) + replacement + text.slice(offset).replace(/^[ \t]+/g, "")` */
-    const replaceWhitespaceRight = (offset: number, replacement: string) => {
-        const space = /^[ \t]*/.exec(text.slice(offset))!
-        if (space[0] !== replacement) {
-            edits.push({
-                range: { start: textDocument.positionAt(offset), end: textDocument.positionAt(offset + space[0].length) },
-                newText: replacement,
-            })
-        }
-    }
-
     for (const section of f.sections) {
         // `  [section]` -> `[section]`
-        replaceWhitespaceLeft(toLSPPosition(section.sectionHeader.location.start).offset, "")
+        edits.push(...replaceWhitespaceLeft(toLSPPosition(section.sectionHeader.location.start).offset, "", text, textDocument))
 
         // `[ section  "subsections" ]` -> `[section "subsections"]`
         if (section.sectionHeader.ast !== null) {
             if (section.sectionHeader.ast.subsectionLocation !== null) {
-                replaceWhitespaceLeft(toLSPPosition(section.sectionHeader.ast.parts[0].location.start).offset, "")
-                replaceWhitespaceRight(toLSPPosition(section.sectionHeader.ast.subsectionLocation.end).offset, "")
-                replaceWhitespaceRight(toLSPPosition(section.sectionHeader.ast.subsectionLocation.start).offset, " ")
+                edits.push(...replaceWhitespaceLeft(toLSPPosition(section.sectionHeader.ast.parts[0].location.start).offset, "", text, textDocument))
+                edits.push(...replaceWhitespaceRight(toLSPPosition(section.sectionHeader.ast.subsectionLocation.end).offset, "", text, textDocument))
+                edits.push(...replaceWhitespaceRight(toLSPPosition(section.sectionHeader.ast.subsectionLocation.start).offset, " ", text, textDocument))
             }
         }
 
         for (const assignment of section.variableAssignments) {
             if (assignment.ast === null) { continue }
             // ` name  =  value ` -> `name = value`
-            replaceWhitespaceLeft(toLSPPosition(assignment.ast.name.location.start).offset, tab)
-            replaceWhitespaceRight(toLSPPosition(assignment.ast.name.location.end).offset, " ")
+            edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.name.location.start).offset, tab, text, textDocument))
+            edits.push(...replaceWhitespaceRight(toLSPPosition(assignment.ast.name.location.end).offset, " ", text, textDocument))
             if (assignment.ast.value !== null) {
-                replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.start).offset, " ")
-                replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.end).offset, "")
+                edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.start).offset, " ", text, textDocument))
+                edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.end).offset, "", text, textDocument))
             }
         }
     }
 
-    conn.console.log(JSON.stringify(edits))
     return edits
 })
 
