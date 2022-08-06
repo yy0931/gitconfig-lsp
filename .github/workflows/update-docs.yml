@@ -20,3 +20,4 @@ jobs:
           commit-message: Update the documentation
           delete-branch: true
           title: Update the documentation
+          base: main
