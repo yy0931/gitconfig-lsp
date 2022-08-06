@@ -46,7 +46,7 @@ export const setOffset = <T>(x: T, start: { offset: number, line: number, column
     } else if (typeof x === "object" && x !== null) {
         if ("offset" in x && "line" in x && "column" in x) {
             const obj = x as any as { offset: number, line: number, column: number }
-            obj.offset += start.offset - 1
+            obj.offset += start.offset
             if (obj.line === 1) {
                 obj.column += start.column - 1
             }

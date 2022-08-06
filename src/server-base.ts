@@ -1,9 +1,9 @@
 import * as lsp from 'vscode-languageserver/node'
 
-export const toLSPPosition = (range: { readonly line: number, readonly column: number }): lsp.Position =>
-    ({ line: range.line - 1, character: range.column - 1 })
+export const toLSPPosition = (range: { readonly line: number, readonly column: number, readonly offset: number }): lsp.Position & { offset: number } =>
+    ({ line: range.line - 1, character: range.column - 1, offset: range.offset })
 
-export const toLSPRange = (range: { start: { readonly line: number, readonly column: number }, end: { readonly line: number, readonly column: number } }): lsp.Range =>
+export const toLSPRange = (range: { start: { readonly line: number, readonly column: number, readonly offset: number }, end: { readonly line: number, readonly column: number, readonly offset: number } }): lsp.Range & { start: { offset: number }, end: { offset: number } } =>
     ({ start: toLSPPosition(range.start), end: toLSPPosition(range.end) })
 
 export const isBefore = (self: lsp.Position, other: lsp.Position) => self.line < other.line || other.line === self.line && self.character < other.character;

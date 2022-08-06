@@ -1,7 +1,7 @@
 {
   "name": "gitconfig-lsp",
   "displayName": "git-config Language Server",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "publisher": "yy0931",
   "description": "",
   "main": "./dist/extension.js",
@@ -12,6 +12,10 @@
   "bugs": {
     "url": "https://github.com/yy0931/gitconfig-lsp/issues"
   },
+  "categories": [
+    "Programming Languages",
+    "Formatters"
+  ],
   "scripts": {
     "generate-docs": "ts-node generate-docs.ts",
     "build": "npm run generate-docs && esbuild --sourcemap=external --target=esnext --platform=node --format=cjs --outdir=dist $(find src \\( -name '*.ts' \\))",
