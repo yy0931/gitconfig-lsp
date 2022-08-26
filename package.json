@@ -53,6 +53,14 @@
         "configuration": "./language-configurations/gitattributes.json"
       }
     ],
+    "configurationDefaults": {
+      "[gitconfig]": {
+        "editor.semanticHighlighting.enabled": true
+      },
+      "[properties]": {
+        "editor.semanticHighlighting.enabled": true
+      }
+    },
     "semanticTokenScopes": [
       {
         "scopes": {
