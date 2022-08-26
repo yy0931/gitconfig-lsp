@@ -461,7 +461,7 @@
     },
     "core.sparseCheckoutCone": {
         "deprecated": false,
-        "documentation": "Enables the \"cone mode\" of the sparse checkout feature. When the sparse-checkout file contains a limited set of patterns, this mode provides significant performance advantages. The \"non cone mode\" can be requested to allow specifying a more flexible patterns by setting this variable to _false_. See [git-sparse-checkout\\[1\\]](https://git-scm.com/docs/git-sparse-checkout) for more information.",
+        "documentation": "Enables the \"cone mode\" of the sparse checkout feature. When the sparse-checkout file contains a limited set of patterns, this mode provides significant performance advantages. The \"non-cone mode\" can be requested to allow specifying more flexible patterns by setting this variable to _false_. See [git-sparse-checkout\\[1\\]](https://git-scm.com/docs/git-sparse-checkout) for more information.",
         "autocomplete": true
     },
     "core.abbrev": {
@@ -1853,6 +1853,16 @@
         "deprecated": false,
         "documentation": "Specify authenticate method for authentication with IMAP server. If Git was built with the NO\\_CURL option, or if your curl version is older than 7.34.0, or if you’re running git-imap-send with the `--no-curl` option, the only supported method is _CRAM-MD5_. If this is not set then _git imap-send_ uses the basic IMAP plaintext LOGIN command.",
         "autocomplete": true
+    },
+    "include.path": {
+        "autocomplete": true,
+        "deprecated": false,
+        "documentation": "Includes\n\nThe include and includeIf sections allow you to include config\ndirectives from another source. These sections behave identically to\neach other with the exception that includeIf sections may be ignored\nif their condition does not evaluate to true; see \"Conditional includes\"\nbelow.\n\n\nYou can include a config file from another by setting the special\ninclude.path (or includeIf.*.path) variable to the name of the file\nto be included. The variable takes a pathname as its value, and is\nsubject to tilde expansion. These variables can be given multiple times.\n\n\nThe contents of the included file are inserted immediately, as if they\nhad been found at the location of the include directive. If the value of the\nvariable is a relative path, the path is considered to\nbe relative to the configuration file in which the include directive\nwas found.  See below for examples."
+    },
+    "includeIf.<condition>.path": {
+        "autocomplete": true,
+        "deprecated": false,
+        "documentation": "Includes\n\nThe include and includeIf sections allow you to include config\ndirectives from another source. These sections behave identically to\neach other with the exception that includeIf sections may be ignored\nif their condition does not evaluate to true; see \"Conditional includes\"\nbelow.\n\n\nYou can include a config file from another by setting the special\ninclude.path (or includeIf.*.path) variable to the name of the file\nto be included. The variable takes a pathname as its value, and is\nsubject to tilde expansion. These variables can be given multiple times.\n\n\nThe contents of the included file are inserted immediately, as if they\nhad been found at the location of the include directive. If the value of the\nvariable is a relative path, the path is considered to\nbe relative to the configuration file in which the include directive\nwas found.  See below for examples."
     },
     "index.recordEndOfIndexEntries": {
         "deprecated": false,
@@ -3258,15 +3268,5 @@
         "deprecated": false,
         "documentation": "If no branch is specified and neither `-b` nor `-B` nor `--detach` is used, then `git worktree add` defaults to creating a new branch from HEAD. If `worktree.guessRemote` is set to true, `worktree add` tries to find a remote-tracking branch whose name uniquely matches the new branch name. If such a branch exists, it is checked out and set as \"upstream\" for the new branch. If no such match can be found, it falls back to creating a new branch from the current HEAD.",
         "autocomplete": true
-    },
-    "includeIf.<condition>.path": {
-        "autocomplete": true,
-        "deprecated": false,
-        "documentation": "Includes\n\nThe include and includeIf sections allow you to include config\ndirectives from another source. These sections behave identically to\neach other with the exception that includeIf sections may be ignored\nif their condition does not evaluate to true; see \"Conditional includes\"\nbelow.\n\n\nYou can include a config file from another by setting the special\ninclude.path (or includeIf.*.path) variable to the name of the file\nto be included. The variable takes a pathname as its value, and is\nsubject to tilde expansion. These variables can be given multiple times.\n\n\nThe contents of the included file are inserted immediately, as if they\nhad been found at the location of the include directive. If the value of the\nvariable is a relative path, the path is considered to\nbe relative to the configuration file in which the include directive\nwas found.  See below for examples."
-    },
-    "include.path": {
-        "autocomplete": true,
-        "deprecated": false,
-        "documentation": "Includes\n\nThe include and includeIf sections allow you to include config\ndirectives from another source. These sections behave identically to\neach other with the exception that includeIf sections may be ignored\nif their condition does not evaluate to true; see \"Conditional includes\"\nbelow.\n\n\nYou can include a config file from another by setting the special\ninclude.path (or includeIf.*.path) variable to the name of the file\nto be included. The variable takes a pathname as its value, and is\nsubject to tilde expansion. These variables can be given multiple times.\n\n\nThe contents of the included file are inserted immediately, as if they\nhad been found at the location of the include directive. If the value of the\nvariable is a relative path, the path is considered to\nbe relative to the configuration file in which the include directive\nwas found.  See below for examples."
     }
 }
