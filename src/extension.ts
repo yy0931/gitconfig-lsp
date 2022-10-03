@@ -4,7 +4,7 @@ import { LanguageClient, TransportKind } from 'vscode-languageclient/node'
 export const activate = (context: vscode.ExtensionContext) => {
     {
         const serverModule = context.asAbsolutePath('dist/gitconfig/server.js')
-        context.subscriptions.push(new LanguageClient(
+        const client = new LanguageClient(
             'gitconfig',
             'gitconfig',
             {
@@ -17,11 +17,13 @@ export const activate = (context: vscode.ExtensionContext) => {
                     { language: "gitconfig" }
                 ],
             },
-        ).start())
+        )
+        context.subscriptions.push(client)
+        client.start()
     }
     {
         const serverModule = context.asAbsolutePath('dist/gitattributes/server.js')
-        context.subscriptions.push(new LanguageClient(
+        const client = new LanguageClient(
             'gitattributes',
             'gitattributes',
             {
@@ -34,7 +36,9 @@ export const activate = (context: vscode.ExtensionContext) => {
                     { language: "gitattributes" }
                 ],
             },
-        ).start())
+        )
+        context.subscriptions.push(client)
+        client.start()
     }
 }
 
