@@ -1,5 +1,4 @@
 import fs from "fs"
-import fetch from "node-fetch"
 import jsdom from "jsdom"
 import assert from "assert"
 import TurndownService from "turndown"
