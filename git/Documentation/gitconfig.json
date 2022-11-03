@@ -346,7 +346,7 @@
     },
     "core.bigFileThreshold": {
         "deprecated": false,
-        "documentation": "Files larger than this size are stored deflated, without attempting delta compression. Storing large files without delta compression avoids excessive memory usage, at the slight expense of increased disk usage. Additionally files larger than this size are always treated as binary.\n\nDefault is 512 MiB on all platforms. This should be reasonable for most projects as source code and other text files can still be delta compressed, but larger binary media files won’t be.\n\nCommon unit suffixes of _k_, _m_, or _g_ are supported.",
+        "documentation": "The size of files considered \"big\", which as discussed below changes the behavior of numerous git commands, as well as how such files are stored within the repository. The default is 512 MiB. Common unit suffixes of _k_, _m_, or _g_ are supported.\n\nFiles above the configured limit will be:\n\n*   Stored deflated in packfiles, without attempting delta compression.\n    \n    The default limit is primarily set with this use-case in mind. With it, most projects will have their source code and other text files delta compressed, but not larger binary media files.\n    \n    Storing large files without delta compression avoids excessive memory usage, at the slight expense of increased disk usage.\n    \n*   Will be treated as if they were labeled \"binary\" (see [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes)). e.g. [git-log\\[1\\]](https://git-scm.com/docs/git-log) and [git-diff\\[1\\]](https://git-scm.com/docs/git-diff) will not compute diffs for files above this limit.\n    \n*   Will generally be streamed when written, which avoids excessive memory usage, at the cost of some fixed overhead. Commands that make use of this include [git-archive\\[1\\]](https://git-scm.com/docs/git-archive), [git-fast-import\\[1\\]](https://git-scm.com/docs/git-fast-import), [git-index-pack\\[1\\]](https://git-scm.com/docs/git-index-pack), [git-unpack-objects\\[1\\]](https://git-scm.com/docs/git-unpack-objects) and [git-fsck\\[1\\]](https://git-scm.com/docs/git-fsck).",
         "autocomplete": true
     },
     "core.excludesFile": {
@@ -971,17 +971,7 @@
     },
     "diff.<driver>.cachetextconv": {
         "deprecated": false,
-        "documentation": "Set this option to true to make the diff driver cache the text conversion outputs. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
-        "autocomplete": true
-    },
-    "diff.tool": {
-        "deprecated": false,
-        "documentation": "Controls which diff tool is used by [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool). This variable overrides the value configured in `merge.tool`. The list below shows the valid built-in values. Any other value is treated as a custom diff tool and requires that a corresponding difftool.<tool>.cmd variable is defined.",
-        "autocomplete": true
-    },
-    "diff.guitool": {
-        "deprecated": false,
-        "documentation": "Controls which diff tool is used by [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool) when the -g/--gui flag is specified. This variable overrides the value configured in `merge.guitool`. The list below shows the valid built-in values. Any other value is treated as a custom diff tool and requires that a corresponding difftool.<guitool>.cmd variable is defined.\n\n*   araxis\n    \n*   bc\n    \n*   codecompare\n    \n*   deltawalker\n    \n*   diffmerge\n    \n*   diffuse\n    \n*   ecmerge\n    \n*   emerge\n    \n*   examdiff\n    \n*   guiffy\n    \n*   gvimdiff\n    \n*   kdiff3\n    \n*   kompare\n    \n*   meld\n    \n*   nvimdiff\n    \n*   opendiff\n    \n*   p4merge\n    \n*   smerge\n    \n*   tkdiff\n    \n*   vimdiff\n    \n*   winmerge\n    \n*   xxdiff",
+        "documentation": "Set this option to true to make the diff driver cache the text conversion outputs. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.\n\n*   araxis\n    \n*   bc\n    \n*   codecompare\n    \n*   deltawalker\n    \n*   diffmerge\n    \n*   diffuse\n    \n*   ecmerge\n    \n*   emerge\n    \n*   examdiff\n    \n*   guiffy\n    \n*   gvimdiff\n    \n*   kdiff3\n    \n*   kompare\n    \n*   meld\n    \n*   nvimdiff\n    \n*   opendiff\n    \n*   p4merge\n    \n*   smerge\n    \n*   tkdiff\n    \n*   vimdiff\n    \n*   winmerge\n    \n*   xxdiff",
         "autocomplete": true
     },
     "diff.indentHeuristic": {
@@ -1009,14 +999,29 @@
         "documentation": "When moved lines are colored using e.g. the `diff.colorMoved` setting, this option controls the `<mode>` how spaces are treated for details of valid modes see _\\--color-moved-ws_ in [git-diff\\[1\\]](https://git-scm.com/docs/git-diff).",
         "autocomplete": true
     },
+    "diff.tool": {
+        "deprecated": false,
+        "documentation": "Controls which diff tool is used by [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool). This variable overrides the value configured in `merge.tool`. The list below shows the valid built-in values. Any other value is treated as a custom diff tool and requires that a corresponding difftool.<tool>.cmd variable is defined.",
+        "autocomplete": true
+    },
+    "diff.guitool": {
+        "deprecated": false,
+        "documentation": "Controls which diff tool is used by [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool) when the -g/--gui flag is specified. This variable overrides the value configured in `merge.guitool`. The list below shows the valid built-in values. Any other value is treated as a custom diff tool and requires that a corresponding difftool.<guitool>.cmd variable is defined.",
+        "autocomplete": true
+    },
+    "difftool.<tool>.cmd": {
+        "deprecated": false,
+        "documentation": "Specify the command to invoke the specified diff tool. The specified command is evaluated in shell with the following variables available: _LOCAL_ is set to the name of the temporary file containing the contents of the diff pre-image and _REMOTE_ is set to the name of the temporary file containing the contents of the diff post-image.\n\nSee the `--tool=<tool>` option in [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool) for more details.",
+        "autocomplete": true
+    },
     "difftool.<tool>.path": {
         "deprecated": false,
         "documentation": "Override the path for the given tool. This is useful in case your tool is not in the PATH.",
         "autocomplete": true
     },
-    "difftool.<tool>.cmd": {
+    "difftool.trustExitCode": {
         "deprecated": false,
-        "documentation": "Specify the command to invoke the specified diff tool. The specified command is evaluated in shell with the following variables available: _LOCAL_ is set to the name of the temporary file containing the contents of the diff pre-image and _REMOTE_ is set to the name of the temporary file containing the contents of the diff post-image.",
+        "documentation": "Exit difftool if the invoked diff tool returns a non-zero exit status.\n\nSee the `--trust-exit-code` option in [git-difftool\\[1\\]](https://git-scm.com/docs/git-difftool) for more details.",
         "autocomplete": true
     },
     "difftool.prompt": {
@@ -1122,6 +1127,11 @@
     "format.from": {
         "deprecated": false,
         "documentation": "Provides the default value for the `--from` option to format-patch. Accepts a boolean value, or a name and email address. If false, format-patch defaults to `--no-from`, using commit authors directly in the \"From:\" field of patch mails. If true, format-patch defaults to `--from`, using your committer identity in the \"From:\" field of patch mails and including a \"From:\" field in the body of the patch mail if different. If set to a non-boolean value, format-patch uses that value instead of your committer identity. Defaults to false.",
+        "autocomplete": true
+    },
+    "format.forceInBodyFrom": {
+        "deprecated": false,
+        "documentation": "Provides the default value for the `--[no-]force-in-body-from` option to format-patch. Defaults to false.",
         "autocomplete": true
     },
     "format.numbered": {
@@ -1456,7 +1466,12 @@
     },
     "grep.threads": {
         "deprecated": false,
-        "documentation": "Number of grep worker threads to use. See `grep.threads` in [git-grep\\[1\\]](https://git-scm.com/docs/git-grep) for more information.",
+        "documentation": "Number of grep worker threads to use. If unset (or set to 0), Git will use as many threads as the number of logical cores available.",
+        "autocomplete": true
+    },
+    "grep.fullName": {
+        "deprecated": false,
+        "documentation": "If set to true, enable `--full-name` option by default.",
         "autocomplete": true
     },
     "grep.fallbackToNoIndex": {
@@ -1941,12 +1956,17 @@
     },
     "log.date": {
         "deprecated": false,
-        "documentation": "Set the default date-time mode for the _log_ command. Setting a value for log.date is similar to using _git log_'s `--date` option. See [git-log\\[1\\]](https://git-scm.com/docs/git-log) for details.",
+        "documentation": "Set the default date-time mode for the _log_ command. Setting a value for log.date is similar to using _git log_'s `--date` option. See [git-log\\[1\\]](https://git-scm.com/docs/git-log) for details.\n\nIf the format is set to \"auto:foo\" and the pager is in use, format \"foo\" will be the used for the date format. Otherwise \"default\" will be used.",
         "autocomplete": true
     },
     "log.decorate": {
         "deprecated": false,
         "documentation": "Print out the ref names of any commits that are shown by the log command. If _short_ is specified, the ref name prefixes _refs/heads/_, _refs/tags/_ and _refs/remotes/_ will not be printed. If _full_ is specified, the full ref name (including prefix) will be printed. If _auto_ is specified, then if the output is going to a terminal, the ref names are shown as if _short_ were given, otherwise no ref names are shown. This is the same as the `--decorate` option of the `git log`.",
+        "autocomplete": true
+    },
+    "log.initialDecorationSet": {
+        "deprecated": false,
+        "documentation": "By default, `git log` only shows decorations for certain known ref namespaces. If _all_ is specified, then show all refs as decorations.",
         "autocomplete": true
     },
     "log.excludeDecoration": {
@@ -1986,7 +2006,7 @@
     },
     "lsrefs.unborn": {
         "deprecated": false,
-        "documentation": "May be \"advertise\" (the default), \"allow\", or \"ignore\". If \"advertise\", the server will respond to the client sending \"unborn\" (as described in protocol-v2.txt) and will advertise support for this feature during the protocol v2 capability advertisement. \"allow\" is the same as \"advertise\" except that the server will not advertise support for this feature; this is useful for load-balanced servers that cannot be updated atomically (for example), since the administrator could configure \"allow\", then after a delay, configure \"advertise\".",
+        "documentation": "May be \"advertise\" (the default), \"allow\", or \"ignore\". If \"advertise\", the server will respond to the client sending \"unborn\" (as described in [gitprotocol-v2\\[5\\]](https://git-scm.com/docs/gitprotocol-v2)) and will advertise support for this feature during the protocol v2 capability advertisement. \"allow\" is the same as \"advertise\" except that the server will not advertise support for this feature; this is useful for load-balanced servers that cannot be updated atomically (for example), since the administrator could configure \"allow\", then after a delay, configure \"advertise\".",
         "autocomplete": true
     },
     "mailinfo.scissors": {
@@ -2211,7 +2231,7 @@
     },
     "notes.mergeStrategy": {
         "deprecated": false,
-        "documentation": "Which merge strategy to choose by default when resolving notes conflicts. Must be one of `manual`, `ours`, `theirs`, `union`, or `cat_sort_uniq`. Defaults to `manual`. See \"NOTES MERGE STRATEGIES\" section of [git-notes\\[1\\]](https://git-scm.com/docs/git-notes) for more information on each strategy.",
+        "documentation": "Which merge strategy to choose by default when resolving notes conflicts. Must be one of `manual`, `ours`, `theirs`, `union`, or `cat_sort_uniq`. Defaults to `manual`. See \"NOTES MERGE STRATEGIES\" section of [git-notes\\[1\\]](https://git-scm.com/docs/git-notes) for more information on each strategy.\n\nThis setting can be overridden by passing the `--strategy` option to [git-notes\\[1\\]](https://git-scm.com/docs/git-notes).",
         "autocomplete": true
     },
     "notes.<name>.mergeStrategy": {
@@ -2221,12 +2241,12 @@
     },
     "notes.displayRef": {
         "deprecated": false,
-        "documentation": "The (fully qualified) refname from which to show notes when showing commit messages. The value of this variable can be set to a glob, in which case notes from all matching refs will be shown. You may also specify this configuration variable several times. A warning will be issued for refs that do not exist, but a glob that does not match any refs is silently ignored.\n\nThis setting can be overridden with the `GIT_NOTES_DISPLAY_REF` environment variable, which must be a colon separated list of refs or globs.\n\nThe effective value of \"core.notesRef\" (possibly overridden by GIT\\_NOTES\\_REF) is also implicitly added to the list of refs to be displayed.",
+        "documentation": "Which ref (or refs, if a glob or specified more than once), in addition to the default set by `core.notesRef` or `GIT_NOTES_REF`, to read notes from when showing commit messages with the _git log_ family of commands.\n\nThis setting can be overridden with the `GIT_NOTES_DISPLAY_REF` environment variable, which must be a colon separated list of refs or globs.\n\nA warning will be issued for refs that do not exist, but a glob that does not match any refs is silently ignored.\n\nThis setting can be disabled by the `--no-notes` option to the _git log_ family of commands, or by the `--notes=<ref>` option accepted by those commands.\n\nThe effective value of \"core.notesRef\" (possibly overridden by GIT\\_NOTES\\_REF) is also implicitly added to the list of refs to be displayed.",
         "autocomplete": true
     },
     "notes.rewrite.<command>": {
         "deprecated": false,
-        "documentation": "When rewriting commits with <command> (currently `amend` or `rebase`) and this variable is set to `true`, Git automatically copies your notes from the original to the rewritten commit. Defaults to `true`, but see \"notes.rewriteRef\" below.",
+        "documentation": "When rewriting commits with <command> (currently `amend` or `rebase`), if this variable is `false`, git will not copy notes from the original to the rewritten commit. Defaults to `true`. See also \"`notes.rewriteRef`\" below.\n\nThis setting can be overridden with the `GIT_NOTES_REWRITE_REF` environment variable, which must be a colon separated list of refs or globs.",
         "autocomplete": true
     },
     "notes.rewriteMode": {
@@ -2236,7 +2256,7 @@
     },
     "notes.rewriteRef": {
         "deprecated": false,
-        "documentation": "When copying notes during a rewrite, specifies the (fully qualified) ref whose notes should be copied. The ref may be a glob, in which case notes in all matching refs will be copied. You may also specify this configuration several times.\n\nDoes not have a default value; you must configure this variable to enable note rewriting. Set it to `refs/notes/commits` to enable rewriting for the default commit notes.\n\nThis setting can be overridden with the `GIT_NOTES_REWRITE_REF` environment variable, which must be a colon separated list of refs or globs.",
+        "documentation": "When copying notes during a rewrite, specifies the (fully qualified) ref whose notes should be copied. May be a glob, in which case notes in all matching refs will be copied. You may also specify this configuration several times.\n\nDoes not have a default value; you must configure this variable to enable note rewriting. Set it to `refs/notes/commits` to enable rewriting for the default commit notes.\n\nCan be overridden with the `GIT_NOTES_REWRITE_REF` environment variable. See `notes.rewrite.<command>` above for a further description of its format.",
         "autocomplete": true
     },
     "pack.window": {
@@ -2324,9 +2344,14 @@
         "documentation": "When true, git will include a \"hash cache\" section in the bitmap index (if one is written). This cache can be used to feed git’s delta heuristics, potentially leading to better deltas between bitmapped and non-bitmapped objects (e.g., when serving a fetch between an older, bitmapped pack and objects that have been pushed since the last gc). The downside is that it consumes 4 bytes per object of disk space. Defaults to true.\n\nWhen writing a multi-pack reachability bitmap, no new namehashes are computed; instead, any namehashes stored in an existing bitmap are permuted into their appropriate location when writing a new bitmap.",
         "autocomplete": true
     },
+    "pack.writeBitmapLookupTable": {
+        "deprecated": false,
+        "documentation": "When true, Git will include a \"lookup table\" section in the bitmap index (if one is written). This table is used to defer loading individual bitmaps as late as possible. This can be beneficial in repositories that have relatively large bitmap indexes. Defaults to false.",
+        "autocomplete": true
+    },
     "pack.writeReverseIndex": {
         "deprecated": false,
-        "documentation": "When true, git will write a corresponding .rev file (see: [Documentation/technical/pack-format.txt](/docs/../technical/pack-format)) for each new packfile that it writes in all places except for [git-fast-import\\[1\\]](https://git-scm.com/docs/git-fast-import) and in the bulk checkin mechanism. Defaults to false.",
+        "documentation": "When true, git will write a corresponding .rev file (see: [gitformat-pack\\[5\\]](https://git-scm.com/docs/gitformat-pack)) for each new packfile that it writes in all places except for [git-fast-import\\[1\\]](https://git-scm.com/docs/git-fast-import) and in the bulk checkin mechanism. Defaults to false.",
         "autocomplete": true
     },
     "pager.<cmd>": {
@@ -2341,7 +2366,7 @@
     },
     "protocol.allow": {
         "deprecated": false,
-        "documentation": "If set, provide a user defined default policy for all protocols which don’t explicitly have a policy (`protocol.<name>.allow`). By default, if unset, known-safe protocols (http, https, git, ssh, file) have a default policy of `always`, known-dangerous protocols (ext) have a default policy of `never`, and all other protocols have a default policy of `user`. Supported policies:\n\n*   `always` - protocol is always able to be used.\n    \n*   `never` - protocol is never able to be used.\n    \n*   `user` - protocol is only able to be used when `GIT_PROTOCOL_FROM_USER` is either unset or has a value of 1. This policy should be used when you want a protocol to be directly usable by the user but don’t want it used by commands which execute clone/fetch/push commands without user input, e.g. recursive submodule initialization.",
+        "documentation": "If set, provide a user defined default policy for all protocols which don’t explicitly have a policy (`protocol.<name>.allow`). By default, if unset, known-safe protocols (http, https, git, ssh) have a default policy of `always`, known-dangerous protocols (ext) have a default policy of `never`, and all other protocols (including file) have a default policy of `user`. Supported policies:\n\n*   `always` - protocol is always able to be used.\n    \n*   `never` - protocol is never able to be used.\n    \n*   `user` - protocol is only able to be used when `GIT_PROTOCOL_FROM_USER` is either unset or has a value of 1. This policy should be used when you want a protocol to be directly usable by the user but don’t want it used by commands which execute clone/fetch/push commands without user input, e.g. recursive submodule initialization.",
         "autocomplete": true
     },
     "protocol.<name>.allow": {
@@ -2351,7 +2376,7 @@
     },
     "protocol.version": {
         "deprecated": false,
-        "documentation": "If set, clients will attempt to communicate with a server using the specified protocol version. If the server does not support it, communication falls back to version 0. If unset, the default is `2`. Supported versions:\n\n*   `0` - the original wire protocol.\n    \n*   `1` - the original wire protocol with the addition of a version string in the initial response from the server.\n    \n*   `2` - [wire protocol version 2](https://git-scm.com/docs/protocol-v2).",
+        "documentation": "If set, clients will attempt to communicate with a server using the specified protocol version. If the server does not support it, communication falls back to version 0. If unset, the default is `2`. Supported versions:\n\n*   `0` - the original wire protocol.\n    \n*   `1` - the original wire protocol with the addition of a version string in the initial response from the server.\n    \n*   `2` - Wire protocol version 2, see [gitprotocol-v2\\[5\\]](https://git-scm.com/docs/gitprotocol-v2).",
         "autocomplete": true
     },
     "pull.ff": {
@@ -2414,6 +2439,11 @@
         "documentation": "If set to \"true\", attempt to reduce the size of the packfile sent by rounds of negotiation in which the client and the server attempt to find commits in common. If \"false\", Git will rely solely on the server’s ref advertisement to find commits in common.",
         "autocomplete": true
     },
+    "push.useBitmaps": {
+        "deprecated": false,
+        "documentation": "If set to \"false\", disable use of bitmaps for \"git push\" even if `pack.useBitmaps` is \"true\", without preventing other git operations from using bitmaps. Default is true.",
+        "autocomplete": true
+    },
     "rebase.backend": {
         "deprecated": false,
         "documentation": "Default backend to use for rebasing. Possible choices are _apply_ or _merge_. In the future, if the merge backend gains all remaining capabilities of the apply backend, this setting may become unused.",
@@ -2432,6 +2462,11 @@
     "rebase.autoStash": {
         "deprecated": false,
         "documentation": "When set to true, automatically create a temporary stash entry before the operation begins, and apply it after the operation ends. This means that you can run rebase on a dirty worktree. However, use with care: the final stash application after a successful rebase might result in non-trivial conflicts. This option can be overridden by the `--no-autostash` and `--autostash` options of [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase). Defaults to false.",
+        "autocomplete": true
+    },
+    "rebase.updateRefs": {
+        "deprecated": false,
+        "documentation": "If set to true enable `--update-refs` option by default.",
         "autocomplete": true
     },
     "rebase.missingCommitsCheck": {
@@ -2709,9 +2744,14 @@
         "documentation": "Setting this variable to true makes `git revert` behave as if the `--reference` option is given.",
         "autocomplete": true
     },
+    "safe.bareRepository": {
+        "deprecated": false,
+        "documentation": "Specifies which bare repositories Git will work with. The currently supported values are:\n\n*   `all`: Git works with all bare repositories. This is the default.\n    \n*   `explicit`: Git only works with bare repositories specified via the top-level `--git-dir` command-line option, or the `GIT_DIR` environment variable (see [git\\[1\\]](https://git-scm.com/docs/git)).\n    \n    If you do not use bare repositories in your workflow, then it may be beneficial to set `safe.bareRepository` to `explicit` in your global config. This will protect you from attacks that involve cloning a repository that contains a bare repository and running a Git command within that directory.\n    \n    This config setting is only respected in protected configuration (see [SCOPES](#SCOPES)). This prevents the untrusted repository from tampering with this value.",
+        "autocomplete": true
+    },
     "safe.directory": {
         "deprecated": false,
-        "documentation": "These config entries specify Git-tracked directories that are considered safe even if they are owned by someone other than the current user. By default, Git will refuse to even parse a Git config of a repository owned by someone else, let alone run its hooks, and this config setting allows users to specify exceptions, e.g. for intentionally shared repositories (see the `--shared` option in [git-init\\[1\\]](https://git-scm.com/docs/git-init)).\n\nThis is a multi-valued setting, i.e. you can add more than one directory via `git config --add`. To reset the list of safe directories (e.g. to override any such directories specified in the system config), add a `safe.directory` entry with an empty value.\n\nThis config setting is only respected when specified in a system or global config, not when it is specified in a repository config, via the command line option `-c safe.directory=<path>`, or in environment variables.\n\nThe value of this setting is interpolated, i.e. `~/<path>` expands to a path relative to the home directory and `%(prefix)/<path>` expands to a path relative to Git’s (runtime) prefix.\n\nTo completely opt-out of this security check, set `safe.directory` to the string `*`. This will allow all repositories to be treated as if their directory was listed in the `safe.directory` list. If `safe.directory=*` is set in system config and you want to re-enable this protection, then initialize your list with an empty value before listing the repositories that you deem safe.\n\nAs explained, Git only allows you to access repositories owned by yourself, i.e. the user who is running Git, by default. When Git is running as _root_ in a non Windows platform that provides sudo, however, git checks the SUDO\\_UID environment variable that sudo creates and will allow access to the uid recorded as its value in addition to the id from _root_. This is to make it easy to perform a common sequence during installation \"make && sudo make install\". A git process running under _sudo_ runs as _root_ but the _sudo_ command exports the environment variable to record which id the original user has. If that is not what you would prefer and want git to only trust repositories that are owned by root instead, then you can remove the `SUDO_UID` variable from root’s environment before invoking git.",
+        "documentation": "These config entries specify Git-tracked directories that are considered safe even if they are owned by someone other than the current user. By default, Git will refuse to even parse a Git config of a repository owned by someone else, let alone run its hooks, and this config setting allows users to specify exceptions, e.g. for intentionally shared repositories (see the `--shared` option in [git-init\\[1\\]](https://git-scm.com/docs/git-init)).\n\nThis is a multi-valued setting, i.e. you can add more than one directory via `git config --add`. To reset the list of safe directories (e.g. to override any such directories specified in the system config), add a `safe.directory` entry with an empty value.\n\nThis config setting is only respected in protected configuration (see [SCOPES](#SCOPES)). This prevents the untrusted repository from tampering with this value.\n\nThe value of this setting is interpolated, i.e. `~/<path>` expands to a path relative to the home directory and `%(prefix)/<path>` expands to a path relative to Git’s (runtime) prefix.\n\nTo completely opt-out of this security check, set `safe.directory` to the string `*`. This will allow all repositories to be treated as if their directory was listed in the `safe.directory` list. If `safe.directory=*` is set in system config and you want to re-enable this protection, then initialize your list with an empty value before listing the repositories that you deem safe.\n\nAs explained, Git only allows you to access repositories owned by yourself, i.e. the user who is running Git, by default. When Git is running as _root_ in a non Windows platform that provides sudo, however, git checks the SUDO\\_UID environment variable that sudo creates and will allow access to the uid recorded as its value in addition to the id from _root_. This is to make it easy to perform a common sequence during installation \"make && sudo make install\". A git process running under _sudo_ runs as _root_ but the _sudo_ command exports the environment variable to record which id the original user has. If that is not what you would prefer and want git to only trust repositories that are owned by root instead, then you can remove the `SUDO_UID` variable from root’s environment before invoking git.",
         "autocomplete": true
     },
     "sendemail.identity": {
@@ -2734,14 +2774,24 @@
         "documentation": "Identity-specific versions of the _sendemail.\\*_ parameters found below, taking precedence over those when this identity is selected, through either the command-line or `sendemail.identity`.",
         "autocomplete": true
     },
+    "sendemail.multiEdit": {
+        "deprecated": false,
+        "documentation": "If true (default), a single editor instance will be spawned to edit files you have to edit (patches when `--annotate` is used, and the summary when `--compose` is used). If false, files will be edited one after the other, spawning a new editor each time.",
+        "autocomplete": true
+    },
+    "sendemail.confirm": {
+        "deprecated": false,
+        "documentation": "Sets the default for whether to confirm before sending. Must be one of _always_, _never_, _cc_, _compose_, or _auto_. See `--confirm` in the [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) documentation for the meaning of these values.",
+        "autocomplete": true
+    },
     "sendemail.aliasesFile": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "To avoid typing long email addresses, point this to one or more email aliases files. You must also supply `sendemail.aliasFileType`.",
         "autocomplete": true
     },
     "sendemail.aliasFileType": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Format of the file(s) specified in sendemail.aliasesFile. Must be one of _mutt_, _mailrc_, _pine_, _elm_, or _gnus_, or _sendmail_.\n\nWhat an alias file in each format looks like can be found in the documentation of the email program of the same name. The differences and limitations from the standard formats are described below:\n\n[](#Documentation/git-config.txt-sendmail)sendmail\n\n*   Quoted aliases and quoted addresses are not supported: lines that contain a `\"` symbol are ignored.\n    \n*   Redirection to a file (`/path/name`) or pipe (`|command`) is not supported.\n    \n*   File inclusion (`:include: /path/name`) is not supported.\n    \n*   Warnings are printed on the standard error output for any explicitly unsupported constructs, and any other lines that are not recognized by the parser.",
         "autocomplete": true
     },
     "sendemail.annotate": {
@@ -2769,22 +2819,12 @@
         "documentation": "",
         "autocomplete": true
     },
-    "sendemail.confirm": {
-        "deprecated": false,
-        "documentation": "",
-        "autocomplete": true
-    },
     "sendemail.envelopeSender": {
         "deprecated": false,
         "documentation": "",
         "autocomplete": true
     },
     "sendemail.from": {
-        "deprecated": false,
-        "documentation": "",
-        "autocomplete": true
-    },
-    "sendemail.multiEdit": {
         "deprecated": false,
         "documentation": "",
         "autocomplete": true
@@ -2861,7 +2901,7 @@
     },
     "sendemail.xmailer": {
         "deprecated": false,
-        "documentation": "See [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) for description.",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.signedoffcc": {
@@ -3116,7 +3156,7 @@
     },
     "transfer.credentialsInUrl": {
         "deprecated": false,
-        "documentation": "A configured URL can contain plaintext credentials in the form `<protocol>://<user>:<password>@<domain>/<path>`. You may want to warn or forbid the use of such configuration (in favor of using [git-credential\\[1\\]](https://git-scm.com/docs/git-credential)). This will be used on [git-clone\\[1\\]](https://git-scm.com/docs/git-clone), [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch), [git-push\\[1\\]](https://git-scm.com/docs/git-push), and any other direct use of the configured URL.\n\nNote that this is currently limited to detecting credentials in `remote.<name>.url` configuration, it won’t detect credentials in `remote.<name>.pushurl` configuration.\n\nYou might want to enable this to prevent inadvertent credentials exposure, e.g. because:\n\n*   The OS or system where you’re running git may not provide way way or otherwise allow you to configure the permissions of the configuration file where the username and/or password are stored.\n    \n*   Even if it does, having such data stored \"at rest\" might expose you in other ways, e.g. a backup process might copy the data to another system.\n    \n*   The git programs will pass the full URL to one another as arguments on the command-line, meaning the credentials will be exposed to other users on OS’s or systems that allow other users to see the full process list of other users. On linux the \"hidepid\" setting documented in procfs(5) allows for configuring this behavior.\n    \n    If such concerns don’t apply to you then you probably don’t need to be concerned about credentials exposure due to storing that sensitive data in git’s configuration files. If you do want to use this, set `transfer.credentialsInUrl` to one of these values:\n    \n*   `allow` (default): Git will proceed with its activity without warning.\n    \n*   `warn`: Git will write a warning message to `stderr` when parsing a URL with a plaintext credential.\n    \n*   `die`: Git will write a failure message to `stderr` when parsing a URL with a plaintext credential.",
+        "documentation": "A configured URL can contain plaintext credentials in the form `<protocol>://<user>:<password>@<domain>/<path>`. You may want to warn or forbid the use of such configuration (in favor of using [git-credential\\[1\\]](https://git-scm.com/docs/git-credential)). This will be used on [git-clone\\[1\\]](https://git-scm.com/docs/git-clone), [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch), [git-push\\[1\\]](https://git-scm.com/docs/git-push), and any other direct use of the configured URL.\n\nNote that this is currently limited to detecting credentials in `remote.<name>.url` configuration, it won’t detect credentials in `remote.<name>.pushurl` configuration.\n\nYou might want to enable this to prevent inadvertent credentials exposure, e.g. because:\n\n*   The OS or system where you’re running git may not provide a way or otherwise allow you to configure the permissions of the configuration file where the username and/or password are stored.\n    \n*   Even if it does, having such data stored \"at rest\" might expose you in other ways, e.g. a backup process might copy the data to another system.\n    \n*   The git programs will pass the full URL to one another as arguments on the command-line, meaning the credentials will be exposed to other users on OS’s or systems that allow other users to see the full process list of other users. On linux the \"hidepid\" setting documented in procfs(5) allows for configuring this behavior.\n    \n    If such concerns don’t apply to you then you probably don’t need to be concerned about credentials exposure due to storing that sensitive data in git’s configuration files. If you do want to use this, set `transfer.credentialsInUrl` to one of these values:\n    \n*   `allow` (default): Git will proceed with its activity without warning.\n    \n*   `warn`: Git will write a warning message to `stderr` when parsing a URL with a plaintext credential.\n    \n*   `die`: Git will write a failure message to `stderr` when parsing a URL with a plaintext credential.",
         "autocomplete": true
     },
     "transfer.fsckObjects": {
@@ -3171,7 +3211,7 @@
     },
     "uploadpack.packObjectsHook": {
         "deprecated": false,
-        "documentation": "If this option is set, when `upload-pack` would run `git pack-objects` to create a packfile for a client, it will run this shell command instead. The `pack-objects` command and arguments it _would_ have run (including the `git pack-objects` at the beginning) are appended to the shell command. The stdin and stdout of the hook are treated as if `pack-objects` itself was run. I.e., `upload-pack` will feed input intended for `pack-objects` to the hook, and expects a completed packfile on stdout.\n\nNote that this configuration variable is ignored if it is seen in the repository-level config (this is a safety measure against fetching from untrusted repositories).",
+        "documentation": "If this option is set, when `upload-pack` would run `git pack-objects` to create a packfile for a client, it will run this shell command instead. The `pack-objects` command and arguments it _would_ have run (including the `git pack-objects` at the beginning) are appended to the shell command. The stdin and stdout of the hook are treated as if `pack-objects` itself was run. I.e., `upload-pack` will feed input intended for `pack-objects` to the hook, and expects a completed packfile on stdout.\n\nNote that this configuration variable is only respected when it is specified in protected configuration (see [SCOPES](#SCOPES)). This is a safety measure against fetching from untrusted repositories.",
         "autocomplete": true
     },
     "uploadpack.allowFilter": {
