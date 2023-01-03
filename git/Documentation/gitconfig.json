@@ -401,7 +401,7 @@
     },
     "core.fsync": {
         "deprecated": false,
-        "documentation": "A comma-separated list of components of the repository that should be hardened via the core.fsyncMethod when created or modified. You can disable hardening of any component by prefixing it with a _\\-_. Items that are not hardened may be lost in the event of an unclean system shutdown. Unless you have special requirements, it is recommended that you leave this option empty or pick one of `committed`, `added`, or `all`.\n\nWhen this configuration is encountered, the set of components starts with the platform default value, disabled components are removed, and additional components are added. `none` resets the state so that the platform default is ignored.\n\nThe empty string resets the fsync configuration to the platform default. The default on most platforms is equivalent to `core.fsync=committed,-loose-object`, which has good performance, but risks losing recent work in the event of an unclean system shutdown.\n\n*   `none` clears the set of fsynced components.\n    \n*   `loose-object` hardens objects added to the repo in loose-object form.\n    \n*   `pack` hardens objects added to the repo in packfile form.\n    \n*   `pack-metadata` hardens packfile bitmaps and indexes.\n    \n*   `commit-graph` hardens the commit graph file.\n    \n*   `index` hardens the index when it is modified.\n    \n*   `objects` is an aggregate option that is equivalent to `loose-object,pack`.\n    \n*   `reference` hardens references modified in the repo.\n    \n*   `derived-metadata` is an aggregate option that is equivalent to `pack-metadata,commit-graph`.\n    \n*   `committed` is an aggregate option that is currently equivalent to `objects`. This mode sacrifices some performance to ensure that work that is committed to the repository with `git commit` or similar commands is hardened.\n    \n*   `added` is an aggregate option that is currently equivalent to `committed,index`. This mode sacrifices additional performance to ensure that the results of commands like `git add` and similar operations are hardened.\n    \n*   `all` is an aggregate option that syncs all individual components above.",
+        "documentation": "A comma-separated list of components of the repository that should be hardened via the core.fsyncMethod when created or modified. You can disable hardening of any component by prefixing it with a _\\-_. Items that are not hardened may be lost in the event of an unclean system shutdown. Unless you have special requirements, it is recommended that you leave this option empty or pick one of `committed`, `added`, or `all`.\n\nWhen this configuration is encountered, the set of components starts with the platform default value, disabled components are removed, and additional components are added. `none` resets the state so that the platform default is ignored.\n\nThe empty string resets the fsync configuration to the platform default. The default on most platforms is equivalent to `core.fsync=committed,-loose-object`, which has good performance, but risks losing recent work in the event of an unclean system shutdown.\n\n*   `none` clears the set of fsynced components.\n    \n*   `loose-object` hardens objects added to the repo in loose-object form.\n    \n*   `pack` hardens objects added to the repo in packfile form.\n    \n*   `pack-metadata` hardens packfile bitmaps and indexes.\n    \n*   `commit-graph` hardens the commit-graph file.\n    \n*   `index` hardens the index when it is modified.\n    \n*   `objects` is an aggregate option that is equivalent to `loose-object,pack`.\n    \n*   `reference` hardens references modified in the repo.\n    \n*   `derived-metadata` is an aggregate option that is equivalent to `pack-metadata,commit-graph`.\n    \n*   `committed` is an aggregate option that is currently equivalent to `objects`. This mode sacrifices some performance to ensure that work that is committed to the repository with `git commit` or similar commands is hardened.\n    \n*   `added` is an aggregate option that is currently equivalent to `committed,index`. This mode sacrifices additional performance to ensure that the results of commands like `git add` and similar operations are hardened.\n    \n*   `all` is an aggregate option that syncs all individual components above.",
         "autocomplete": true
     },
     "core.fsyncMethod": {
@@ -602,6 +602,31 @@
     "browser.<tool>.path": {
         "deprecated": false,
         "documentation": "Override the path for the given tool that may be used to browse HTML help (see `-w` option in [git-help\\[1\\]](https://git-scm.com/docs/git-help)) or a working repository in gitweb (see [git-instaweb\\[1\\]](https://git-scm.com/docs/git-instaweb)).",
+        "autocomplete": true
+    },
+    "bundle.*": {
+        "deprecated": false,
+        "documentation": "The `bundle.*` keys may appear in a bundle list file found via the `git clone --bundle-uri` option. These keys currently have no effect if placed in a repository config file, though this will change in the future. See [the bundle URI design document](https://git-scm.com/docs/bundle-uri) for more details.",
+        "autocomplete": true
+    },
+    "bundle.version": {
+        "deprecated": false,
+        "documentation": "This integer value advertises the version of the bundle list format used by the bundle list. Currently, the only accepted value is `1`.",
+        "autocomplete": true
+    },
+    "bundle.mode": {
+        "deprecated": false,
+        "documentation": "This string value should be either `all` or `any`. This value describes whether all of the advertised bundles are required to unbundle a complete understanding of the bundled information (`all`) or if any one of the listed bundle URIs is sufficient (`any`).",
+        "autocomplete": true
+    },
+    "bundle.<id>.*": {
+        "deprecated": false,
+        "documentation": "The `bundle.<id>.*` keys are used to describe a single item in the bundle list, grouped under `<id>` for identification purposes.",
+        "autocomplete": true
+    },
+    "bundle.<id>.uri": {
+        "deprecated": false,
+        "documentation": "This string value defines the URI by which Git can reach the contents of this `<id>`. This URI may be a bundle file or another bundle list.",
         "autocomplete": true
     },
     "checkout.defaultRemote": {
@@ -1051,7 +1076,7 @@
     },
     "feature.experimental": {
         "deprecated": false,
-        "documentation": "Enable config options that are new to Git, and are being considered for future defaults. Config settings included here may be added or removed with each release, including minor version updates. These settings may have unintended interactions since they are so new. Please enable this setting if you are interested in providing feedback on experimental features. The new default values are:\n\n*   `fetch.negotiationAlgorithm=skipping` may improve fetch negotiation times by skipping more commits at a time, reducing the number of round trips.",
+        "documentation": "Enable config options that are new to Git, and are being considered for future defaults. Config settings included here may be added or removed with each release, including minor version updates. These settings may have unintended interactions since they are so new. Please enable this setting if you are interested in providing feedback on experimental features. The new default values are:\n\n*   `fetch.negotiationAlgorithm=skipping` may improve fetch negotiation times by skipping more commits at a time, reducing the number of round trips.\n    \n*   `gc.cruftPacks=true` reduces disk space used by unreachable objects during garbage collection, preventing loose object explosions.",
         "autocomplete": true
     },
     "feature.manyFiles": {
@@ -1236,12 +1261,22 @@
     },
     "fsck.<msg-id>": {
         "deprecated": false,
-        "documentation": "During fsck git may find issues with legacy data which wouldn’t be generated by current versions of git, and which wouldn’t be sent over the wire if `transfer.fsckObjects` was set. This feature is intended to support working with legacy repositories containing such data.\n\nSetting `fsck.<msg-id>` will be picked up by [git-fsck\\[1\\]](https://git-scm.com/docs/git-fsck), but to accept pushes of such data set `receive.fsck.<msg-id>` instead, or to clone or fetch it set `fetch.fsck.<msg-id>`.\n\nThe rest of the documentation discusses `fsck.*` for brevity, but the same applies for the corresponding `receive.fsck.*` and `fetch.<msg-id>.*`. variables.\n\nUnlike variables like `color.ui` and `core.editor` the `receive.fsck.<msg-id>` and `fetch.fsck.<msg-id>` variables will not fall back on the `fsck.<msg-id>` configuration if they aren’t set. To uniformly configure the same fsck settings in different circumstances all three of them they must all set to the same values.\n\nWhen `fsck.<msg-id>` is set, errors can be switched to warnings and vice versa by configuring the `fsck.<msg-id>` setting where the `<msg-id>` is the fsck message ID and the value is one of `error`, `warn` or `ignore`. For convenience, fsck prefixes the error/warning with the message ID, e.g. \"missingEmail: invalid author/committer line - missing email\" means that setting `fsck.missingEmail = ignore` will hide that issue.\n\nIn general, it is better to enumerate existing objects with problems with `fsck.skipList`, instead of listing the kind of breakages these problematic objects share to be ignored, as doing the latter will allow new instances of the same breakages go unnoticed.\n\nSetting an unknown `fsck.<msg-id>` value will cause fsck to die, but doing the same for `receive.fsck.<msg-id>` and `fetch.fsck.<msg-id>` will only cause git to warn.",
+        "documentation": "During fsck git may find issues with legacy data which wouldn’t be generated by current versions of git, and which wouldn’t be sent over the wire if `transfer.fsckObjects` was set. This feature is intended to support working with legacy repositories containing such data.\n\nSetting `fsck.<msg-id>` will be picked up by [git-fsck\\[1\\]](https://git-scm.com/docs/git-fsck), but to accept pushes of such data set `receive.fsck.<msg-id>` instead, or to clone or fetch it set `fetch.fsck.<msg-id>`.\n\nThe rest of the documentation discusses `fsck.*` for brevity, but the same applies for the corresponding `receive.fsck.*` and `fetch.<msg-id>.*`. variables.\n\nUnlike variables like `color.ui` and `core.editor` the `receive.fsck.<msg-id>` and `fetch.fsck.<msg-id>` variables will not fall back on the `fsck.<msg-id>` configuration if they aren’t set. To uniformly configure the same fsck settings in different circumstances all three of them they must all set to the same values.\n\nWhen `fsck.<msg-id>` is set, errors can be switched to warnings and vice versa by configuring the `fsck.<msg-id>` setting where the `<msg-id>` is the fsck message ID and the value is one of `error`, `warn` or `ignore`. For convenience, fsck prefixes the error/warning with the message ID, e.g. \"missingEmail: invalid author/committer line - missing email\" means that setting `fsck.missingEmail = ignore` will hide that issue.\n\nIn general, it is better to enumerate existing objects with problems with `fsck.skipList`, instead of listing the kind of breakages these problematic objects share to be ignored, as doing the latter will allow new instances of the same breakages go unnoticed.\n\nSetting an unknown `fsck.<msg-id>` value will cause fsck to die, but doing the same for `receive.fsck.<msg-id>` and `fetch.fsck.<msg-id>` will only cause git to warn.\n\nSee `Fsck Messages` section of [git-fsck\\[1\\]](https://git-scm.com/docs/git-fsck) for supported values of `<msg-id>`.",
         "autocomplete": true
     },
     "fsck.skipList": {
         "deprecated": false,
         "documentation": "The path to a list of object names (i.e. one unabbreviated SHA-1 per line) that are known to be broken in a non-fatal way and should be ignored. On versions of Git 2.20 and later comments (_#_), empty lines, and any leading and trailing whitespace is ignored. Everything but a SHA-1 per line will error out on older versions.\n\nThis feature is useful when an established project should be accepted despite early commits containing errors that can be safely ignored such as invalid committer email addresses. Note: corrupt objects cannot be skipped with this setting.\n\nLike `fsck.<msg-id>` this variable has corresponding `receive.fsck.skipList` and `fetch.fsck.skipList` variants.\n\nUnlike variables like `color.ui` and `core.editor` the `receive.fsck.skipList` and `fetch.fsck.skipList` variables will not fall back on the `fsck.skipList` configuration if they aren’t set. To uniformly configure the same fsck settings in different circumstances all three of them they must all set to the same values.\n\nOlder versions of Git (before 2.20) documented that the object names list should be sorted. This was never a requirement, the object names could appear in any order, but when reading the list we tracked whether the list was sorted for the purposes of an internal binary search implementation, which could save itself some work with an already sorted list. Unless you had a humongous list there was no reason to go out of your way to pre-sort the list. After Git version 2.20 a hash implementation is used instead, so there’s now no reason to pre-sort the list.",
+        "autocomplete": true
+    },
+    "fsmonitor.allowRemote": {
+        "deprecated": false,
+        "documentation": "By default, the fsmonitor daemon refuses to work against network-mounted repositories. Setting `fsmonitor.allowRemote` to `true` overrides this behavior. Only respected when `core.fsmonitor` is set to `true`.",
+        "autocomplete": true
+    },
+    "fsmonitor.socketDir": {
+        "deprecated": false,
+        "documentation": "This Mac OS-specific option, if set, specifies the directory in which to create the Unix domain socket used for communication between the fsmonitor daemon and various Git commands. The directory must reside on a native Mac OS filesystem. Only respected when `core.fsmonitor` is set to `true`.",
         "autocomplete": true
     },
     "gc.aggressiveDepth": {
@@ -1976,7 +2011,7 @@
     },
     "log.diffMerges": {
         "deprecated": false,
-        "documentation": "Set default diff format to be used for merge commits. See `--diff-merges` in [git-log\\[1\\]](https://git-scm.com/docs/git-log) for details. Defaults to `separate`.",
+        "documentation": "Set diff format to be used when `--diff-merges=on` is specified, see `--diff-merges` in [git-log\\[1\\]](https://git-scm.com/docs/git-log) for details. Defaults to `separate`.",
         "autocomplete": true
     },
     "log.follow": {
@@ -2206,7 +2241,7 @@
     },
     "mergetool.hideResolved": {
         "deprecated": false,
-        "documentation": "During a merge Git will automatically resolve as many conflicts as possible and write the _MERGED_ file containing conflict markers around any conflicts that it cannot resolve; _LOCAL_ and _REMOTE_ normally represent the versions of the file from before Git’s conflict resolution. This flag causes _LOCAL_ and _REMOTE_ to be overwriten so that only the unresolved conflicts are presented to the merge tool. Can be configured per-tool via the `mergetool.<tool>.hideResolved` configuration variable. Defaults to `false`.",
+        "documentation": "During a merge Git will automatically resolve as many conflicts as possible and write the _MERGED_ file containing conflict markers around any conflicts that it cannot resolve; _LOCAL_ and _REMOTE_ normally represent the versions of the file from before Git’s conflict resolution. This flag causes _LOCAL_ and _REMOTE_ to be overwritten so that only the unresolved conflicts are presented to the merge tool. Can be configured per-tool via the `mergetool.<tool>.hideResolved` configuration variable. Defaults to `false`.",
         "autocomplete": true
     },
     "mergetool.keepBackup": {
@@ -2426,7 +2461,7 @@
     },
     "push.recurseSubmodules": {
         "deprecated": false,
-        "documentation": "Make sure all submodule commits used by the revisions to be pushed are available on a remote-tracking branch. If the value is _check_ then Git will verify that all submodule commits that changed in the revisions to be pushed are available on at least one remote of the submodule. If any commits are missing, the push will be aborted and exit with non-zero status. If the value is _on-demand_ then all submodules that changed in the revisions to be pushed will be pushed. If on-demand was not able to push all necessary revisions it will also be aborted and exit with non-zero status. If the value is _no_ then default behavior of ignoring submodules when pushing is retained. You may override this configuration at time of push by specifying _\\--recurse-submodules=check|on-demand|no_. If not set, _no_ is used by default, unless _submodule.recurse_ is set (in which case a _true_ value means _on-demand_).",
+        "documentation": "May be \"check\", \"on-demand\", \"only\", or \"no\", with the same behavior as that of \"push --recurse-submodules\". If not set, _no_ is used by default, unless _submodule.recurse_ is set (in which case a _true_ value means _on-demand_).",
         "autocomplete": true
     },
     "push.useForceIfIncludes": {
