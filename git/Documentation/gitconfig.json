@@ -471,7 +471,7 @@
     },
     "add.ignoreErrors": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Tells _git add_ to continue adding files when some files cannot be added due to indexing errors. Equivalent to the `--ignore-errors` option of [git-add\\[1\\]](https://git-scm.com/docs/git-add). `add.ignore-errors` is deprecated, as it does not follow the usual naming convention for configuration variables.",
         "autocomplete": true
     },
     "add.ignore-errors": {
@@ -1171,7 +1171,7 @@
     },
     "format.to": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Additional recipients to include in a patch to be submitted by mail. See the --to and --cc options in [git-format-patch\\[1\\]](https://git-scm.com/docs/git-format-patch).",
         "autocomplete": true
     },
     "format.cc": {
@@ -1341,7 +1341,7 @@
     },
     "gc.reflogExpire": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "_git reflog expire_ removes reflog entries older than this time; defaults to 90 days. The value \"now\" expires all entries immediately, and \"never\" suppresses expiration altogether. With \"<pattern>\" (e.g. \"refs/stash\") in the middle the setting applies only to the refs that match the <pattern>.",
         "autocomplete": true
     },
     "gc.<pattern>.reflogExpire": {
@@ -1351,7 +1351,7 @@
     },
     "gc.reflogExpireUnreachable": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "_git reflog expire_ removes reflog entries older than this time and are not reachable from the current tip; defaults to 30 days. The value \"now\" expires all entries immediately, and \"never\" suppresses expiration altogether. With \"<pattern>\" (e.g. \"refs/stash\") in the middle, the setting applies only to the refs that match the <pattern>.\n\nThese types of entries are generally created as a result of using `git commit --amend` or `git rebase` and are the commits prior to the amend or rebase occurring. Since these changes are not part of the current project most users will want to expire them sooner, which is why the default is more aggressive than `gc.reflogExpire`.",
         "autocomplete": true
     },
     "gc.<pattern>.reflogExpireUnreachable": {
@@ -1416,17 +1416,17 @@
     },
     "gitweb.category": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb\\[1\\]](https://git-scm.com/docs/gitweb) for description.",
         "autocomplete": true
     },
     "gitweb.description": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb\\[1\\]](https://git-scm.com/docs/gitweb) for description.",
         "autocomplete": true
     },
     "gitweb.owner": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb\\[1\\]](https://git-scm.com/docs/gitweb) for description.",
         "autocomplete": true
     },
     "gitweb.url": {
@@ -1436,42 +1436,42 @@
     },
     "gitweb.avatar": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.blame": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.grep": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.highlight": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.patches": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.pickaxe": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.remote_heads": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.showSizes": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
     "gitweb.snapshot": {
@@ -2746,17 +2746,17 @@
     },
     "repack.cruftWindow": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Parameters used by [git-pack-objects\\[1\\]](https://git-scm.com/docs/git-pack-objects) when generating a cruft pack and the respective parameters are not given over the command line. See similarly named `pack.*` configuration variables for defaults and meaning.",
         "autocomplete": true
     },
     "repack.cruftWindowMemory": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Parameters used by [git-pack-objects\\[1\\]](https://git-scm.com/docs/git-pack-objects) when generating a cruft pack and the respective parameters are not given over the command line. See similarly named `pack.*` configuration variables for defaults and meaning.",
         "autocomplete": true
     },
     "repack.cruftDepth": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "Parameters used by [git-pack-objects\\[1\\]](https://git-scm.com/docs/git-pack-objects) when generating a cruft pack and the respective parameters are not given over the command line. See similarly named `pack.*` configuration variables for defaults and meaning.",
         "autocomplete": true
     },
     "repack.cruftThreads": {
@@ -2831,107 +2831,107 @@
     },
     "sendemail.annotate": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.bcc": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.cc": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.ccCmd": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.chainReplyTo": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.envelopeSender": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.from": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.signedoffbycc": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpPass": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.suppresscc": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.suppressFrom": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.to": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.tocmd": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpDomain": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpServer": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpServerPort": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpServerOption": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.smtpUser": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.thread": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.transferEncoding": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.validate": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
     "sendemail.xmailer": {
@@ -3286,27 +3286,27 @@
     },
     "user.name": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "The `user.name` and `user.email` variables determine what ends up in the `author` and `committer` field of commit objects. If you need the `author` or `committer` to be different, the `author.name`, `author.email`, `committer.name` or `committer.email` variables can be set. Also, all of these can be overridden by the `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL` and `EMAIL` environment variables.\n\nNote that the `name` forms of these variables conventionally refer to some form of a personal name. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) and the environment variables section of [git\\[1\\]](https://git-scm.com/docs/git) for more information on these settings and the `credential.username` option if you’re looking for authentication credentials instead.",
         "autocomplete": true
     },
     "user.email": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "The `user.name` and `user.email` variables determine what ends up in the `author` and `committer` field of commit objects. If you need the `author` or `committer` to be different, the `author.name`, `author.email`, `committer.name` or `committer.email` variables can be set. Also, all of these can be overridden by the `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL` and `EMAIL` environment variables.\n\nNote that the `name` forms of these variables conventionally refer to some form of a personal name. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) and the environment variables section of [git\\[1\\]](https://git-scm.com/docs/git) for more information on these settings and the `credential.username` option if you’re looking for authentication credentials instead.",
         "autocomplete": true
     },
     "author.name": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "The `user.name` and `user.email` variables determine what ends up in the `author` and `committer` field of commit objects. If you need the `author` or `committer` to be different, the `author.name`, `author.email`, `committer.name` or `committer.email` variables can be set. Also, all of these can be overridden by the `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL` and `EMAIL` environment variables.\n\nNote that the `name` forms of these variables conventionally refer to some form of a personal name. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) and the environment variables section of [git\\[1\\]](https://git-scm.com/docs/git) for more information on these settings and the `credential.username` option if you’re looking for authentication credentials instead.",
         "autocomplete": true
     },
     "author.email": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "The `user.name` and `user.email` variables determine what ends up in the `author` and `committer` field of commit objects. If you need the `author` or `committer` to be different, the `author.name`, `author.email`, `committer.name` or `committer.email` variables can be set. Also, all of these can be overridden by the `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL` and `EMAIL` environment variables.\n\nNote that the `name` forms of these variables conventionally refer to some form of a personal name. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) and the environment variables section of [git\\[1\\]](https://git-scm.com/docs/git) for more information on these settings and the `credential.username` option if you’re looking for authentication credentials instead.",
         "autocomplete": true
     },
     "committer.name": {
         "deprecated": false,
-        "documentation": "",
+        "documentation": "The `user.name` and `user.email` variables determine what ends up in the `author` and `committer` field of commit objects. If you need the `author` or `committer` to be different, the `author.name`, `author.email`, `committer.name` or `committer.email` variables can be set. Also, all of these can be overridden by the `GIT_AUTHOR_NAME`, `GIT_AUTHOR_EMAIL`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL` and `EMAIL` environment variables.\n\nNote that the `name` forms of these variables conventionally refer to some form of a personal name. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) and the environment variables section of [git\\[1\\]](https://git-scm.com/docs/git) for more information on these settings and the `credential.username` option if you’re looking for authentication credentials instead.",
         "autocomplete": true
     },
     "committer.email": {

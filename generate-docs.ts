@@ -33,21 +33,54 @@ const generateGitDocumentation = async () => {
         }
 
         const children = dl.children as HTMLCollectionOf<HTMLElement>
+
+        /**
+         * Parses
+         * ```html
+         * <dt>user.name</dt>
+         * <dt>user.email</dt>
+         * <dd>
+         *     documentation for user.name and user.email
+         * </dd>
+         * ```
+         */
+        const stack: string[] = []
+
         for (let i = 0; i < children.length;) {
             assert(children[i].tagName === "DT")
             const header = children[i].textContent!.trim()
             i++
-            if (i >= children.length || children[i].tagName === "DT") { // <dt>foo.bar</dt>
+            if (i >= children.length || children[i].tagName === "DT") {
+                // <dt>foo.bar</dt>
                 set(header, "")
+                stack.push(header)
             } else if (children[i]!.tagName === "DD") {
-                if (header.endsWith(".*") && children[i].querySelector("div.dlist") !== null) { // <dt>foo.bar</dt><dd><p>help</p><div><div><div class="dlist"><dl>...children</dl></div></div></div></dd>
+                if (header.endsWith(".*") && children[i].querySelector("div.dlist") !== null) {
+                    // Parses nested entries:
+                    //
+                    // <dt>foo.bar</dt>
+                    // <dd>
+                    //     <p>help</p>
+                    //     <div>
+                    //         <div>
+                    //             <div class="dlist">
+                    //                 <dl>
+                    //                     ...children
+                    //                 </dl>
+                    //             </div>
+                    //         </div>
+                    //     </div>
+                    // </dd>
                     result[header] = { deprecated: false, documentation: [...children[i]!.querySelectorAll(":scope > p")].map((v) => htmlToMarkdown(v.innerHTML)).join("\n"), autocomplete: false }
                     for (const [k, v] of Object.entries(parseDl(querySelector(children[i]!, ":scope > div > div > div.dlist > dl") as HTMLElement))) {
                         result[header.replace("*", k)] = v
                     }
                 } else { // <dt>foo.bar</dt><dd>help</dd>
-                    set(header, htmlToMarkdown(children[i].innerHTML))
+                    for (const k of [header, ...stack]) {
+                        set(k, htmlToMarkdown(children[i].innerHTML))
+                    }
                 }
+                stack.length = 0
                 i++
             } else {
                 throw new Error("parse error")
