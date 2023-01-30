@@ -82,8 +82,7 @@ conn.languages.semanticTokens.on(({ textDocument: { uri } }) => {
             } else if (line.type === "comment") {
                 builder.push(toLSPRange(line.comment.location), "comment")
             } else {
-                const _: "macro" = line.type
-                builder.push(toLSPRange(line.header.location), "keyword")
+                builder.push(toLSPRange((line satisfies { type: "macro" }).header.location), "keyword")
             }
         }
     }
@@ -122,7 +121,7 @@ conn.onDocumentFormatting(async ({ options, textDocument: { uri } }): Promise<ls
         } else if (line.type === "macro") {
             edits.push(...replaceWhitespaceLeft(toLSPPosition(line.location.start).offset, "", text, textDocument))
         } else {
-            const _: "comment" = line.type
+            line.type satisfies "comment"
         }
     }
 
@@ -156,7 +155,7 @@ conn.onHover(({ position, textDocument: { uri } }) => {
             }
         } else if (line.type === "comment") {
         } else {
-            const _: "macro" = line.type
+            line.type satisfies "macro"
         }
     }
 })
@@ -181,9 +180,8 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
                     ...docs.map((d): lsp.CompletionItem => ({ label: d.title, kind: lsp.CompletionItemKind.Property, documentation: d.documentation })),
                     { label: "binary", kind: lsp.CompletionItemKind.Keyword, documentation: "Expands  to `-text -diff`" }
                 ]
-            } else if (line.type === "comment") {
             } else {
-                const _: "macro" = line.type
+                line.type satisfies "macro" | "comment"
             }
         }
     }

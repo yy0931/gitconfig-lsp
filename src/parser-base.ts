@@ -44,13 +44,12 @@ export const setOffset = <T>(x: T, start: { offset: number, line: number, column
     if (Array.isArray(x)) {
         x.forEach((v) => setOffset(v, start))
     } else if (typeof x === "object" && x !== null) {
-        if ("offset" in x && "line" in x && "column" in x) {
-            const obj = x as any as { offset: number, line: number, column: number }
-            obj.offset += start.offset
-            if (obj.line === 1) {
-                obj.column += start.column - 1
+        if ("offset" in x && typeof x.offset === "number" && "line" in x && typeof x.line === "number" && "column" in x && typeof x.column === "number") {
+            x.offset += start.offset
+            if (x.line === 1) {
+                x.column += start.column - 1
             }
-            obj.line += start.line - 1
+            x.line += start.line - 1
         }
         Object.values(x).forEach((v) => setOffset(v, start))
     }
