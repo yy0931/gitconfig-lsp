@@ -1,7 +1,7 @@
 {
     "advice.*": {
         "deprecated": false,
-        "documentation": "These variables control various optional help messages designed to aid new users. All _advice.\\*_ variables default to _true_, and you can tell Git that you do not need help by setting these to _false_:\nAdvice shown when fetch refspec for multiple remotes map to the same remote-tracking branch namespace and causes branch tracking set-up to fail.\nAdvice shown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.\nSet this variable to _false_ if you want to disable _pushNonFFCurrent_, _pushNonFFMatching_, _pushAlreadyExists_, _pushFetchFirst_, _pushNeedsForce_, and _pushRefNeedsUpdate_ simultaneously.\nAdvice shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.\nAdvice shown when you ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed _matching refs_ explicitly (i.e. you used _:_, or specified a refspec that isn’t your current branch) and it resulted in a non-fast-forward error.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that does not qualify for fast-forwarding (e.g., a tag.)\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object we do not have.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object that is not a commit-ish, or make the remote ref point at an object that is not a commit-ish.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either refs/heads/\\* or refs/tags/\\* based on the type of the source object.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects a forced update of a branch when its remote-tracking ref has updates that we do not have locally.\nShown when [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) skips a commit that has already been cherry-picked onto the upstream branch.\nShown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) computes the ahead/behind counts for a local ref compared to its remote tracking ref, and that calculation takes longer than expected. Will not appear if `status.aheadBehind` is false or the option `--no-ahead-behind` is given.\nShow directions on how to proceed from the current state in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status), in the template shown when writing commit messages in [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), and in the help message shown by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when switching branch.\nAdvise to consider using the `-u` option to [git-status\\[1\\]](https://git-scm.com/docs/git-status) when the command takes more than 2 seconds to enumerate untracked files.\nAdvice shown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.\nAdvice to consider using the `--no-refresh` option to [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) when the command takes more than 2 seconds to refresh the index after reset.\nAdvice shown by various commands when conflicts prevent the operation from being performed.\nAdvice shown when a sequencer command is already in progress.\nAdvice on how to set your identity configuration when your information is guessed from the system username and domain name.\nAdvice shown when you used [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detach HEAD state, to instruct how to create a local branch after the fact.\nAdvice shown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.\nAdvice shown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to used by default in some situations where this advice would be printed.\nAdvice that shows the location of the patch file when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply it.\nIn case of failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), show directions on how to proceed from the current state.\nAdvice on what to do when you’ve accidentally added one git repo inside of another.\nAdvice shown if a hook is ignored because the hook is not set as executable.\nPrint a message to the terminal whenever Git is waiting for editor input from the user.\nAdvice shown if a user attempts to recursively tag a tag object.\nAdvice shown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.\nAdvice shown when a user runs a submodule command that fails because `git submodule update --init` was not run.\nAdvice shown if a user attempts to add an ignored file to the index.\nAdvice shown if a user runs the add command without providing the pathspec parameter.\nAdvice shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.",
+        "documentation": "These variables control various optional help messages designed to aid new users. All _advice.\\*_ variables default to _true_, and you can tell Git that you do not need help by setting these to _false_:\nAdvice shown when fetch refspec for multiple remotes map to the same remote-tracking branch namespace and causes branch tracking set-up to fail.\nAdvice shown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.\nSet this variable to _false_ if you want to disable _pushNonFFCurrent_, _pushNonFFMatching_, _pushAlreadyExists_, _pushFetchFirst_, _pushNeedsForce_, and _pushRefNeedsUpdate_ simultaneously.\nAdvice shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.\nAdvice shown when you ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed _matching refs_ explicitly (i.e. you used _:_, or specified a refspec that isn’t your current branch) and it resulted in a non-fast-forward error.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that does not qualify for fast-forwarding (e.g., a tag.)\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object we do not have.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object that is not a commit-ish, or make the remote ref point at an object that is not a commit-ish.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either refs/heads/\\* or refs/tags/\\* based on the type of the source object.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects a forced update of a branch when its remote-tracking ref has updates that we do not have locally.\nShown when [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) skips a commit that has already been cherry-picked onto the upstream branch.\nShown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) computes the ahead/behind counts for a local ref compared to its remote tracking ref, and that calculation takes longer than expected. Will not appear if `status.aheadBehind` is false or the option `--no-ahead-behind` is given.\nShow directions on how to proceed from the current state in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status), in the template shown when writing commit messages in [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), and in the help message shown by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when switching branch.\nAdvise to consider using the `-u` option to [git-status\\[1\\]](https://git-scm.com/docs/git-status) when the command takes more than 2 seconds to enumerate untracked files.\nAdvice shown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.\nAdvice to consider using the `--no-refresh` option to [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) when the command takes more than 2 seconds to refresh the index after reset.\nAdvice shown by various commands when conflicts prevent the operation from being performed.\nAdvice shown when a sequencer command is already in progress.\nAdvice on how to set your identity configuration when your information is guessed from the system username and domain name.\nAdvice shown when you used [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detach HEAD state, to instruct how to create a local branch after the fact.\nAdvice shown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.\nAdvice shown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to used by default in some situations where this advice would be printed.\nAdvice that shows the location of the patch file when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply it.\nIn case of failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), show directions on how to proceed from the current state.\nAdvice on what to do when you’ve accidentally added one git repo inside of another.\nAdvice shown if a hook is ignored because the hook is not set as executable.\nPrint a message to the terminal whenever Git is waiting for editor input from the user.\nAdvice shown if a user attempts to recursively tag a tag object.\nAdvice shown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.\nAdvice shown when a user runs a submodule command that fails because `git submodule update --init` was not run.\nAdvice shown if a user attempts to add an ignored file to the index.\nAdvice shown if a user runs the add command without providing the pathspec parameter.\nAdvice shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.\nAdvice shown when a fast-forward is not possible.",
         "autocomplete": false
     },
     "advice.ambiguousFetchRefspec": {
@@ -167,6 +167,11 @@
     "advice.updateSparsePath": {
         "deprecated": false,
         "documentation": "Advice shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.",
+        "autocomplete": true
+    },
+    "advice.diverging": {
+        "deprecated": false,
+        "documentation": "Advice shown when a fast-forward is not possible.",
         "autocomplete": true
     },
     "core.fileMode": {
@@ -481,7 +486,7 @@
     },
     "add.interactive.useBuiltin": {
         "deprecated": false,
-        "documentation": "Set to `false` to fall back to the original Perl implementation of the interactive version of [git-add\\[1\\]](https://git-scm.com/docs/git-add) instead of the built-in version. Is `true` by default.",
+        "documentation": "Unused configuration variable. Used in Git versions v2.25.0 to v2.36.0 to enable the built-in version of [git-add\\[1\\]](https://git-scm.com/docs/git-add)'s interactive mode, which then became the default in Git versions v2.37.0 to v2.39.0.",
         "autocomplete": true
     },
     "alias.*": {
@@ -617,6 +622,11 @@
     "bundle.mode": {
         "deprecated": false,
         "documentation": "This string value should be either `all` or `any`. This value describes whether all of the advertised bundles are required to unbundle a complete understanding of the bundled information (`all`) or if any one of the listed bundle URIs is sufficient (`any`).",
+        "autocomplete": true
+    },
+    "bundle.heuristic": {
+        "deprecated": false,
+        "documentation": "If this string-valued key exists, then the bundle list is designed to work well with incremental `git fetch` commands. The heuristic signals that there are additional keys available for each bundle that help determine which subset of bundles the client should download. The only value currently understood is `creationToken`.",
         "autocomplete": true
     },
     "bundle.<id>.*": {
@@ -1054,6 +1064,11 @@
         "documentation": "Prompt before each invocation of the diff tool.",
         "autocomplete": true
     },
+    "difftool.guiDefault": {
+        "deprecated": false,
+        "documentation": "Set `true` to use the `diff.guitool` by default (equivalent to specifying the `--gui` argument), or `auto` to select `diff.guitool` or `diff.tool` depending on the presence of a `DISPLAY` environment variable value. The default is `false`, where the `--gui` argument must be provided explicitly for the `diff.guitool` to be used.",
+        "autocomplete": true
+    },
     "extensions.objectFormat": {
         "deprecated": false,
         "documentation": "Specify the hash algorithm to use. The acceptable values are `sha1` and `sha256`. If not specified, `sha1` is assumed. It is an error to specify this key unless `core.repositoryFormatVersion` is 1.\n\nNote that this setting should only be set by [git-init\\[1\\]](https://git-scm.com/docs/git-init) or [git-clone\\[1\\]](https://git-scm.com/docs/git-clone). Trying to change it after initialization will not work and will produce hard-to-diagnose issues.",
@@ -1076,12 +1091,12 @@
     },
     "feature.experimental": {
         "deprecated": false,
-        "documentation": "Enable config options that are new to Git, and are being considered for future defaults. Config settings included here may be added or removed with each release, including minor version updates. These settings may have unintended interactions since they are so new. Please enable this setting if you are interested in providing feedback on experimental features. The new default values are:\n\n*   `fetch.negotiationAlgorithm=skipping` may improve fetch negotiation times by skipping more commits at a time, reducing the number of round trips.\n    \n*   `gc.cruftPacks=true` reduces disk space used by unreachable objects during garbage collection, preventing loose object explosions.",
+        "documentation": "Enable config options that are new to Git, and are being considered for future defaults. Config settings included here may be added or removed with each release, including minor version updates. These settings may have unintended interactions since they are so new. Please enable this setting if you are interested in providing feedback on experimental features. The new default values are:\n\n*   `fetch.negotiationAlgorithm=skipping` may improve fetch negotiation times by skipping more commits at a time, reducing the number of round trips.",
         "autocomplete": true
     },
     "feature.manyFiles": {
         "deprecated": false,
-        "documentation": "Enable config options that optimize for repos with many files in the working directory. With many files, commands such as `git status` and `git checkout` may be slow and these new defaults improve performance:\n\n*   `index.version=4` enables path-prefix compression in the index.\n    \n*   `core.untrackedCache=true` enables the untracked cache. This setting assumes that mtime is working on your machine.",
+        "documentation": "Enable config options that optimize for repos with many files in the working directory. With many files, commands such as `git status` and `git checkout` may be slow and these new defaults improve performance:\n\n*   `index.skipHash=true` speeds up index writes by not computing a trailing checksum. Note that this will cause Git versions earlier than 2.13.0 to refuse to parse the index and Git versions earlier than 2.40.0 will report a corrupted index during `git fsck`.\n    \n*   `index.version=4` enables path-prefix compression in the index.\n    \n*   `core.untrackedCache=true` enables the untracked cache. This setting assumes that mtime is working on your machine.",
         "autocomplete": true
     },
     "fetch.recurseSubmodules": {
@@ -1144,9 +1159,19 @@
         "documentation": "Set to true to write a commit-graph after every `git fetch` command that downloads a pack-file from a remote. Using the `--split` option, most executions will create a very small commit-graph file on top of the existing commit-graph file(s). Occasionally, these files will merge and the write may take longer. Having an updated commit-graph file helps performance of many Git commands, including `git merge-base`, `git push -f`, and `git log --graph`. Defaults to false.",
         "autocomplete": true
     },
+    "fetch.bundleURI": {
+        "deprecated": false,
+        "documentation": "This value stores a URI for downloading Git object data from a bundle URI before performing an incremental fetch from the origin Git server. This is similar to how the `--bundle-uri` option behaves in [git-clone\\[1\\]](https://git-scm.com/docs/git-clone). `git clone --bundle-uri` will set the `fetch.bundleURI` value if the supplied bundle URI contains a bundle list that is organized for incremental fetches.\n\nIf you modify this value and your repository has a `fetch.bundleCreationToken` value, then remove that `fetch.bundleCreationToken` value before fetching from the new bundle URI.",
+        "autocomplete": true
+    },
+    "fetch.bundleCreationToken": {
+        "deprecated": false,
+        "documentation": "When using `fetch.bundleURI` to fetch incrementally from a bundle list that uses the \"creationToken\" heuristic, this config value stores the maximum `creationToken` value of the downloaded bundles. This value is used to prevent downloading bundles in the future if the advertised `creationToken` is not strictly larger than this value.\n\nThe creation token values are chosen by the provider serving the specific bundle URI. If you modify the URI at `fetch.bundleURI`, then be sure to remove the value for the `fetch.bundleCreationToken` value before fetching.",
+        "autocomplete": true
+    },
     "format.attach": {
         "deprecated": false,
-        "documentation": "Enable multipart/mixed attachments as the default for _format-patch_. The value can also be a double quoted string which will enable attachments as the default and set the value as the boundary. See the --attach option in [git-format-patch\\[1\\]](https://git-scm.com/docs/git-format-patch).",
+        "documentation": "Enable multipart/mixed attachments as the default for _format-patch_. The value can also be a double quoted string which will enable attachments as the default and set the value as the boundary. See the --attach option in [git-format-patch\\[1\\]](https://git-scm.com/docs/git-format-patch). To countermand an earlier value, set it to an empty string.",
         "autocomplete": true
     },
     "format.from": {
@@ -1249,6 +1274,16 @@
         "documentation": "Provides the default value for the `--notes` option to format-patch. Accepts a boolean value, or a ref which specifies where to get notes. If false, format-patch defaults to `--no-notes`. If true, format-patch defaults to `--notes`. If set to a non-boolean value, format-patch defaults to `--notes=<ref>`, where `ref` is the non-boolean value. Defaults to false.\n\nIf one wishes to use the ref `ref/notes/true`, please use that literal instead.\n\nThis configuration can be specified multiple times in order to allow multiple notes refs to be included. In that case, it will behave similarly to multiple `--[no-]notes[=]` options passed in. That is, a value of `true` will show the default notes, a value of `<ref>` will also show notes from that notes ref and a value of `false` will negate previous configurations and not show notes.\n\nFor example,\n\n\\[format\\]\n\tnotes = true\n\tnotes = foo\n\tnotes = false\n\tnotes = bar\n\nwill only show notes from `refs/notes/bar`.",
         "autocomplete": true
     },
+    "format.mboxrd": {
+        "deprecated": false,
+        "documentation": "A boolean value which enables the robust \"mboxrd\" format when `--stdout` is in use to escape \"^>+From \" lines.",
+        "autocomplete": true
+    },
+    "format.noprefix": {
+        "deprecated": false,
+        "documentation": "If set, do not show any source or destination prefix in patches. This is equivalent to the `diff.noprefix` option used by `git diff` (but which is not respected by `format-patch`). Note that by setting this, the receiver of any patches you generate will have to apply them using the `-p0` option.",
+        "autocomplete": true
+    },
     "filter.<driver>.clean": {
         "deprecated": false,
         "documentation": "The command which is used to convert the content of a worktree file to a blob upon checkin. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
@@ -1306,7 +1341,7 @@
     },
     "gc.bigPackThreshold": {
         "deprecated": false,
-        "documentation": "If non-zero, all packs larger than this limit are kept when `git gc` is run. This is very similar to `--keep-largest-pack` except that all packs that meet the threshold are kept, not just the largest pack. Defaults to zero. Common unit suffixes of _k_, _m_, or _g_ are supported.\n\nNote that if the number of kept packs is more than gc.autoPackLimit, this configuration variable is ignored, all packs except the base pack will be repacked. After this the number of packs should go below gc.autoPackLimit and gc.bigPackThreshold should be respected again.\n\nIf the amount of memory estimated for `git repack` to run smoothly is not available and `gc.bigPackThreshold` is not set, the largest pack will also be excluded (this is the equivalent of running `git gc` with `--keep-largest-pack`).",
+        "documentation": "If non-zero, all non-cruft packs larger than this limit are kept when `git gc` is run. This is very similar to `--keep-largest-pack` except that all non-cruft packs that meet the threshold are kept, not just the largest pack. Defaults to zero. Common unit suffixes of _k_, _m_, or _g_ are supported.\n\nNote that if the number of kept packs is more than gc.autoPackLimit, this configuration variable is ignored, all packs except the base pack will be repacked. After this the number of packs should go below gc.autoPackLimit and gc.bigPackThreshold should be respected again.\n\nIf the amount of memory estimated for `git repack` to run smoothly is not available and `gc.bigPackThreshold` is not set, the largest pack will also be excluded (this is the equivalent of running `git gc` with `--keep-largest-pack`).",
         "autocomplete": true
     },
     "gc.writeCommitGraph": {
@@ -1326,7 +1361,7 @@
     },
     "gc.cruftPacks": {
         "deprecated": false,
-        "documentation": "Store unreachable objects in a cruft pack (see [git-repack\\[1\\]](https://git-scm.com/docs/git-repack)) instead of as loose objects. The default is `false`.",
+        "documentation": "Store unreachable objects in a cruft pack (see [git-repack\\[1\\]](https://git-scm.com/docs/git-repack)) instead of as loose objects. The default is `true`.",
         "autocomplete": true
     },
     "gc.pruneExpire": {
@@ -1521,7 +1556,7 @@
     },
     "gpg.format": {
         "deprecated": false,
-        "documentation": "Specifies which key format to use when signing with `--gpg-sign`. Default is \"openpgp\". Other possible values are \"x509\", \"ssh\".",
+        "documentation": "Specifies which key format to use when signing with `--gpg-sign`. Default is \"openpgp\". Other possible values are \"x509\", \"ssh\".\n\nSee [gitformat-signature\\[5\\]](https://git-scm.com/docs/gitformat-signature) for the signature format, which differs based on the selected `gpg.format`.",
         "autocomplete": true
     },
     "gpg.<format>.program": {
@@ -1826,7 +1861,7 @@
     },
     "http.lowSpeedLimit, http.lowSpeedTime": {
         "deprecated": false,
-        "documentation": "If the HTTP transfer speed is less than _http.lowSpeedLimit_ for longer than _http.lowSpeedTime_ seconds, the transfer is aborted. Can be overridden by the `GIT_HTTP_LOW_SPEED_LIMIT` and `GIT_HTTP_LOW_SPEED_TIME` environment variables.",
+        "documentation": "If the HTTP transfer speed, in bytes per second, is less than _http.lowSpeedLimit_ for longer than _http.lowSpeedTime_ seconds, the transfer is aborted. Can be overridden by the `GIT_HTTP_LOW_SPEED_LIMIT` and `GIT_HTTP_LOW_SPEED_TIME` environment variables.",
         "autocomplete": true
     },
     "http.noEPSV": {
@@ -1937,6 +1972,11 @@
     "index.version": {
         "deprecated": false,
         "documentation": "Specify the version with which new index files should be initialized. This does not affect existing repositories. If `feature.manyFiles` is enabled, then the default is 4.",
+        "autocomplete": true
+    },
+    "index.skipHash": {
+        "deprecated": false,
+        "documentation": "When enabled, do not compute the trailing hash for the index file. This accelerates Git commands that manipulate the index, such as `git add`, `git commit`, or `git status`. Instead of storing the checksum, write a trailing set of bytes with value zero, indicating that the computation was skipped.\n\nIf you enable `index.skipHash`, then Git clients older than 2.13.0 will refuse to parse the index and Git clients older than 2.40.0 will report an error during `git fsck`.",
         "autocomplete": true
     },
     "init.templateDir": {
@@ -2264,6 +2304,11 @@
         "documentation": "Prompt before each invocation of the merge resolution program.",
         "autocomplete": true
     },
+    "mergetool.guiDefault": {
+        "deprecated": false,
+        "documentation": "Set `true` to use the `merge.guitool` by default (equivalent to specifying the `--gui` argument), or `auto` to select `merge.guitool` or `merge.tool` depending on the presence of a `DISPLAY` environment variable value. The default is `false`, where the `--gui` argument must be provided explicitly for the `merge.guitool` to be used.",
+        "autocomplete": true
+    },
     "notes.mergeStrategy": {
         "deprecated": false,
         "documentation": "Which merge strategy to choose by default when resolving notes conflicts. Must be one of `manual`, `ours`, `theirs`, `union`, or `cat_sort_uniq`. Defaults to `manual`. See \"NOTES MERGE STRATEGIES\" section of [git-notes\\[1\\]](https://git-scm.com/docs/git-notes) for more information on each strategy.\n\nThis setting can be overridden by passing the `--strategy` option to [git-notes\\[1\\]](https://git-scm.com/docs/git-notes).",
@@ -2384,9 +2429,14 @@
         "documentation": "When true, Git will include a \"lookup table\" section in the bitmap index (if one is written). This table is used to defer loading individual bitmaps as late as possible. This can be beneficial in repositories that have relatively large bitmap indexes. Defaults to false.",
         "autocomplete": true
     },
+    "pack.readReverseIndex": {
+        "deprecated": false,
+        "documentation": "When true, git will read any .rev file(s) that may be available (see: [gitformat-pack\\[5\\]](https://git-scm.com/docs/gitformat-pack)). When false, the reverse index will be generated from scratch and stored in memory. Defaults to true.",
+        "autocomplete": true
+    },
     "pack.writeReverseIndex": {
         "deprecated": false,
-        "documentation": "When true, git will write a corresponding .rev file (see: [gitformat-pack\\[5\\]](https://git-scm.com/docs/gitformat-pack)) for each new packfile that it writes in all places except for [git-fast-import\\[1\\]](https://git-scm.com/docs/git-fast-import) and in the bulk checkin mechanism. Defaults to false.",
+        "documentation": "When true, git will write a corresponding .rev file (see: [gitformat-pack\\[5\\]](https://git-scm.com/docs/gitformat-pack)) for each new packfile that it writes in all places except for [git-fast-import\\[1\\]](https://git-scm.com/docs/git-fast-import) and in the bulk checkin mechanism. Defaults to true.",
         "autocomplete": true
     },
     "pager.<cmd>": {
@@ -2527,6 +2577,11 @@
     "rebase.forkPoint": {
         "deprecated": false,
         "documentation": "If set to false set `--no-fork-point` option by default.",
+        "autocomplete": true
+    },
+    "rebase.rebaseMerges": {
+        "deprecated": false,
+        "documentation": "Whether and how to set the `--rebase-merges` option by default. Can be `rebase-cousins`, `no-rebase-cousins`, or a boolean. Setting to true or to `no-rebase-cousins` is equivalent to `--rebase-merges=no-rebase-cousins`, setting to `rebase-cousins` is equivalent to `--rebase-merges=rebase-cousins`, and setting to false is equivalent to `--no-rebase-merges`. Passing `--rebase-merges` on the command line, with or without an argument, overrides any `rebase.rebaseMerges` configuration.",
         "autocomplete": true
     },
     "receive.advertiseAtomic": {
@@ -2860,6 +2915,11 @@
         "autocomplete": true
     },
     "sendemail.from": {
+        "deprecated": false,
+        "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
+        "autocomplete": true
+    },
+    "sendemail.headerCmd": {
         "deprecated": false,
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
@@ -3212,6 +3272,11 @@
     "transfer.advertiseSID": {
         "deprecated": false,
         "documentation": "Boolean. When true, client and server processes will advertise their unique session IDs to their remote counterpart. Defaults to false.",
+        "autocomplete": true
+    },
+    "transfer.bundleURI": {
+        "deprecated": false,
+        "documentation": "When `true`, local `git clone` commands will request bundle information from the remote server (if advertised) and download bundles before continuing the clone through the Git protocol. Defaults to `false`.",
         "autocomplete": true
     },
     "uploadarchive.allowUnreachable": {
