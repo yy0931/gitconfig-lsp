@@ -240,13 +240,22 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         }
     }
 
+    // Display the variables of the current section when `indented && currentSection !== null`
+    const indented = textDocument.getText({ start: { character: 0, line: position.line }, end: position }) === "\t"
+
     // the cursor is neither in a section header nor on a value
     return Object.entries(docs).flatMap(([k, v]) => {
         if (!v.autocomplete) { return [] }
         if (uri.endsWith(".lfsconfig") && !k.startsWith("lfs.") && !k.endsWith(".lfsurl")) { return [] }  // https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-config.5.ronn#lfsconfig
+        if (indented && currentSection !== null && !matchVariable(k.split(".").slice(0, -1).join("."), currentSection)) {
+            return []
+        }
 
-        const item: lsp.CompletionItem = { label: k, kind: lsp.CompletionItemKind.Property }
         const parts = parseVariablePath(k)
+        const item: lsp.CompletionItem =
+            indented && currentSection !== null ?
+                { label: parts.variable, kind: lsp.CompletionItemKind.Property, detail: parts.section + (parts.subsection ? "." + parts.subsection : "") } :
+                { label: k, kind: lsp.CompletionItemKind.Property }
 
         let i = 1
         let sectionHeader = ""
