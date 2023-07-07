@@ -23,6 +23,11 @@ const matchVariable = (doc: string, code: string) => {
         l.every((li, i) => li.startsWith("<") || li === "*" || li === r[i])
 }
 
+const parseVariablePath = (header: string) => {
+    const parts = header.split(".")
+    return { section: parts[0], subsection: parts.slice(1, -1).join("."), variable: parts[parts.length - 1] }
+}
+
 const conn = lsp.createConnection(lsp.ProposedFeatures.all)
 const documents: lsp.TextDocuments<TextDocument> = new lsp.TextDocuments(TextDocument)
 
@@ -194,7 +199,18 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         for (const section of f.sections) {
             const range = toLSPRange(section.sectionHeader.location)
             if (containsPosition(range, position)) { // if the cursor is on a section header
-                return []
+                const items = new Map<string, lsp.CompletionItem>()
+                for (const key of Object.keys(docs)) {
+                    const parts = parseVariablePath(key)
+                    items.set(parts.section, {
+                        label: parts.section + (parts.subsection ? "." + parts.subsection : ""),
+                        insertText: parts.subsection ?
+                            `${parts.section} "$\{0:${parts.subsection.replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`).replaceAll("{", "\\{")}}"` :
+                            parts.section,
+                        insertTextFormat: lsp.InsertTextFormat.Snippet,
+                    })
+                }
+                return [...items.values()]
             }
             if (isBefore(range.end, position)) {
                 if (section.sectionHeader.ast === null) {
@@ -230,7 +246,7 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
         if (uri.endsWith(".lfsconfig") && !k.startsWith("lfs.") && !k.endsWith(".lfsurl")) { return [] }  // https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-config.5.ronn#lfsconfig
 
         const item: lsp.CompletionItem = { label: k, kind: lsp.CompletionItemKind.Property }
-        const parts = k.split(".")
+        const parts = parseVariablePath(k)
 
         let i = 1
         let sectionHeader = ""
@@ -244,15 +260,15 @@ conn.onCompletion(({ position, textDocument: { uri } }) => {
                     }
                 }
             ]
-            if (parts.length >= 3) {
-                sectionHeader += `[${parts[0]} "${parts.slice(1, -1).join(".").replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`)}"]\n\t`
+            if (parts.subsection) {
+                sectionHeader += `[${parts.section} "${parts.subsection.replaceAll("\\", "\\\\").replaceAll(`"`, `\\"`)}"]\n\t`
             } else {
-                sectionHeader += `[${parts[0]}]\n\t`
+                sectionHeader += `[${parts.section}]\n\t`
             }
             sectionHeader = sectionHeader.replace(/<([^>]+)>/g, (_, m) => `\${${i++}:${m}}`)
         }
 
-        let variable = parts[parts.length - 1]
+        let variable = parts.variable
         if (variable === "*") {
             variable = `\${${i++}:name}`
         }
