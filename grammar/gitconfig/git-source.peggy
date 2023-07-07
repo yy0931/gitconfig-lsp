@@ -27,6 +27,6 @@ IfBegin
   = "if (strcmp(var, \"" @$[^"]+ "\") == 0)"
   / "if (!strcmp(var, \"" @$[^"]+ "\"))"
 
-LValue = head:Ident tail:("->" Ident)* { return [head, ...tail.map((v) => v[1])].join("") }
+LValue = idents:Ident|1.., "->"| { return idents.join("") }
 Ident = $[a-zA-Z0-9_]+
 _ = $[ \t]*

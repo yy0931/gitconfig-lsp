@@ -1,10 +1,8 @@
 File =
   _s
   @(
-    head:Line
-    tail:(newline @Line [ \t]*)*
+    @Line|1.., newline|
     [\n\r \t]*
-    { return [head, ...tail].filter((line) => line !== null) }
   )?
 
 Line =

@@ -27,19 +27,13 @@ SectionHeader =
   _t
   "["
   _
-  section:(
-    head:SectionIdent
-    tail:("." ident:SectionIdent)*
-    { return [head, ...tail.map((v) => v[1])] }
-  )
+  section:SectionIdent|1.., "."|
   subsection:(
     [ \t]+
     strLiteral:(
       '"'
-      head:SubsectionIdent 
-      tail:("." SubsectionIdent)* 
+      @SubsectionIdent|1.., "."|
       '"'
-      { return [head, ...tail.map((v) => v[1])] }
     )
     { return { parts: strLiteral, location: location() } }
   )?

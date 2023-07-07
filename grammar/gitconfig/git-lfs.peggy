@@ -1,14 +1,12 @@
-Main
-  = head:Section tail:("\n" @Section)*
-  { return [head, ...tail] }
+Main = Section|1.., "\n"|
 
 // * `foo.bar`
 // 
 //   help
 Section
   = header:Header
-    helpHead:Paragraph helpTail:("\n" @Paragraph)* "\n"
-  { return { header, help: [helpHead, ...helpTail].join("\n\n") } }
+    help:Paragraph|1.., "\n"| "\n"
+  { return { header, help: help.join("\n\n") } }
 
 Paragraph
   = p:("\n  " @$[^\n]+)+
@@ -16,10 +14,7 @@ Paragraph
 
 // * `key1` / `key2`
 //   `key3`
-Header
-  = "* " head:Key tail:((" / " / ", " / "\n  ") Key)*
-    "\n"
-  { return [head, ...tail.map((v) => v[1])] }
+Header = "* " @Key|1.., (" / " / ", " / "\n  ")| "\n"
 
 // `foo.bar`, `FOO_BAR` or FOO_BAR
 Key
