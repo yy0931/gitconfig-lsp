@@ -2,7 +2,7 @@ name: Update the documentation
 on:
   push:
   schedule:
-    - cron: 1 2 3 * *  # run monthly
+    - cron: 1 2 3 */3 *  # At 02:01 on day-of-month 3 in every 3rd month.
 jobs:
   create_pull_request:
     runs-on: ubuntu-latest
