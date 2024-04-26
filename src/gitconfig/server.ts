@@ -147,7 +147,9 @@ conn.onDocumentFormatting(({ options, textDocument: { uri } }): lsp.TextEdit[] |
             edits.push(...replaceWhitespaceRight(toLSPPosition(assignment.ast.name.location.end).offset, " ", text, textDocument))
             if (assignment.ast.value !== null) {
                 edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.start).offset, " ", text, textDocument))
-                edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.end).offset, "", text, textDocument))
+                if (assignment.comments.length === 0) {  // resolves #12
+                    edits.push(...replaceWhitespaceLeft(toLSPPosition(assignment.ast.value.location.end).offset, "", text, textDocument))
+                }
             }
         }
     }
