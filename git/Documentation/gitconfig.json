@@ -1,77 +1,97 @@
 {
+    "add.ignoreErrors": {
+        "deprecated": false,
+        "documentation": "Tells _git add_ to continue adding files when some files cannot be added due to indexing errors. Equivalent to the `--ignore-errors` option of [git-add\\[1\\]](https://git-scm.com/docs/git-add). `add.ignore-errors` is deprecated, as it does not follow the usual naming convention for configuration variables.",
+        "autocomplete": true
+    },
+    "add.ignore-errors": {
+        "deprecated": true,
+        "documentation": "(deprecated) Tells _git add_ to continue adding files when some files cannot be added due to indexing errors. Equivalent to the `--ignore-errors` option of [git-add\\[1\\]](https://git-scm.com/docs/git-add). `add.ignore-errors` is deprecated, as it does not follow the usual naming convention for configuration variables.",
+        "autocomplete": true
+    },
+    "add.interactive.useBuiltin": {
+        "deprecated": false,
+        "documentation": "Unused configuration variable. Used in Git versions v2.25.0 to v2.36.0 to enable the built-in version of [git-add\\[1\\]](https://git-scm.com/docs/git-add)'s interactive mode, which then became the default in Git versions v2.37.0 to v2.39.0.",
+        "autocomplete": true
+    },
     "advice.*": {
         "deprecated": false,
-        "documentation": "These variables control various optional help messages designed to aid new users. When left unconfigured, Git will give the message alongside instructions on how to squelch it. You can tell Git that you do not need the help message by setting these to _false_:\nAdvice on what to do when you’ve accidentally added one git repo inside of another.\nAdvice shown if a user runs the add command without providing the pathspec parameter.\nAdvice shown if a user attempts to add an ignored file to the index.\nAdvice that shows the location of the patch file when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply it.\nAdvice shown when a fetch refspec for multiple remotes maps to the same remote-tracking branch namespace and causes branch tracking set-up to fail.\nAdvice shown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to be used by default in some situations where this advice would be printed.\nAdvice shown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.\nAdvice shown when you used [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detached HEAD state, to instruct how to create a local branch after the fact.\nAdvice shown when a fast-forward is not possible.\nAdvice shown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.\nAdvice shown when a user tries to delete a not fully merged branch without the force option set.\nAdvice shown if a hook is ignored because the hook is not set as executable.\nAdvice on how to set your identity configuration when your information is guessed from the system username and domain name.\nAdvice shown if a user attempts to recursively tag a tag object.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that does not qualify for fast-forwarding (e.g., a tag.)\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object we do not have.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object that is not a commit-ish, or make the remote ref point at an object that is not a commit-ish.\nAdvice shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.\nAdvice shown when you ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed _matching refs_ explicitly (i.e. you used _:_, or specified a refspec that isn’t your current branch) and it resulted in a non-fast-forward error.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects a forced update of a branch when its remote-tracking ref has updates that we do not have locally.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either refs/heads/\\* or refs/tags/\\* based on the type of the source object.\nSet this variable to _false_ if you want to disable _pushNonFFCurrent_, _pushNonFFMatching_, _pushAlreadyExists_, _pushFetchFirst_, _pushNeedsForce_, and _pushRefNeedsUpdate_ simultaneously.\nAdvice to consider using the `--no-refresh` option to [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) when the command takes more than 2 seconds to refresh the index after reset.\nAdvice shown by various commands when conflicts prevent the operation from being performed.\nIn case of failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), show directions on how to proceed from the current state.\nAdvice shown when a sequencer command is already in progress.\nShown when [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) skips a commit that has already been cherry-picked onto the upstream branch.\nShown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) computes the ahead/behind counts for a local ref compared to its remote tracking ref, and that calculation takes longer than expected. Will not appear if `status.aheadBehind` is false or the option `--no-ahead-behind` is given.\nShow directions on how to proceed from the current state in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status), in the template shown when writing commit messages in [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), and in the help message shown by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when switching branches.\nAdvise to consider using the `-u` option to [git-status\\[1\\]](https://git-scm.com/docs/git-status) when the command takes more than 2 seconds to enumerate untracked files.\nAdvice shown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.\nAdvice shown when a user runs a submodule command that fails because `git submodule update --init` was not run.\nAdvice shown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.\nAdvice shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.\nPrint a message to the terminal whenever Git is waiting for editor input from the user.\nAdvice shown when a user tries to create a worktree from an invalid reference, to instruct how to create a new unborn branch instead.",
+        "documentation": "These variables control various optional help messages designed to aid new users. When left unconfigured, Git will give the message alongside instructions on how to squelch it. You can tell Git that you do not need the help message by setting these to `false`:\nShown when the user accidentally adds one git repo inside of another.\nShown when the user runs `git add` without providing the pathspec parameter.\nShown when the user attempts to add an ignored file to the index.\nShown when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply a patch file, to tell the user the location of the file.\nShown when a fetch refspec for multiple remotes maps to the same remote-tracking branch namespace and causes branch tracking set-up to fail.\nShown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to be used by default in some situations where this advice would be printed.\nShown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.\nShown when the user uses [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detached HEAD state, to tell the user how to create a local branch after the fact.\nShown when a fast-forward is not possible.\nShown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.\nShown when the user tries to delete a not fully merged branch without the force option set.\nShown when a hook is ignored because the hook is not set as executable.\nShown when the user’s information is guessed from the system username and domain name, to tell the user how to set their identity configuration.\nShown when various commands stop because of conflicts.\nShown when a user attempts to recursively tag a tag object.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that does not qualify for fast-forwarding (e.g., a tag.)\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object we do not have.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects an update that tries to overwrite a remote ref that points at an object that is not a commit-ish, or make the remote ref point at an object that is not a commit-ish.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.\nShown when the user ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed \"matching refs\" explicitly (i.e. used `:`, or specified a refspec that isn’t the current branch) and it resulted in a non-fast-forward error.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) rejects a forced update of a branch when its remote-tracking ref has updates that we do not have locally.\nShown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either `refs/heads/*` or `refs/tags/*` based on the type of the source object.\nSet this variable to `false` if you want to disable `pushNonFFCurrent`, `pushNonFFMatching`, `pushAlreadyExists`, `pushFetchFirst`, `pushNeedsForce`, and `pushRefNeedsUpdate` simultaneously.\nShown when the user provides an illegal ref name, to tell the user about the ref syntax documentation.\nShown when [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) takes more than 2 seconds to refresh the index after reset, to tell the user that they can use the `--no-refresh` option.\nShown by various commands when conflicts prevent the operation from being performed.\nShown on failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), to give directions on how to proceed from the current state.\nShown when a sequencer command is already in progress.\nShown when [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) skips a commit that has already been cherry-picked onto the upstream branch.\nShown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) computes the ahead/behind counts for a local ref compared to its remote tracking ref, and that calculation takes longer than expected. Will not appear if `status.aheadBehind` is false or the option `--no-ahead-behind` is given.\nShow directions on how to proceed from the current state in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status), in the template shown when writing commit messages in [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), and in the help message shown by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when switching branches.\nShown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) takes more than 2 seconds to enumerate untracked files, to tell the user that they can use the `-u` option.\nShown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.\nAdvice shown when a non-trivial submodule merge conflict is encountered.\nShown when a user runs a submodule command that fails because `git submodule update --init` was not run.\nShown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.\nShown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.\nShown when Git is waiting for editor input. Relevant when e.g. the editor is not launched inside the terminal.\nShown when the user tries to create a worktree from an invalid reference, to tell the user how to create a new unborn branch instead.",
         "autocomplete": false
     },
     "advice.addEmbeddedRepo": {
         "deprecated": false,
-        "documentation": "Advice on what to do when you’ve accidentally added one git repo inside of another.",
+        "documentation": "Shown when the user accidentally adds one git repo inside of another.",
         "autocomplete": true
     },
     "advice.addEmptyPathspec": {
         "deprecated": false,
-        "documentation": "Advice shown if a user runs the add command without providing the pathspec parameter.",
+        "documentation": "Shown when the user runs `git add` without providing the pathspec parameter.",
         "autocomplete": true
     },
     "advice.addIgnoredFile": {
         "deprecated": false,
-        "documentation": "Advice shown if a user attempts to add an ignored file to the index.",
+        "documentation": "Shown when the user attempts to add an ignored file to the index.",
         "autocomplete": true
     },
     "advice.amWorkDir": {
         "deprecated": false,
-        "documentation": "Advice that shows the location of the patch file when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply it.",
+        "documentation": "Shown when [git-am\\[1\\]](https://git-scm.com/docs/git-am) fails to apply a patch file, to tell the user the location of the file.",
         "autocomplete": true
     },
     "advice.ambiguousFetchRefspec": {
         "deprecated": false,
-        "documentation": "Advice shown when a fetch refspec for multiple remotes maps to the same remote-tracking branch namespace and causes branch tracking set-up to fail.",
+        "documentation": "Shown when a fetch refspec for multiple remotes maps to the same remote-tracking branch namespace and causes branch tracking set-up to fail.",
         "autocomplete": true
     },
     "advice.checkoutAmbiguousRemoteBranchName": {
         "deprecated": false,
-        "documentation": "Advice shown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to be used by default in some situations where this advice would be printed.",
+        "documentation": "Shown when the argument to [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) and [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) ambiguously resolves to a remote tracking branch on more than one remote in situations where an unambiguous argument would have otherwise caused a remote-tracking branch to be checked out. See the `checkout.defaultRemote` configuration variable for how to set a given remote to be used by default in some situations where this advice would be printed.",
         "autocomplete": true
     },
     "advice.commitBeforeMerge": {
         "deprecated": false,
-        "documentation": "Advice shown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.",
+        "documentation": "Shown when [git-merge\\[1\\]](https://git-scm.com/docs/git-merge) refuses to merge to avoid overwriting local changes.",
         "autocomplete": true
     },
     "advice.detachedHead": {
         "deprecated": false,
-        "documentation": "Advice shown when you used [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detached HEAD state, to instruct how to create a local branch after the fact.",
+        "documentation": "Shown when the user uses [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) or [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) to move to the detached HEAD state, to tell the user how to create a local branch after the fact.",
         "autocomplete": true
     },
     "advice.diverging": {
         "deprecated": false,
-        "documentation": "Advice shown when a fast-forward is not possible.",
+        "documentation": "Shown when a fast-forward is not possible.",
         "autocomplete": true
     },
     "advice.fetchShowForcedUpdates": {
         "deprecated": false,
-        "documentation": "Advice shown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.",
+        "documentation": "Shown when [git-fetch\\[1\\]](https://git-scm.com/docs/git-fetch) takes a long time to calculate forced updates after ref updates, or to warn that the check is disabled.",
         "autocomplete": true
     },
     "advice.forceDeleteBranch": {
         "deprecated": false,
-        "documentation": "Advice shown when a user tries to delete a not fully merged branch without the force option set.",
+        "documentation": "Shown when the user tries to delete a not fully merged branch without the force option set.",
         "autocomplete": true
     },
     "advice.ignoredHook": {
         "deprecated": false,
-        "documentation": "Advice shown if a hook is ignored because the hook is not set as executable.",
+        "documentation": "Shown when a hook is ignored because the hook is not set as executable.",
         "autocomplete": true
     },
     "advice.implicitIdentity": {
         "deprecated": false,
-        "documentation": "Advice on how to set your identity configuration when your information is guessed from the system username and domain name.",
+        "documentation": "Shown when the user’s information is guessed from the system username and domain name, to tell the user how to set their identity configuration.",
+        "autocomplete": true
+    },
+    "advice.mergeConflict": {
+        "deprecated": false,
+        "documentation": "Shown when various commands stop because of conflicts.",
         "autocomplete": true
     },
     "advice.nestedTag": {
         "deprecated": false,
-        "documentation": "Advice shown if a user attempts to recursively tag a tag object.",
+        "documentation": "Shown when a user attempts to recursively tag a tag object.",
         "autocomplete": true
     },
     "advice.pushAlreadyExists": {
@@ -91,12 +111,12 @@
     },
     "advice.pushNonFFCurrent": {
         "deprecated": false,
-        "documentation": "Advice shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.",
+        "documentation": "Shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) fails due to a non-fast-forward update to the current branch.",
         "autocomplete": true
     },
     "advice.pushNonFFMatching": {
         "deprecated": false,
-        "documentation": "Advice shown when you ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed _matching refs_ explicitly (i.e. you used _:_, or specified a refspec that isn’t your current branch) and it resulted in a non-fast-forward error.",
+        "documentation": "Shown when the user ran [git-push\\[1\\]](https://git-scm.com/docs/git-push) and pushed \"matching refs\" explicitly (i.e. used `:`, or specified a refspec that isn’t the current branch) and it resulted in a non-fast-forward error.",
         "autocomplete": true
     },
     "advice.pushRefNeedsUpdate": {
@@ -106,32 +126,37 @@
     },
     "advice.pushUnqualifiedRefname": {
         "deprecated": false,
-        "documentation": "Shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either refs/heads/\\* or refs/tags/\\* based on the type of the source object.",
+        "documentation": "Shown when [git-push\\[1\\]](https://git-scm.com/docs/git-push) gives up trying to guess based on the source and destination refs what remote ref namespace the source belongs in, but where we can still suggest that the user push to either `refs/heads/*` or `refs/tags/*` based on the type of the source object.",
         "autocomplete": true
     },
     "advice.pushUpdateRejected": {
         "deprecated": false,
-        "documentation": "Set this variable to _false_ if you want to disable _pushNonFFCurrent_, _pushNonFFMatching_, _pushAlreadyExists_, _pushFetchFirst_, _pushNeedsForce_, and _pushRefNeedsUpdate_ simultaneously.",
+        "documentation": "Set this variable to `false` if you want to disable `pushNonFFCurrent`, `pushNonFFMatching`, `pushAlreadyExists`, `pushFetchFirst`, `pushNeedsForce`, and `pushRefNeedsUpdate` simultaneously.",
+        "autocomplete": true
+    },
+    "advice.refSyntax": {
+        "deprecated": false,
+        "documentation": "Shown when the user provides an illegal ref name, to tell the user about the ref syntax documentation.",
         "autocomplete": true
     },
     "advice.resetNoRefresh": {
         "deprecated": false,
-        "documentation": "Advice to consider using the `--no-refresh` option to [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) when the command takes more than 2 seconds to refresh the index after reset.",
+        "documentation": "Shown when [git-reset\\[1\\]](https://git-scm.com/docs/git-reset) takes more than 2 seconds to refresh the index after reset, to tell the user that they can use the `--no-refresh` option.",
         "autocomplete": true
     },
     "advice.resolveConflict": {
         "deprecated": false,
-        "documentation": "Advice shown by various commands when conflicts prevent the operation from being performed.",
+        "documentation": "Shown by various commands when conflicts prevent the operation from being performed.",
         "autocomplete": true
     },
     "advice.rmHints": {
         "deprecated": false,
-        "documentation": "In case of failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), show directions on how to proceed from the current state.",
+        "documentation": "Shown on failure in the output of [git-rm\\[1\\]](https://git-scm.com/docs/git-rm), to give directions on how to proceed from the current state.",
         "autocomplete": true
     },
     "advice.sequencerInUse": {
         "deprecated": false,
-        "documentation": "Advice shown when a sequencer command is already in progress.",
+        "documentation": "Shown when a sequencer command is already in progress.",
         "autocomplete": true
     },
     "advice.skippedCherryPicks": {
@@ -151,42 +176,427 @@
     },
     "advice.statusUoption": {
         "deprecated": false,
-        "documentation": "Advise to consider using the `-u` option to [git-status\\[1\\]](https://git-scm.com/docs/git-status) when the command takes more than 2 seconds to enumerate untracked files.",
+        "documentation": "Shown when [git-status\\[1\\]](https://git-scm.com/docs/git-status) takes more than 2 seconds to enumerate untracked files, to tell the user that they can use the `-u` option.",
         "autocomplete": true
     },
     "advice.submoduleAlternateErrorStrategyDie": {
         "deprecated": false,
-        "documentation": "Advice shown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.",
+        "documentation": "Shown when a submodule.alternateErrorStrategy option configured to \"die\" causes a fatal error.",
+        "autocomplete": true
+    },
+    "advice.submoduleMergeConflict": {
+        "deprecated": false,
+        "documentation": "Advice shown when a non-trivial submodule merge conflict is encountered.",
         "autocomplete": true
     },
     "advice.submodulesNotUpdated": {
         "deprecated": false,
-        "documentation": "Advice shown when a user runs a submodule command that fails because `git submodule update --init` was not run.",
+        "documentation": "Shown when a user runs a submodule command that fails because `git submodule update --init` was not run.",
         "autocomplete": true
     },
     "advice.suggestDetachingHead": {
         "deprecated": false,
-        "documentation": "Advice shown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.",
+        "documentation": "Shown when [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) refuses to detach HEAD without the explicit `--detach` option.",
         "autocomplete": true
     },
     "advice.updateSparsePath": {
         "deprecated": false,
-        "documentation": "Advice shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.",
+        "documentation": "Shown when either [git-add\\[1\\]](https://git-scm.com/docs/git-add) or [git-rm\\[1\\]](https://git-scm.com/docs/git-rm) is asked to update index entries outside the current sparse checkout.",
         "autocomplete": true
     },
     "advice.waitingForEditor": {
         "deprecated": false,
-        "documentation": "Print a message to the terminal whenever Git is waiting for editor input from the user.",
+        "documentation": "Shown when Git is waiting for editor input. Relevant when e.g. the editor is not launched inside the terminal.",
         "autocomplete": true
     },
     "advice.worktreeAddOrphan": {
         "deprecated": false,
-        "documentation": "Advice shown when a user tries to create a worktree from an invalid reference, to instruct how to create a new unborn branch instead.",
+        "documentation": "Shown when the user tries to create a worktree from an invalid reference, to tell the user how to create a new unborn branch instead.",
+        "autocomplete": true
+    },
+    "alias.*": {
+        "deprecated": false,
+        "documentation": "Command aliases for the [git\\[1\\]](https://git-scm.com/docs/git) command wrapper - e.g. after defining `alias.last = cat-file commit HEAD`, the invocation `git last` is equivalent to `git cat-file commit HEAD`. To avoid confusion and troubles with script usage, aliases that hide existing Git commands are ignored. Arguments are split by spaces, the usual shell quoting and escaping are supported. A quote pair or a backslash can be used to quote them.\n\nNote that the first word of an alias does not necessarily have to be a command. It can be a command-line option that will be passed into the invocation of `git`. In particular, this is useful when used with `-c` to pass in one-time configurations or `-p` to force pagination. For example, `loud-rebase = -c commit.verbose=true rebase` can be defined such that running `git loud-rebase` would be equivalent to `git -c commit.verbose=true rebase`. Also, `ps = -p status` would be a helpful alias since `git ps` would paginate the output of `git status` where the original command does not.\n\nIf the alias expansion is prefixed with an exclamation point, it will be treated as a shell command. For example, defining `alias.new = !gitk --all --not ORIG_HEAD`, the invocation `git new` is equivalent to running the shell command `gitk --all --not ORIG_HEAD`. Note that shell commands will be executed from the top-level directory of a repository, which may not necessarily be the current directory. `GIT_PREFIX` is set as returned by running `git rev-parse --show-prefix` from the original current directory. See [git-rev-parse\\[1\\]](https://git-scm.com/docs/git-rev-parse).",
+        "autocomplete": true
+    },
+    "am.keepcr": {
+        "deprecated": false,
+        "documentation": "If true, git-am will call git-mailsplit for patches in mbox format with parameter `--keep-cr`. In this case git-mailsplit will not remove `\\r` from lines ending with `\\r\\n`. Can be overridden by giving `--no-keep-cr` from the command line. See [git-am\\[1\\]](https://git-scm.com/docs/git-am), [git-mailsplit\\[1\\]](https://git-scm.com/docs/git-mailsplit).",
+        "autocomplete": true
+    },
+    "am.threeWay": {
+        "deprecated": false,
+        "documentation": "By default, `git am` will fail if the patch does not apply cleanly. When set to true, this setting tells `git am` to fall back on 3-way merge if the patch records the identity of blobs it is supposed to apply to and we have those blobs available locally (equivalent to giving the `--3way` option from the command line). Defaults to `false`. See [git-am\\[1\\]](https://git-scm.com/docs/git-am).",
+        "autocomplete": true
+    },
+    "apply.ignoreWhitespace": {
+        "deprecated": false,
+        "documentation": "When set to _change_, tells _git apply_ to ignore changes in whitespace, in the same way as the `--ignore-space-change` option. When set to one of: no, none, never, false, it tells _git apply_ to respect all whitespace differences. See [git-apply\\[1\\]](https://git-scm.com/docs/git-apply).",
+        "autocomplete": true
+    },
+    "apply.whitespace": {
+        "deprecated": false,
+        "documentation": "Tells _git apply_ how to handle whitespace, in the same way as the `--whitespace` option. See [git-apply\\[1\\]](https://git-scm.com/docs/git-apply).",
         "autocomplete": true
     },
     "attr.tree": {
         "deprecated": false,
         "documentation": "A reference to a tree in the repository from which to read attributes, instead of the `.gitattributes` file in the working tree. In a bare repository, this defaults to `HEAD:.gitattributes`. If the value does not resolve to a valid tree object, an empty tree is used instead. When the `GIT_ATTR_SOURCE` environment variable or `--attr-source` command line option are used, this configuration variable has no effect.",
+        "autocomplete": true
+    },
+    "blame.blankBoundary": {
+        "deprecated": false,
+        "documentation": "Show blank commit object name for boundary commits in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
+        "autocomplete": true
+    },
+    "blame.coloring": {
+        "deprecated": false,
+        "documentation": "This determines the coloring scheme to be applied to blame output. It can be _repeatedLines_, _highlightRecent_, or _none_ which is the default.",
+        "autocomplete": true
+    },
+    "blame.date": {
+        "deprecated": false,
+        "documentation": "Specifies the format used to output dates in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). If unset the iso format is used. For supported values, see the discussion of the `--date` option at [git-log\\[1\\]](https://git-scm.com/docs/git-log).",
+        "autocomplete": true
+    },
+    "blame.showEmail": {
+        "deprecated": false,
+        "documentation": "Show the author email instead of author name in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
+        "autocomplete": true
+    },
+    "blame.showRoot": {
+        "deprecated": false,
+        "documentation": "Do not treat root commits as boundaries in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
+        "autocomplete": true
+    },
+    "blame.ignoreRevsFile": {
+        "deprecated": false,
+        "documentation": "Ignore revisions listed in the file, one unabbreviated object name per line, in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). Whitespace and comments beginning with `#` are ignored. This option may be repeated multiple times. Empty file names will reset the list of ignored revisions. This option will be handled before the command line option `--ignore-revs-file`.",
+        "autocomplete": true
+    },
+    "blame.markUnblamableLines": {
+        "deprecated": false,
+        "documentation": "Mark lines that were changed by an ignored revision that we could not attribute to another commit with a _\\*_ in the output of [git-blame\\[1\\]](https://git-scm.com/docs/git-blame).",
+        "autocomplete": true
+    },
+    "blame.markIgnoredLines": {
+        "deprecated": false,
+        "documentation": "Mark lines that were changed by an ignored revision that we attributed to another commit with a _?_ in the output of [git-blame\\[1\\]](https://git-scm.com/docs/git-blame).",
+        "autocomplete": true
+    },
+    "branch.autoSetupMerge": {
+        "deprecated": false,
+        "documentation": "Tells _git branch_, _git switch_ and _git checkout_ to set up new branches so that [git-pull\\[1\\]](https://git-scm.com/docs/git-pull) will appropriately merge from the starting point branch. Note that even if this option is not set, this behavior can be chosen per-branch using the `--track` and `--no-track` options. The valid settings are: `false` — no automatic setup is done; `true` — automatic setup is done when the starting point is a remote-tracking branch; `always` — automatic setup is done when the starting point is either a local branch or remote-tracking branch; `inherit` — if the starting point has a tracking configuration, it is copied to the new branch; `simple` — automatic setup is done only when the starting point is a remote-tracking branch and the new branch has the same name as the remote branch. This option defaults to true.",
+        "autocomplete": true
+    },
+    "branch.autoSetupRebase": {
+        "deprecated": false,
+        "documentation": "When a new branch is created with _git branch_, _git switch_ or _git checkout_ that tracks another branch, this variable tells Git to set up pull to rebase instead of merge (see \"branch.<name>.rebase\"). When `never`, rebase is never automatically set to true. When `local`, rebase is set to true for tracked branches of other local branches. When `remote`, rebase is set to true for tracked branches of remote-tracking branches. When `always`, rebase will be set to true for all tracking branches. See \"branch.autoSetupMerge\" for details on how to set up a branch to track another branch. This option defaults to never.",
+        "autocomplete": true
+    },
+    "branch.sort": {
+        "deprecated": false,
+        "documentation": "This variable controls the sort ordering of branches when displayed by [git-branch\\[1\\]](https://git-scm.com/docs/git-branch). Without the \"--sort=<value>\" option provided, the value of this variable will be used as the default. See [git-for-each-ref\\[1\\]](https://git-scm.com/docs/git-for-each-ref) field names for valid values.",
+        "autocomplete": true
+    },
+    "branch.<name>.remote": {
+        "deprecated": false,
+        "documentation": "When on branch <name>, it tells _git fetch_ and _git push_ which remote to fetch from or push to. The remote to push to may be overridden with `remote.pushDefault` (for all branches). The remote to push to, for the current branch, may be further overridden by `branch.<name>.pushRemote`. If no remote is configured, or if you are not on any branch and there is more than one remote defined in the repository, it defaults to `origin` for fetching and `remote.pushDefault` for pushing. Additionally, `.` (a period) is the current local repository (a dot-repository), see `branch.<name>.merge`'s final note below.",
+        "autocomplete": true
+    },
+    "branch.<name>.pushRemote": {
+        "deprecated": false,
+        "documentation": "When on branch <name>, it overrides `branch.<name>.remote` for pushing. It also overrides `remote.pushDefault` for pushing from branch <name>. When you pull from one place (e.g. your upstream) and push to another place (e.g. your own publishing repository), you would want to set `remote.pushDefault` to specify the remote to push to for all branches, and use this option to override it for a specific branch.",
+        "autocomplete": true
+    },
+    "branch.<name>.merge": {
+        "deprecated": false,
+        "documentation": "Defines, together with branch.<name>.remote, the upstream branch for the given branch. It tells _git fetch_/_git pull_/_git rebase_ which branch to merge and can also affect _git push_ (see push.default). When in branch <name>, it tells _git fetch_ the default refspec to be marked for merging in FETCH\\_HEAD. The value is handled like the remote part of a refspec, and must match a ref which is fetched from the remote given by \"branch.<name>.remote\". The merge information is used by _git pull_ (which first calls _git fetch_) to lookup the default branch for merging. Without this option, _git pull_ defaults to merge the first refspec fetched. Specify multiple values to get an octopus merge. If you wish to setup _git pull_ so that it merges into <name> from another branch in the local repository, you can point branch.<name>.merge to the desired branch, and use the relative path setting `.` (a period) for branch.<name>.remote.",
+        "autocomplete": true
+    },
+    "branch.<name>.mergeOptions": {
+        "deprecated": false,
+        "documentation": "Sets default options for merging into branch <name>. The syntax and supported options are the same as those of [git-merge\\[1\\]](https://git-scm.com/docs/git-merge), but option values containing whitespace characters are currently not supported.",
+        "autocomplete": true
+    },
+    "branch.<name>.rebase": {
+        "deprecated": false,
+        "documentation": "When true, rebase the branch <name> on top of the fetched branch, instead of merging the default branch from the default remote when \"git pull\" is run. See \"pull.rebase\" for doing this in a non branch-specific manner.\n\nWhen `merges` (or just _m_), pass the `--rebase-merges` option to _git rebase_ so that the local merge commits are included in the rebase (see [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) for details).\n\nWhen the value is `interactive` (or just _i_), the rebase is run in interactive mode.\n\n**NOTE**: this is a possibly dangerous operation; do **not** use it unless you understand the implications (see [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) for details).",
+        "autocomplete": true
+    },
+    "branch.<name>.description": {
+        "deprecated": false,
+        "documentation": "Branch description, can be edited with `git branch --edit-description`. Branch description is automatically added to the format-patch cover letter or request-pull summary.",
+        "autocomplete": true
+    },
+    "browser.<tool>.cmd": {
+        "deprecated": false,
+        "documentation": "Specify the command to invoke the specified browser. The specified command is evaluated in shell with the URLs passed as arguments. (See [git-web--browse\\[1\\]](https://git-scm.com/docs/git-web--browse).)",
+        "autocomplete": true
+    },
+    "browser.<tool>.path": {
+        "deprecated": false,
+        "documentation": "Override the path for the given tool that may be used to browse HTML help (see `-w` option in [git-help\\[1\\]](https://git-scm.com/docs/git-help)) or a working repository in gitweb (see [git-instaweb\\[1\\]](https://git-scm.com/docs/git-instaweb)).",
+        "autocomplete": true
+    },
+    "bundle.*": {
+        "deprecated": false,
+        "documentation": "The `bundle.*` keys may appear in a bundle list file found via the `git clone --bundle-uri` option. These keys currently have no effect if placed in a repository config file, though this will change in the future. See [the bundle URI design document](https://git-scm.com/docs/bundle-uri) for more details.",
+        "autocomplete": true
+    },
+    "bundle.version": {
+        "deprecated": false,
+        "documentation": "This integer value advertises the version of the bundle list format used by the bundle list. Currently, the only accepted value is `1`.",
+        "autocomplete": true
+    },
+    "bundle.mode": {
+        "deprecated": false,
+        "documentation": "This string value should be either `all` or `any`. This value describes whether all of the advertised bundles are required to unbundle a complete understanding of the bundled information (`all`) or if any one of the listed bundle URIs is sufficient (`any`).",
+        "autocomplete": true
+    },
+    "bundle.heuristic": {
+        "deprecated": false,
+        "documentation": "If this string-valued key exists, then the bundle list is designed to work well with incremental `git fetch` commands. The heuristic signals that there are additional keys available for each bundle that help determine which subset of bundles the client should download. The only value currently understood is `creationToken`.",
+        "autocomplete": true
+    },
+    "bundle.<id>.*": {
+        "deprecated": false,
+        "documentation": "The `bundle.<id>.*` keys are used to describe a single item in the bundle list, grouped under `<id>` for identification purposes.",
+        "autocomplete": true
+    },
+    "bundle.<id>.uri": {
+        "deprecated": false,
+        "documentation": "This string value defines the URI by which Git can reach the contents of this `<id>`. This URI may be a bundle file or another bundle list.",
+        "autocomplete": true
+    },
+    "checkout.defaultRemote": {
+        "deprecated": false,
+        "documentation": "When you run `git checkout <something>` or `git switch <something>` and only have one remote, it may implicitly fall back on checking out and tracking e.g. `origin/<something>`. This stops working as soon as you have more than one remote with a `<something>` reference. This setting allows for setting the name of a preferred remote that should always win when it comes to disambiguation. The typical use-case is to set this to `origin`.\n\nCurrently this is used by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) and [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when `git checkout <something>` or `git switch <something>` will checkout the `<something>` branch on another remote, and by [git-worktree\\[1\\]](https://git-scm.com/docs/git-worktree) when `git worktree add` refers to a remote branch. This setting might be used for other checkout-like commands or functionality in the future.",
+        "autocomplete": true
+    },
+    "checkout.guess": {
+        "deprecated": false,
+        "documentation": "Provides the default value for the `--guess` or `--no-guess` option in `git checkout` and `git switch`. See [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) and [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout).",
+        "autocomplete": true
+    },
+    "checkout.workers": {
+        "deprecated": false,
+        "documentation": "The number of parallel workers to use when updating the working tree. The default is one, i.e. sequential execution. If set to a value less than one, Git will use as many workers as the number of logical cores available. This setting and `checkout.thresholdForParallelism` affect all commands that perform checkout. E.g. checkout, clone, reset, sparse-checkout, etc.\n\nNote: Parallel checkout usually delivers better performance for repositories located on SSDs or over NFS. For repositories on spinning disks and/or machines with a small number of cores, the default sequential checkout often performs better. The size and compression level of a repository might also influence how well the parallel version performs.",
+        "autocomplete": true
+    },
+    "checkout.thresholdForParallelism": {
+        "deprecated": false,
+        "documentation": "When running parallel checkout with a small number of files, the cost of subprocess spawning and inter-process communication might outweigh the parallelization gains. This setting allows you to define the minimum number of files for which parallel checkout should be attempted. The default is 100.",
+        "autocomplete": true
+    },
+    "clean.requireForce": {
+        "deprecated": false,
+        "documentation": "A boolean to make git-clean refuse to delete files unless -f is given. Defaults to true.",
+        "autocomplete": true
+    },
+    "clone.defaultRemoteName": {
+        "deprecated": false,
+        "documentation": "The name of the remote to create when cloning a repository. Defaults to `origin`. It can be overridden by passing the `--origin` command-line option to [git-clone\\[1\\]](https://git-scm.com/docs/git-clone).",
+        "autocomplete": true
+    },
+    "clone.rejectShallow": {
+        "deprecated": false,
+        "documentation": "Reject cloning a repository if it is a shallow one; this can be overridden by passing the `--reject-shallow` option on the command line. See [git-clone\\[1\\]](https://git-scm.com/docs/git-clone).",
+        "autocomplete": true
+    },
+    "clone.filterSubmodules": {
+        "deprecated": false,
+        "documentation": "If a partial clone filter is provided (see `--filter` in [git-rev-list\\[1\\]](https://git-scm.com/docs/git-rev-list)) and `--recurse-submodules` is used, also apply the filter to submodules.",
+        "autocomplete": true
+    },
+    "color.advice": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color in hints (e.g. when a push failed, see `advice.*` for a list). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.advice.hint": {
+        "deprecated": false,
+        "documentation": "Use customized color for hints.",
+        "autocomplete": true
+    },
+    "color.blame.highlightRecent": {
+        "deprecated": false,
+        "documentation": "Specify the line annotation color for `git blame --color-by-age` depending upon the age of the line.\n\nThis setting should be set to a comma-separated list of color and date settings, starting and ending with a color, the dates should be set from oldest to newest. The metadata will be colored with the specified colors if the line was introduced before the given timestamp, overwriting older timestamped colors.\n\nInstead of an absolute timestamp relative timestamps work as well, e.g. `2.weeks.ago` is valid to address anything older than 2 weeks.\n\nIt defaults to `blue,12 month ago,white,1 month ago,red`, which colors everything older than one year blue, recent changes between one month and one year old are kept white, and lines introduced within the last month are colored red.",
+        "autocomplete": true
+    },
+    "color.blame.repeatedLines": {
+        "deprecated": false,
+        "documentation": "Use the specified color to colorize line annotations for `git blame --color-lines`, if they come from the same commit as the preceding line. Defaults to cyan.",
+        "autocomplete": true
+    },
+    "color.branch": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color in the output of [git-branch\\[1\\]](https://git-scm.com/docs/git-branch). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.branch.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for branch coloration. `<slot>` is one of `current` (the current branch), `local` (a local branch), `remote` (a remote-tracking branch in refs/remotes/), `upstream` (upstream tracking branch), `plain` (other refs).",
+        "autocomplete": true
+    },
+    "color.diff": {
+        "deprecated": false,
+        "documentation": "Whether to use ANSI escape sequences to add color to patches. If this is set to `always`, [git-diff\\[1\\]](https://git-scm.com/docs/git-diff), [git-log\\[1\\]](https://git-scm.com/docs/git-log), and [git-show\\[1\\]](https://git-scm.com/docs/git-show) will use color for all patches. If it is set to `true` or `auto`, those commands will only use color when output is to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).\n\nThis does not affect [git-format-patch\\[1\\]](https://git-scm.com/docs/git-format-patch) or the _git-diff-\\*_ plumbing commands. Can be overridden on the command line with the `--color[=<when>]` option.",
+        "autocomplete": true
+    },
+    "color.diff.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for diff colorization. `<slot>` specifies which part of the patch to use the specified color, and is one of `context` (context text - `plain` is a historical synonym), `meta` (metainformation), `frag` (hunk header), _func_ (function in hunk header), `old` (removed lines), `new` (added lines), `commit` (commit headers), `whitespace` (highlighting whitespace errors), `oldMoved` (deleted lines), `newMoved` (added lines), `oldMovedDimmed`, `oldMovedAlternative`, `oldMovedAlternativeDimmed`, `newMovedDimmed`, `newMovedAlternative` `newMovedAlternativeDimmed` (See the _<mode>_ setting of _\\--color-moved_ in [git-diff\\[1\\]](https://git-scm.com/docs/git-diff) for details), `contextDimmed`, `oldDimmed`, `newDimmed`, `contextBold`, `oldBold`, and `newBold` (see [git-range-diff\\[1\\]](https://git-scm.com/docs/git-range-diff) for details).",
+        "autocomplete": true
+    },
+    "color.decorate.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for _git log --decorate_ output. `<slot>` is one of `branch`, `remoteBranch`, `tag`, `stash` or `HEAD` for local branches, remote-tracking branches, tags, stash and HEAD, respectively and `grafted` for grafted commits.",
+        "autocomplete": true
+    },
+    "color.grep": {
+        "deprecated": false,
+        "documentation": "When set to `always`, always highlight matches. When `false` (or `never`), never. When set to `true` or `auto`, use color only when the output is written to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.grep.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for grep colorization. `<slot>` specifies which part of the line to use the specified color, and is one of\n\n[](#Documentation/git-config.txt-codecontextcode)`context`\n\nnon-matching text in context lines (when using `-A`, `-B`, or `-C`)\n\n[](#Documentation/git-config.txt-codefilenamecode)`filename`\n\nfilename prefix (when not using `-h`)\n\n[](#Documentation/git-config.txt-codefunctioncode)`function`\n\nfunction name lines (when using `-p`)\n\n[](#Documentation/git-config.txt-codelineNumbercode)`lineNumber`\n\nline number prefix (when using `-n`)\n\n[](#Documentation/git-config.txt-codecolumncode)`column`\n\ncolumn number prefix (when using `--column`)\n\n[](#Documentation/git-config.txt-codematchcode)`match`\n\nmatching text (same as setting `matchContext` and `matchSelected`)\n\n[](#Documentation/git-config.txt-codematchContextcode)`matchContext`\n\nmatching text in context lines\n\n[](#Documentation/git-config.txt-codematchSelectedcode)`matchSelected`\n\nmatching text in selected lines. Also, used to customize the following [git-log\\[1\\]](https://git-scm.com/docs/git-log) subcommands: `--grep`, `--author`, and `--committer`.\n\n[](#Documentation/git-config.txt-codeselectedcode)`selected`\n\nnon-matching text in selected lines. Also, used to customize the following [git-log\\[1\\]](https://git-scm.com/docs/git-log) subcommands: `--grep`, `--author` and `--committer`.\n\n[](#Documentation/git-config.txt-codeseparatorcode)`separator`\n\nseparators between fields on a line (`:`, `-`, and `=`) and between hunks (`--`)",
+        "autocomplete": true
+    },
+    "color.interactive": {
+        "deprecated": false,
+        "documentation": "When set to `always`, always use colors for interactive prompts and displays (such as those used by \"git-add --interactive\" and \"git-clean --interactive\"). When false (or `never`), never. When set to `true` or `auto`, use colors only when the output is to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.interactive.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for _git add --interactive_ and _git clean --interactive_ output. `<slot>` may be `prompt`, `header`, `help` or `error`, for four distinct types of normal output from interactive commands.",
+        "autocomplete": true
+    },
+    "color.pager": {
+        "deprecated": false,
+        "documentation": "A boolean to specify whether `auto` color modes should colorize output going to the pager. Defaults to true; set this to false if your pager does not understand ANSI color codes.",
+        "autocomplete": true
+    },
+    "color.push": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color in push errors. May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.push.error": {
+        "deprecated": false,
+        "documentation": "Use customized color for push errors.",
+        "autocomplete": true
+    },
+    "color.remote": {
+        "deprecated": false,
+        "documentation": "If set, keywords at the start of the line are highlighted. The keywords are \"error\", \"warning\", \"hint\" and \"success\", and are matched case-insensitively. May be set to `always`, `false` (or `never`) or `auto` (or `true`). If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.remote.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for each remote keyword. `<slot>` may be `hint`, `warning`, `success` or `error` which match the corresponding keyword.",
+        "autocomplete": true
+    },
+    "color.showBranch": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color in the output of [git-show-branch\\[1\\]](https://git-scm.com/docs/git-show-branch). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.status": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.status.<slot>": {
+        "deprecated": false,
+        "documentation": "Use customized color for status colorization. `<slot>` is one of `header` (the header text of the status message), `added` or `updated` (files which are added but not committed), `changed` (files which are changed but not added in the index), `untracked` (files which are not tracked by Git), `branch` (the current branch), `nobranch` (the color the _no branch_ warning is shown in, defaulting to red), `localBranch` or `remoteBranch` (the local and remote branch names, respectively, when branch and tracking information is displayed in the status short-format), or `unmerged` (files which have unmerged changes).",
+        "autocomplete": true
+    },
+    "color.transport": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable color when pushes are rejected. May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
+        "autocomplete": true
+    },
+    "color.transport.rejected": {
+        "deprecated": false,
+        "documentation": "Use customized color when a push was rejected.",
+        "autocomplete": true
+    },
+    "color.ui": {
+        "deprecated": false,
+        "documentation": "This variable determines the default value for variables such as `color.diff` and `color.grep` that control the use of color per command family. Its scope will expand as more commands learn configuration to set a default for the `--color` option. Set it to `false` or `never` if you prefer Git commands not to use color unless enabled explicitly with some other configuration or the `--color` option. Set it to `always` if you want all output not intended for machine consumption to use color, to `true` or `auto` (this is the default since Git 1.8.4) if you want such output to use color when written to the terminal.",
+        "autocomplete": true
+    },
+    "column.ui": {
+        "deprecated": false,
+        "documentation": "Specify whether supported commands should output in columns. This variable consists of a list of tokens separated by spaces or commas:\n\nThese options control when the feature should be enabled (defaults to _never_):\n\n[](#Documentation/git-config.txt-codealwayscode)`always`\n\nalways show in columns\n\n[](#Documentation/git-config.txt-codenevercode)`never`\n\nnever show in columns\n\n[](#Documentation/git-config.txt-codeautocode)`auto`\n\nshow in columns if the output is to the terminal\n\nThese options control layout (defaults to _column_). Setting any of these implies _always_ if none of _always_, _never_, or _auto_ are specified.\n\n[](#Documentation/git-config.txt-codecolumncode-1)`column`\n\nfill columns before rows\n\n[](#Documentation/git-config.txt-coderowcode)`row`\n\nfill rows before columns\n\n[](#Documentation/git-config.txt-codeplaincode)`plain`\n\nshow in one column\n\nFinally, these options can be combined with a layout option (defaults to _nodense_):\n\n[](#Documentation/git-config.txt-codedensecode)`dense`\n\nmake unequal size columns to utilize more space\n\n[](#Documentation/git-config.txt-codenodensecode)`nodense`\n\nmake equal size columns",
+        "autocomplete": true
+    },
+    "column.branch": {
+        "deprecated": false,
+        "documentation": "Specify whether to output branch listing in `git branch` in columns. See `column.ui` for details.",
+        "autocomplete": true
+    },
+    "column.clean": {
+        "deprecated": false,
+        "documentation": "Specify the layout when listing items in `git clean -i`, which always shows files and directories in columns. See `column.ui` for details.",
+        "autocomplete": true
+    },
+    "column.status": {
+        "deprecated": false,
+        "documentation": "Specify whether to output untracked files in `git status` in columns. See `column.ui` for details.",
+        "autocomplete": true
+    },
+    "column.tag": {
+        "deprecated": false,
+        "documentation": "Specify whether to output tag listings in `git tag` in columns. See `column.ui` for details.",
+        "autocomplete": true
+    },
+    "commit.cleanup": {
+        "deprecated": false,
+        "documentation": "This setting overrides the default of the `--cleanup` option in `git commit`. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) for details. Changing the default can be useful when you always want to keep lines that begin with the comment character `#` in your log message, in which case you would do `git config commit.cleanup whitespace` (note that you will have to remove the help lines that begin with `#` in the commit log template yourself, if you do this).",
+        "autocomplete": true
+    },
+    "commit.gpgSign": {
+        "deprecated": false,
+        "documentation": "A boolean to specify whether all commits should be GPG signed. Use of this option when doing operations such as rebase can result in a large number of commits being signed. It may be convenient to use an agent to avoid typing your GPG passphrase several times.",
+        "autocomplete": true
+    },
+    "commit.status": {
+        "deprecated": false,
+        "documentation": "A boolean to enable/disable inclusion of status information in the commit message template when using an editor to prepare the commit message. Defaults to true.",
+        "autocomplete": true
+    },
+    "commit.template": {
+        "deprecated": false,
+        "documentation": "Specify the pathname of a file to use as the template for new commit messages.",
+        "autocomplete": true
+    },
+    "commit.verbose": {
+        "deprecated": false,
+        "documentation": "A boolean or int to specify the level of verbosity with `git commit`. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit).",
+        "autocomplete": true
+    },
+    "commitGraph.generationVersion": {
+        "deprecated": false,
+        "documentation": "Specifies the type of generation number version to use when writing or reading the commit-graph file. If version 1 is specified, then the corrected commit dates will not be written or read. Defaults to 2.",
+        "autocomplete": true
+    },
+    "commitGraph.maxNewFilters": {
+        "deprecated": false,
+        "documentation": "Specifies the default value for the `--max-new-filters` option of `git commit-graph write` (c.f., [git-commit-graph\\[1\\]](https://git-scm.com/docs/git-commit-graph)).",
+        "autocomplete": true
+    },
+    "commitGraph.readChangedPaths": {
+        "deprecated": false,
+        "documentation": "If true, then git will use the changed-path Bloom filters in the commit-graph file (if it exists, and they are present). Defaults to true. See [git-commit-graph\\[1\\]](https://git-scm.com/docs/git-commit-graph) for more information.",
+        "autocomplete": true
+    },
+    "completion.commands": {
+        "deprecated": false,
+        "documentation": "This is only used by git-completion.bash to add or remove commands from the list of completed commands. Normally only porcelain commands and a few select others are completed. You can add more commands, separated by space, in this variable. Prefixing the command with _\\-_ will remove it from the existing list.",
         "autocomplete": true
     },
     "core.fileMode": {
@@ -396,7 +806,12 @@
     },
     "core.commentChar": {
         "deprecated": false,
-        "documentation": "Commands such as `commit` and `tag` that let you edit messages consider a line that begins with this character commented, and removes them after the editor returns (default _#_).\n\nIf set to \"auto\", `git-commit` would select a character that is not the beginning character of any line in existing commit messages.",
+        "documentation": "Commands such as `commit` and `tag` that let you edit messages consider a line that begins with this character commented, and removes them after the editor returns (default _#_).\n\nIf set to \"auto\", `git-commit` would select a character that is not the beginning character of any line in existing commit messages.\n\nNote that these two variables are aliases of each other, and in modern versions of Git you are free to use a string (e.g., `//` or `⁑⁕⁑`) with `commentChar`. Versions of Git prior to v2.45.0 will ignore `commentString` but will reject a value of `commentChar` that consists of more than a single ASCII byte. If you plan to use your config with older and newer versions of Git, you may want to specify both:\n\n\\[core\\]\n# single character for older versions\ncommentChar = \"#\"\n# string for newer versions (which will override commentChar\n# because it comes later in the file)\ncommentString = \"//\"",
+        "autocomplete": true
+    },
+    "core.commentString": {
+        "deprecated": false,
+        "documentation": "Commands such as `commit` and `tag` that let you edit messages consider a line that begins with this character commented, and removes them after the editor returns (default _#_).\n\nIf set to \"auto\", `git-commit` would select a character that is not the beginning character of any line in existing commit messages.\n\nNote that these two variables are aliases of each other, and in modern versions of Git you are free to use a string (e.g., `//` or `⁑⁕⁑`) with `commentChar`. Versions of Git prior to v2.45.0 will ignore `commentString` but will reject a value of `commentChar` that consists of more than a single ASCII byte. If you plan to use your config with older and newer versions of Git, you may want to specify both:\n\n\\[core\\]\n# single character for older versions\ncommentChar = \"#\"\n# string for newer versions (which will override commentChar\n# because it comes later in the file)\ncommentString = \"//\"",
         "autocomplete": true
     },
     "core.filesRefLockTimeout": {
@@ -451,7 +866,7 @@
     },
     "core.createObject": {
         "deprecated": false,
-        "documentation": "You can set this to _link_, in which case a hardlink followed by a delete of the source are used to make sure that object creation will not overwrite existing objects.\n\nOn some file system/operating system combinations, this is unreliable. Set this config setting to _rename_ there; However, This will remove the check that makes sure that existing object files will not get overwritten.",
+        "documentation": "You can set this to _link_, in which case a hardlink followed by a delete of the source are used to make sure that object creation will not overwrite existing objects.\n\nOn some file system/operating system combinations, this is unreliable. Set this config setting to _rename_ there; however, this will remove the check that makes sure that existing object files will not get overwritten.",
         "autocomplete": true
     },
     "core.notesRef": {
@@ -494,396 +909,6 @@
         "documentation": "The maximum depth Git is willing to recurse while traversing a tree (e.g., \"a/b/cde/f\" has a depth of 4). This is a fail-safe to allow Git to abort cleanly, and should not generally need to be adjusted. The default is 4096.",
         "autocomplete": true
     },
-    "add.ignoreErrors": {
-        "deprecated": false,
-        "documentation": "Tells _git add_ to continue adding files when some files cannot be added due to indexing errors. Equivalent to the `--ignore-errors` option of [git-add\\[1\\]](https://git-scm.com/docs/git-add). `add.ignore-errors` is deprecated, as it does not follow the usual naming convention for configuration variables.",
-        "autocomplete": true
-    },
-    "add.ignore-errors": {
-        "deprecated": true,
-        "documentation": "(deprecated) Tells _git add_ to continue adding files when some files cannot be added due to indexing errors. Equivalent to the `--ignore-errors` option of [git-add\\[1\\]](https://git-scm.com/docs/git-add). `add.ignore-errors` is deprecated, as it does not follow the usual naming convention for configuration variables.",
-        "autocomplete": true
-    },
-    "add.interactive.useBuiltin": {
-        "deprecated": false,
-        "documentation": "Unused configuration variable. Used in Git versions v2.25.0 to v2.36.0 to enable the built-in version of [git-add\\[1\\]](https://git-scm.com/docs/git-add)'s interactive mode, which then became the default in Git versions v2.37.0 to v2.39.0.",
-        "autocomplete": true
-    },
-    "alias.*": {
-        "deprecated": false,
-        "documentation": "Command aliases for the [git\\[1\\]](https://git-scm.com/docs/git) command wrapper - e.g. after defining `alias.last = cat-file commit HEAD`, the invocation `git last` is equivalent to `git cat-file commit HEAD`. To avoid confusion and troubles with script usage, aliases that hide existing Git commands are ignored. Arguments are split by spaces, the usual shell quoting and escaping are supported. A quote pair or a backslash can be used to quote them.\n\nNote that the first word of an alias does not necessarily have to be a command. It can be a command-line option that will be passed into the invocation of `git`. In particular, this is useful when used with `-c` to pass in one-time configurations or `-p` to force pagination. For example, `loud-rebase = -c commit.verbose=true rebase` can be defined such that running `git loud-rebase` would be equivalent to `git -c commit.verbose=true rebase`. Also, `ps = -p status` would be a helpful alias since `git ps` would paginate the output of `git status` where the original command does not.\n\nIf the alias expansion is prefixed with an exclamation point, it will be treated as a shell command. For example, defining `alias.new = !gitk --all --not ORIG_HEAD`, the invocation `git new` is equivalent to running the shell command `gitk --all --not ORIG_HEAD`. Note that shell commands will be executed from the top-level directory of a repository, which may not necessarily be the current directory. `GIT_PREFIX` is set as returned by running `git rev-parse --show-prefix` from the original current directory. See [git-rev-parse\\[1\\]](https://git-scm.com/docs/git-rev-parse).",
-        "autocomplete": true
-    },
-    "am.keepcr": {
-        "deprecated": false,
-        "documentation": "If true, git-am will call git-mailsplit for patches in mbox format with parameter `--keep-cr`. In this case git-mailsplit will not remove `\\r` from lines ending with `\\r\\n`. Can be overridden by giving `--no-keep-cr` from the command line. See [git-am\\[1\\]](https://git-scm.com/docs/git-am), [git-mailsplit\\[1\\]](https://git-scm.com/docs/git-mailsplit).",
-        "autocomplete": true
-    },
-    "am.threeWay": {
-        "deprecated": false,
-        "documentation": "By default, `git am` will fail if the patch does not apply cleanly. When set to true, this setting tells `git am` to fall back on 3-way merge if the patch records the identity of blobs it is supposed to apply to and we have those blobs available locally (equivalent to giving the `--3way` option from the command line). Defaults to `false`. See [git-am\\[1\\]](https://git-scm.com/docs/git-am).",
-        "autocomplete": true
-    },
-    "apply.ignoreWhitespace": {
-        "deprecated": false,
-        "documentation": "When set to _change_, tells _git apply_ to ignore changes in whitespace, in the same way as the `--ignore-space-change` option. When set to one of: no, none, never, false, it tells _git apply_ to respect all whitespace differences. See [git-apply\\[1\\]](https://git-scm.com/docs/git-apply).",
-        "autocomplete": true
-    },
-    "apply.whitespace": {
-        "deprecated": false,
-        "documentation": "Tells _git apply_ how to handle whitespace, in the same way as the `--whitespace` option. See [git-apply\\[1\\]](https://git-scm.com/docs/git-apply).",
-        "autocomplete": true
-    },
-    "blame.blankBoundary": {
-        "deprecated": false,
-        "documentation": "Show blank commit object name for boundary commits in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
-        "autocomplete": true
-    },
-    "blame.coloring": {
-        "deprecated": false,
-        "documentation": "This determines the coloring scheme to be applied to blame output. It can be _repeatedLines_, _highlightRecent_, or _none_ which is the default.",
-        "autocomplete": true
-    },
-    "blame.date": {
-        "deprecated": false,
-        "documentation": "Specifies the format used to output dates in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). If unset the iso format is used. For supported values, see the discussion of the `--date` option at [git-log\\[1\\]](https://git-scm.com/docs/git-log).",
-        "autocomplete": true
-    },
-    "blame.showEmail": {
-        "deprecated": false,
-        "documentation": "Show the author email instead of author name in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
-        "autocomplete": true
-    },
-    "blame.showRoot": {
-        "deprecated": false,
-        "documentation": "Do not treat root commits as boundaries in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). This option defaults to false.",
-        "autocomplete": true
-    },
-    "blame.ignoreRevsFile": {
-        "deprecated": false,
-        "documentation": "Ignore revisions listed in the file, one unabbreviated object name per line, in [git-blame\\[1\\]](https://git-scm.com/docs/git-blame). Whitespace and comments beginning with `#` are ignored. This option may be repeated multiple times. Empty file names will reset the list of ignored revisions. This option will be handled before the command line option `--ignore-revs-file`.",
-        "autocomplete": true
-    },
-    "blame.markUnblamableLines": {
-        "deprecated": false,
-        "documentation": "Mark lines that were changed by an ignored revision that we could not attribute to another commit with a _\\*_ in the output of [git-blame\\[1\\]](https://git-scm.com/docs/git-blame).",
-        "autocomplete": true
-    },
-    "blame.markIgnoredLines": {
-        "deprecated": false,
-        "documentation": "Mark lines that were changed by an ignored revision that we attributed to another commit with a _?_ in the output of [git-blame\\[1\\]](https://git-scm.com/docs/git-blame).",
-        "autocomplete": true
-    },
-    "branch.autoSetupMerge": {
-        "deprecated": false,
-        "documentation": "Tells _git branch_, _git switch_ and _git checkout_ to set up new branches so that [git-pull\\[1\\]](https://git-scm.com/docs/git-pull) will appropriately merge from the starting point branch. Note that even if this option is not set, this behavior can be chosen per-branch using the `--track` and `--no-track` options. The valid settings are: `false` — no automatic setup is done; `true` — automatic setup is done when the starting point is a remote-tracking branch; `always` — automatic setup is done when the starting point is either a local branch or remote-tracking branch; `inherit` — if the starting point has a tracking configuration, it is copied to the new branch; `simple` — automatic setup is done only when the starting point is a remote-tracking branch and the new branch has the same name as the remote branch. This option defaults to true.",
-        "autocomplete": true
-    },
-    "branch.autoSetupRebase": {
-        "deprecated": false,
-        "documentation": "When a new branch is created with _git branch_, _git switch_ or _git checkout_ that tracks another branch, this variable tells Git to set up pull to rebase instead of merge (see \"branch.<name>.rebase\"). When `never`, rebase is never automatically set to true. When `local`, rebase is set to true for tracked branches of other local branches. When `remote`, rebase is set to true for tracked branches of remote-tracking branches. When `always`, rebase will be set to true for all tracking branches. See \"branch.autoSetupMerge\" for details on how to set up a branch to track another branch. This option defaults to never.",
-        "autocomplete": true
-    },
-    "branch.sort": {
-        "deprecated": false,
-        "documentation": "This variable controls the sort ordering of branches when displayed by [git-branch\\[1\\]](https://git-scm.com/docs/git-branch). Without the \"--sort=<value>\" option provided, the value of this variable will be used as the default. See [git-for-each-ref\\[1\\]](https://git-scm.com/docs/git-for-each-ref) field names for valid values.",
-        "autocomplete": true
-    },
-    "branch.<name>.remote": {
-        "deprecated": false,
-        "documentation": "When on branch <name>, it tells _git fetch_ and _git push_ which remote to fetch from or push to. The remote to push to may be overridden with `remote.pushDefault` (for all branches). The remote to push to, for the current branch, may be further overridden by `branch.<name>.pushRemote`. If no remote is configured, or if you are not on any branch and there is more than one remote defined in the repository, it defaults to `origin` for fetching and `remote.pushDefault` for pushing. Additionally, `.` (a period) is the current local repository (a dot-repository), see `branch.<name>.merge`'s final note below.",
-        "autocomplete": true
-    },
-    "branch.<name>.pushRemote": {
-        "deprecated": false,
-        "documentation": "When on branch <name>, it overrides `branch.<name>.remote` for pushing. It also overrides `remote.pushDefault` for pushing from branch <name>. When you pull from one place (e.g. your upstream) and push to another place (e.g. your own publishing repository), you would want to set `remote.pushDefault` to specify the remote to push to for all branches, and use this option to override it for a specific branch.",
-        "autocomplete": true
-    },
-    "branch.<name>.merge": {
-        "deprecated": false,
-        "documentation": "Defines, together with branch.<name>.remote, the upstream branch for the given branch. It tells _git fetch_/_git pull_/_git rebase_ which branch to merge and can also affect _git push_ (see push.default). When in branch <name>, it tells _git fetch_ the default refspec to be marked for merging in FETCH\\_HEAD. The value is handled like the remote part of a refspec, and must match a ref which is fetched from the remote given by \"branch.<name>.remote\". The merge information is used by _git pull_ (which first calls _git fetch_) to lookup the default branch for merging. Without this option, _git pull_ defaults to merge the first refspec fetched. Specify multiple values to get an octopus merge. If you wish to setup _git pull_ so that it merges into <name> from another branch in the local repository, you can point branch.<name>.merge to the desired branch, and use the relative path setting `.` (a period) for branch.<name>.remote.",
-        "autocomplete": true
-    },
-    "branch.<name>.mergeOptions": {
-        "deprecated": false,
-        "documentation": "Sets default options for merging into branch <name>. The syntax and supported options are the same as those of [git-merge\\[1\\]](https://git-scm.com/docs/git-merge), but option values containing whitespace characters are currently not supported.",
-        "autocomplete": true
-    },
-    "branch.<name>.rebase": {
-        "deprecated": false,
-        "documentation": "When true, rebase the branch <name> on top of the fetched branch, instead of merging the default branch from the default remote when \"git pull\" is run. See \"pull.rebase\" for doing this in a non branch-specific manner.\n\nWhen `merges` (or just _m_), pass the `--rebase-merges` option to _git rebase_ so that the local merge commits are included in the rebase (see [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) for details).\n\nWhen the value is `interactive` (or just _i_), the rebase is run in interactive mode.\n\n**NOTE**: this is a possibly dangerous operation; do **not** use it unless you understand the implications (see [git-rebase\\[1\\]](https://git-scm.com/docs/git-rebase) for details).",
-        "autocomplete": true
-    },
-    "branch.<name>.description": {
-        "deprecated": false,
-        "documentation": "Branch description, can be edited with `git branch --edit-description`. Branch description is automatically added to the format-patch cover letter or request-pull summary.",
-        "autocomplete": true
-    },
-    "browser.<tool>.cmd": {
-        "deprecated": false,
-        "documentation": "Specify the command to invoke the specified browser. The specified command is evaluated in shell with the URLs passed as arguments. (See [git-web--browse\\[1\\]](https://git-scm.com/docs/git-web--browse).)",
-        "autocomplete": true
-    },
-    "browser.<tool>.path": {
-        "deprecated": false,
-        "documentation": "Override the path for the given tool that may be used to browse HTML help (see `-w` option in [git-help\\[1\\]](https://git-scm.com/docs/git-help)) or a working repository in gitweb (see [git-instaweb\\[1\\]](https://git-scm.com/docs/git-instaweb)).",
-        "autocomplete": true
-    },
-    "bundle.*": {
-        "deprecated": false,
-        "documentation": "The `bundle.*` keys may appear in a bundle list file found via the `git clone --bundle-uri` option. These keys currently have no effect if placed in a repository config file, though this will change in the future. See [the bundle URI design document](https://git-scm.com/docs/bundle-uri) for more details.",
-        "autocomplete": true
-    },
-    "bundle.version": {
-        "deprecated": false,
-        "documentation": "This integer value advertises the version of the bundle list format used by the bundle list. Currently, the only accepted value is `1`.",
-        "autocomplete": true
-    },
-    "bundle.mode": {
-        "deprecated": false,
-        "documentation": "This string value should be either `all` or `any`. This value describes whether all of the advertised bundles are required to unbundle a complete understanding of the bundled information (`all`) or if any one of the listed bundle URIs is sufficient (`any`).",
-        "autocomplete": true
-    },
-    "bundle.heuristic": {
-        "deprecated": false,
-        "documentation": "If this string-valued key exists, then the bundle list is designed to work well with incremental `git fetch` commands. The heuristic signals that there are additional keys available for each bundle that help determine which subset of bundles the client should download. The only value currently understood is `creationToken`.",
-        "autocomplete": true
-    },
-    "bundle.<id>.*": {
-        "deprecated": false,
-        "documentation": "The `bundle.<id>.*` keys are used to describe a single item in the bundle list, grouped under `<id>` for identification purposes.",
-        "autocomplete": true
-    },
-    "bundle.<id>.uri": {
-        "deprecated": false,
-        "documentation": "This string value defines the URI by which Git can reach the contents of this `<id>`. This URI may be a bundle file or another bundle list.",
-        "autocomplete": true
-    },
-    "checkout.defaultRemote": {
-        "deprecated": false,
-        "documentation": "When you run `git checkout <something>` or `git switch <something>` and only have one remote, it may implicitly fall back on checking out and tracking e.g. `origin/<something>`. This stops working as soon as you have more than one remote with a `<something>` reference. This setting allows for setting the name of a preferred remote that should always win when it comes to disambiguation. The typical use-case is to set this to `origin`.\n\nCurrently this is used by [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) and [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout) when `git checkout <something>` or `git switch <something>` will checkout the `<something>` branch on another remote, and by [git-worktree\\[1\\]](https://git-scm.com/docs/git-worktree) when `git worktree add` refers to a remote branch. This setting might be used for other checkout-like commands or functionality in the future.",
-        "autocomplete": true
-    },
-    "checkout.guess": {
-        "deprecated": false,
-        "documentation": "Provides the default value for the `--guess` or `--no-guess` option in `git checkout` and `git switch`. See [git-switch\\[1\\]](https://git-scm.com/docs/git-switch) and [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout).",
-        "autocomplete": true
-    },
-    "checkout.workers": {
-        "deprecated": false,
-        "documentation": "The number of parallel workers to use when updating the working tree. The default is one, i.e. sequential execution. If set to a value less than one, Git will use as many workers as the number of logical cores available. This setting and `checkout.thresholdForParallelism` affect all commands that perform checkout. E.g. checkout, clone, reset, sparse-checkout, etc.\n\nNote: Parallel checkout usually delivers better performance for repositories located on SSDs or over NFS. For repositories on spinning disks and/or machines with a small number of cores, the default sequential checkout often performs better. The size and compression level of a repository might also influence how well the parallel version performs.",
-        "autocomplete": true
-    },
-    "checkout.thresholdForParallelism": {
-        "deprecated": false,
-        "documentation": "When running parallel checkout with a small number of files, the cost of subprocess spawning and inter-process communication might outweigh the parallelization gains. This setting allows you to define the minimum number of files for which parallel checkout should be attempted. The default is 100.",
-        "autocomplete": true
-    },
-    "clean.requireForce": {
-        "deprecated": false,
-        "documentation": "A boolean to make git-clean do nothing unless given -f, -i, or -n. Defaults to true.",
-        "autocomplete": true
-    },
-    "clone.defaultRemoteName": {
-        "deprecated": false,
-        "documentation": "The name of the remote to create when cloning a repository. Defaults to `origin`, and can be overridden by passing the `--origin` command-line option to [git-clone\\[1\\]](https://git-scm.com/docs/git-clone).",
-        "autocomplete": true
-    },
-    "clone.rejectShallow": {
-        "deprecated": false,
-        "documentation": "Reject cloning a repository if it is a shallow one; this can be overridden by passing the `--reject-shallow` option on the command line. See [git-clone\\[1\\]](https://git-scm.com/docs/git-clone)",
-        "autocomplete": true
-    },
-    "clone.filterSubmodules": {
-        "deprecated": false,
-        "documentation": "If a partial clone filter is provided (see `--filter` in [git-rev-list\\[1\\]](https://git-scm.com/docs/git-rev-list)) and `--recurse-submodules` is used, also apply the filter to submodules.",
-        "autocomplete": true
-    },
-    "color.advice": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color in hints (e.g. when a push failed, see `advice.*` for a list). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.advice.hint": {
-        "deprecated": false,
-        "documentation": "Use customized color for hints.",
-        "autocomplete": true
-    },
-    "color.blame.highlightRecent": {
-        "deprecated": false,
-        "documentation": "Specify the line annotation color for `git blame --color-by-age` depending upon the age of the line.\n\nThis setting should be set to a comma-separated list of color and date settings, starting and ending with a color, the dates should be set from oldest to newest. The metadata will be colored with the specified colors if the line was introduced before the given timestamp, overwriting older timestamped colors.\n\nInstead of an absolute timestamp relative timestamps work as well, e.g. `2.weeks.ago` is valid to address anything older than 2 weeks.\n\nIt defaults to `blue,12 month ago,white,1 month ago,red`, which colors everything older than one year blue, recent changes between one month and one year old are kept white, and lines introduced within the last month are colored red.",
-        "autocomplete": true
-    },
-    "color.blame.repeatedLines": {
-        "deprecated": false,
-        "documentation": "Use the specified color to colorize line annotations for `git blame --color-lines`, if they come from the same commit as the preceding line. Defaults to cyan.",
-        "autocomplete": true
-    },
-    "color.branch": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color in the output of [git-branch\\[1\\]](https://git-scm.com/docs/git-branch). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.branch.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for branch coloration. `<slot>` is one of `current` (the current branch), `local` (a local branch), `remote` (a remote-tracking branch in refs/remotes/), `upstream` (upstream tracking branch), `plain` (other refs).",
-        "autocomplete": true
-    },
-    "color.diff": {
-        "deprecated": false,
-        "documentation": "Whether to use ANSI escape sequences to add color to patches. If this is set to `always`, [git-diff\\[1\\]](https://git-scm.com/docs/git-diff), [git-log\\[1\\]](https://git-scm.com/docs/git-log), and [git-show\\[1\\]](https://git-scm.com/docs/git-show) will use color for all patches. If it is set to `true` or `auto`, those commands will only use color when output is to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).\n\nThis does not affect [git-format-patch\\[1\\]](https://git-scm.com/docs/git-format-patch) or the _git-diff-\\*_ plumbing commands. Can be overridden on the command line with the `--color[=<when>]` option.",
-        "autocomplete": true
-    },
-    "color.diff.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for diff colorization. `<slot>` specifies which part of the patch to use the specified color, and is one of `context` (context text - `plain` is a historical synonym), `meta` (metainformation), `frag` (hunk header), _func_ (function in hunk header), `old` (removed lines), `new` (added lines), `commit` (commit headers), `whitespace` (highlighting whitespace errors), `oldMoved` (deleted lines), `newMoved` (added lines), `oldMovedDimmed`, `oldMovedAlternative`, `oldMovedAlternativeDimmed`, `newMovedDimmed`, `newMovedAlternative` `newMovedAlternativeDimmed` (See the _<mode>_ setting of _\\--color-moved_ in [git-diff\\[1\\]](https://git-scm.com/docs/git-diff) for details), `contextDimmed`, `oldDimmed`, `newDimmed`, `contextBold`, `oldBold`, and `newBold` (see [git-range-diff\\[1\\]](https://git-scm.com/docs/git-range-diff) for details).",
-        "autocomplete": true
-    },
-    "color.decorate.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for _git log --decorate_ output. `<slot>` is one of `branch`, `remoteBranch`, `tag`, `stash` or `HEAD` for local branches, remote-tracking branches, tags, stash and HEAD, respectively and `grafted` for grafted commits.",
-        "autocomplete": true
-    },
-    "color.grep": {
-        "deprecated": false,
-        "documentation": "When set to `always`, always highlight matches. When `false` (or `never`), never. When set to `true` or `auto`, use color only when the output is written to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.grep.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for grep colorization. `<slot>` specifies which part of the line to use the specified color, and is one of\n\n[](#Documentation/git-config.txt-codecontextcode)`context`\n\nnon-matching text in context lines (when using `-A`, `-B`, or `-C`)\n\n[](#Documentation/git-config.txt-codefilenamecode)`filename`\n\nfilename prefix (when not using `-h`)\n\n[](#Documentation/git-config.txt-codefunctioncode)`function`\n\nfunction name lines (when using `-p`)\n\n[](#Documentation/git-config.txt-codelineNumbercode)`lineNumber`\n\nline number prefix (when using `-n`)\n\n[](#Documentation/git-config.txt-codecolumncode)`column`\n\ncolumn number prefix (when using `--column`)\n\n[](#Documentation/git-config.txt-codematchcode)`match`\n\nmatching text (same as setting `matchContext` and `matchSelected`)\n\n[](#Documentation/git-config.txt-codematchContextcode)`matchContext`\n\nmatching text in context lines\n\n[](#Documentation/git-config.txt-codematchSelectedcode)`matchSelected`\n\nmatching text in selected lines. Also, used to customize the following [git-log\\[1\\]](https://git-scm.com/docs/git-log) subcommands: `--grep`, `--author`, and `--committer`.\n\n[](#Documentation/git-config.txt-codeselectedcode)`selected`\n\nnon-matching text in selected lines. Also, used to customize the following [git-log\\[1\\]](https://git-scm.com/docs/git-log) subcommands: `--grep`, `--author` and `--committer`.\n\n[](#Documentation/git-config.txt-codeseparatorcode)`separator`\n\nseparators between fields on a line (`:`, `-`, and `=`) and between hunks (`--`)",
-        "autocomplete": true
-    },
-    "color.interactive": {
-        "deprecated": false,
-        "documentation": "When set to `always`, always use colors for interactive prompts and displays (such as those used by \"git-add --interactive\" and \"git-clean --interactive\"). When false (or `never`), never. When set to `true` or `auto`, use colors only when the output is to the terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.interactive.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for _git add --interactive_ and _git clean --interactive_ output. `<slot>` may be `prompt`, `header`, `help` or `error`, for four distinct types of normal output from interactive commands.",
-        "autocomplete": true
-    },
-    "color.pager": {
-        "deprecated": false,
-        "documentation": "A boolean to specify whether `auto` color modes should colorize output going to the pager. Defaults to true; set this to false if your pager does not understand ANSI color codes.",
-        "autocomplete": true
-    },
-    "color.push": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color in push errors. May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.push.error": {
-        "deprecated": false,
-        "documentation": "Use customized color for push errors.",
-        "autocomplete": true
-    },
-    "color.remote": {
-        "deprecated": false,
-        "documentation": "If set, keywords at the start of the line are highlighted. The keywords are \"error\", \"warning\", \"hint\" and \"success\", and are matched case-insensitively. May be set to `always`, `false` (or `never`) or `auto` (or `true`). If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.remote.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for each remote keyword. `<slot>` may be `hint`, `warning`, `success` or `error` which match the corresponding keyword.",
-        "autocomplete": true
-    },
-    "color.showBranch": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color in the output of [git-show-branch\\[1\\]](https://git-scm.com/docs/git-show-branch). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.status": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color in the output of [git-status\\[1\\]](https://git-scm.com/docs/git-status). May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the output is to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.status.<slot>": {
-        "deprecated": false,
-        "documentation": "Use customized color for status colorization. `<slot>` is one of `header` (the header text of the status message), `added` or `updated` (files which are added but not committed), `changed` (files which are changed but not added in the index), `untracked` (files which are not tracked by Git), `branch` (the current branch), `nobranch` (the color the _no branch_ warning is shown in, defaulting to red), `localBranch` or `remoteBranch` (the local and remote branch names, respectively, when branch and tracking information is displayed in the status short-format), or `unmerged` (files which have unmerged changes).",
-        "autocomplete": true
-    },
-    "color.transport": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable color when pushes are rejected. May be set to `always`, `false` (or `never`) or `auto` (or `true`), in which case colors are used only when the error output goes to a terminal. If unset, then the value of `color.ui` is used (`auto` by default).",
-        "autocomplete": true
-    },
-    "color.transport.rejected": {
-        "deprecated": false,
-        "documentation": "Use customized color when a push was rejected.",
-        "autocomplete": true
-    },
-    "color.ui": {
-        "deprecated": false,
-        "documentation": "This variable determines the default value for variables such as `color.diff` and `color.grep` that control the use of color per command family. Its scope will expand as more commands learn configuration to set a default for the `--color` option. Set it to `false` or `never` if you prefer Git commands not to use color unless enabled explicitly with some other configuration or the `--color` option. Set it to `always` if you want all output not intended for machine consumption to use color, to `true` or `auto` (this is the default since Git 1.8.4) if you want such output to use color when written to the terminal.",
-        "autocomplete": true
-    },
-    "column.ui": {
-        "deprecated": false,
-        "documentation": "Specify whether supported commands should output in columns. This variable consists of a list of tokens separated by spaces or commas:\n\nThese options control when the feature should be enabled (defaults to _never_):\n\n[](#Documentation/git-config.txt-codealwayscode)`always`\n\nalways show in columns\n\n[](#Documentation/git-config.txt-codenevercode)`never`\n\nnever show in columns\n\n[](#Documentation/git-config.txt-codeautocode)`auto`\n\nshow in columns if the output is to the terminal\n\nThese options control layout (defaults to _column_). Setting any of these implies _always_ if none of _always_, _never_, or _auto_ are specified.\n\n[](#Documentation/git-config.txt-codecolumncode-1)`column`\n\nfill columns before rows\n\n[](#Documentation/git-config.txt-coderowcode)`row`\n\nfill rows before columns\n\n[](#Documentation/git-config.txt-codeplaincode)`plain`\n\nshow in one column\n\nFinally, these options can be combined with a layout option (defaults to _nodense_):\n\n[](#Documentation/git-config.txt-codedensecode)`dense`\n\nmake unequal size columns to utilize more space\n\n[](#Documentation/git-config.txt-codenodensecode)`nodense`\n\nmake equal size columns",
-        "autocomplete": true
-    },
-    "column.branch": {
-        "deprecated": false,
-        "documentation": "Specify whether to output branch listing in `git branch` in columns. See `column.ui` for details.",
-        "autocomplete": true
-    },
-    "column.clean": {
-        "deprecated": false,
-        "documentation": "Specify the layout when listing items in `git clean -i`, which always shows files and directories in columns. See `column.ui` for details.",
-        "autocomplete": true
-    },
-    "column.status": {
-        "deprecated": false,
-        "documentation": "Specify whether to output untracked files in `git status` in columns. See `column.ui` for details.",
-        "autocomplete": true
-    },
-    "column.tag": {
-        "deprecated": false,
-        "documentation": "Specify whether to output tag listings in `git tag` in columns. See `column.ui` for details.",
-        "autocomplete": true
-    },
-    "commit.cleanup": {
-        "deprecated": false,
-        "documentation": "This setting overrides the default of the `--cleanup` option in `git commit`. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) for details. Changing the default can be useful when you always want to keep lines that begin with the comment character `#` in your log message, in which case you would do `git config commit.cleanup whitespace` (note that you will have to remove the help lines that begin with `#` in the commit log template yourself, if you do this).",
-        "autocomplete": true
-    },
-    "commit.gpgSign": {
-        "deprecated": false,
-        "documentation": "A boolean to specify whether all commits should be GPG signed. Use of this option when doing operations such as rebase can result in a large number of commits being signed. It may be convenient to use an agent to avoid typing your GPG passphrase several times.",
-        "autocomplete": true
-    },
-    "commit.status": {
-        "deprecated": false,
-        "documentation": "A boolean to enable/disable inclusion of status information in the commit message template when using an editor to prepare the commit message. Defaults to true.",
-        "autocomplete": true
-    },
-    "commit.template": {
-        "deprecated": false,
-        "documentation": "Specify the pathname of a file to use as the template for new commit messages.",
-        "autocomplete": true
-    },
-    "commit.verbose": {
-        "deprecated": false,
-        "documentation": "A boolean or int to specify the level of verbosity with `git commit`. See [git-commit\\[1\\]](https://git-scm.com/docs/git-commit).",
-        "autocomplete": true
-    },
-    "commitGraph.generationVersion": {
-        "deprecated": false,
-        "documentation": "Specifies the type of generation number version to use when writing or reading the commit-graph file. If version 1 is specified, then the corrected commit dates will not be written or read. Defaults to 2.",
-        "autocomplete": true
-    },
-    "commitGraph.maxNewFilters": {
-        "deprecated": false,
-        "documentation": "Specifies the default value for the `--max-new-filters` option of `git commit-graph write` (c.f., [git-commit-graph\\[1\\]](https://git-scm.com/docs/git-commit-graph)).",
-        "autocomplete": true
-    },
-    "commitGraph.readChangedPaths": {
-        "deprecated": false,
-        "documentation": "If true, then git will use the changed-path Bloom filters in the commit-graph file (if it exists, and they are present). Defaults to true. See [git-commit-graph\\[1\\]](https://git-scm.com/docs/git-commit-graph) for more information.",
-        "autocomplete": true
-    },
     "credential.helper": {
         "deprecated": false,
         "documentation": "Specify an external helper to be called when a username or password credential is needed; the helper may consult external storage to avoid prompting the user for the credentials. This is normally the name of a credential helper with possible arguments, but may also be an absolute path with arguments or, if preceded by `!`, shell commands.\n\nNote that multiple helpers may be defined. See [gitcredentials\\[7\\]](https://git-scm.com/docs/gitcredentials) for details and examples.",
@@ -912,11 +937,6 @@
     "credentialStore.lockTimeoutMS": {
         "deprecated": false,
         "documentation": "The length of time, in milliseconds, for git-credential-store to retry when trying to lock the credentials file. A value of 0 means not to retry at all; -1 means to try indefinitely. Default is 1000 (i.e., retry for 1s).",
-        "autocomplete": true
-    },
-    "completion.commands": {
-        "deprecated": false,
-        "documentation": "This is only used by git-completion.bash to add or remove commands from the list of completed commands. Normally only porcelain commands and a few select others are completed. You can add more commands, separated by space, in this variable. Prefixing the command with _\\-_ will remove it from the existing list.",
         "autocomplete": true
     },
     "diff.autoRefreshIndex": {
@@ -964,9 +984,19 @@
         "documentation": "If set, _git diff_ uses a prefix pair that is different from the standard \"a/\" and \"b/\" depending on what is being compared. When this configuration is in effect, reverse diff output also swaps the order of the prefixes:\n\n[](#Documentation/git-config.txt-codegitdiffcode)`git diff`\n\ncompares the (i)ndex and the (w)ork tree;\n\n[](#Documentation/git-config.txt-codegitdiffHEADcode)`git diff HEAD`\n\ncompares a (c)ommit and the (w)ork tree;\n\n[](#Documentation/git-config.txt-codegitdiff--cachedcode)`git diff --cached`\n\ncompares a (c)ommit and the (i)ndex;\n\n[](#Documentation/git-config.txt-codegitdiffHEADfile1file2code)`git diff HEAD:file1 file2`\n\ncompares an (o)bject and a (w)ork tree entity;\n\n[](#Documentation/git-config.txt-codegitdiff--no-indexabcode)`git diff --no-index a b`\n\ncompares two non-git things (1) and (2).",
         "autocomplete": true
     },
-    "diff.noprefix": {
+    "diff.noPrefix": {
         "deprecated": false,
         "documentation": "If set, _git diff_ does not show any source or destination prefix.",
+        "autocomplete": true
+    },
+    "diff.srcPrefix": {
+        "deprecated": false,
+        "documentation": "If set, _git diff_ uses this source prefix. Defaults to \"a/\".",
+        "autocomplete": true
+    },
+    "diff.dstPrefix": {
+        "deprecated": false,
+        "documentation": "If set, _git diff_ uses this destination prefix. Defaults to \"b/\".",
         "autocomplete": true
     },
     "diff.relative": {
@@ -1056,7 +1086,7 @@
     },
     "diff.colorMovedWS": {
         "deprecated": false,
-        "documentation": "When moved lines are colored using e.g. the `diff.colorMoved` setting, this option controls the `<mode>` how spaces are treated for details of valid modes see _\\--color-moved-ws_ in [git-diff\\[1\\]](https://git-scm.com/docs/git-diff).",
+        "documentation": "When moved lines are colored using e.g. the `diff.colorMoved` setting, this option controls the `<mode>` how spaces are treated. For details of valid modes see _\\--color-moved-ws_ in [git-diff\\[1\\]](https://git-scm.com/docs/git-diff).",
         "autocomplete": true
     },
     "diff.tool": {
@@ -1099,9 +1129,14 @@
         "documentation": "Specify the hash algorithm to use. The acceptable values are `sha1` and `sha256`. If not specified, `sha1` is assumed. It is an error to specify this key unless `core.repositoryFormatVersion` is 1.\n\nNote that this setting should only be set by [git-init\\[1\\]](https://git-scm.com/docs/git-init) or [git-clone\\[1\\]](https://git-scm.com/docs/git-clone). Trying to change it after initialization will not work and will produce hard-to-diagnose issues.",
         "autocomplete": true
     },
+    "extensions.compatObjectFormat": {
+        "deprecated": false,
+        "documentation": "Specify a compatitbility hash algorithm to use. The acceptable values are `sha1` and `sha256`. The value specified must be different from the value of extensions.objectFormat. This allows client level interoperability between git repositories whose objectFormat matches this compatObjectFormat. In particular when fully implemented the pushes and pulls from a repository in whose objectFormat matches compatObjectFormat. As well as being able to use oids encoded in compatObjectFormat in addition to oids encoded with objectFormat to locally specify objects.",
+        "autocomplete": true
+    },
     "extensions.refStorage": {
         "deprecated": false,
-        "documentation": "Specify the ref storage format to use. The acceptable values are:\n\n*   `files` for loose files with packed-refs. This is the default.\n    \n\nIt is an error to specify this key unless `core.repositoryFormatVersion` is 1.\n\n\\+ Note that this setting should only be set by [git-init\\[1\\]](https://git-scm.com/docs/git-init) or [git-clone\\[1\\]](https://git-scm.com/docs/git-clone). Trying to change it after initialization will not work and will produce hard-to-diagnose issues.",
+        "documentation": "Specify the ref storage format to use. The acceptable values are:\n\n*   `files` for loose files with packed-refs. This is the default.\n    \n*   `reftable` for the reftable format. This format is experimental and its internals are subject to change.\n    \n\nIt is an error to specify this key unless `core.repositoryFormatVersion` is 1.\n\n\\+ Note that this setting should only be set by [git-init\\[1\\]](https://git-scm.com/docs/git-init) or [git-clone\\[1\\]](https://git-scm.com/docs/git-clone). Trying to change it after initialization will not work and will produce hard-to-diagnose issues.",
         "autocomplete": true
     },
     "extensions.worktreeConfig": {
@@ -1202,6 +1237,16 @@
     "fetch.bundleCreationToken": {
         "deprecated": false,
         "documentation": "When using `fetch.bundleURI` to fetch incrementally from a bundle list that uses the \"creationToken\" heuristic, this config value stores the maximum `creationToken` value of the downloaded bundles. This value is used to prevent downloading bundles in the future if the advertised `creationToken` is not strictly larger than this value.\n\nThe creation token values are chosen by the provider serving the specific bundle URI. If you modify the URI at `fetch.bundleURI`, then be sure to remove the value for the `fetch.bundleCreationToken` value before fetching.",
+        "autocomplete": true
+    },
+    "filter.<driver>.clean": {
+        "deprecated": false,
+        "documentation": "The command which is used to convert the content of a worktree file to a blob upon checkin. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
+        "autocomplete": true
+    },
+    "filter.<driver>.smudge": {
+        "deprecated": false,
+        "documentation": "The command which is used to convert the content of a blob object to a worktree file upon checkout. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
         "autocomplete": true
     },
     "format.attach": {
@@ -1317,16 +1362,6 @@
     "format.noprefix": {
         "deprecated": false,
         "documentation": "If set, do not show any source or destination prefix in patches. This is equivalent to the `diff.noprefix` option used by `git diff` (but which is not respected by `format-patch`). Note that by setting this, the receiver of any patches you generate will have to apply them using the `-p0` option.",
-        "autocomplete": true
-    },
-    "filter.<driver>.clean": {
-        "deprecated": false,
-        "documentation": "The command which is used to convert the content of a worktree file to a blob upon checkin. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
-        "autocomplete": true
-    },
-    "filter.<driver>.smudge": {
-        "deprecated": false,
-        "documentation": "The command which is used to convert the content of a blob object to a worktree file upon checkout. See [gitattributes\\[5\\]](https://git-scm.com/docs/gitattributes) for details.",
         "autocomplete": true
     },
     "fsck.<msg-id>": {
@@ -1569,41 +1604,6 @@
         "documentation": "See [gitweb.conf\\[5\\]](/docs/gitweb.conf) for description.",
         "autocomplete": true
     },
-    "grep.lineNumber": {
-        "deprecated": false,
-        "documentation": "If set to true, enable `-n` option by default.",
-        "autocomplete": true
-    },
-    "grep.column": {
-        "deprecated": false,
-        "documentation": "If set to true, enable the `--column` option by default.",
-        "autocomplete": true
-    },
-    "grep.patternType": {
-        "deprecated": false,
-        "documentation": "Set the default matching behavior. Using a value of _basic_, _extended_, _fixed_, or _perl_ will enable the `--basic-regexp`, `--extended-regexp`, `--fixed-strings`, or `--perl-regexp` option accordingly, while the value _default_ will use the `grep.extendedRegexp` option to choose between _basic_ and _extended_.",
-        "autocomplete": true
-    },
-    "grep.extendedRegexp": {
-        "deprecated": false,
-        "documentation": "If set to true, enable `--extended-regexp` option by default. This option is ignored when the `grep.patternType` option is set to a value other than _default_.",
-        "autocomplete": true
-    },
-    "grep.threads": {
-        "deprecated": false,
-        "documentation": "Number of grep worker threads to use. If unset (or set to 0), Git will use as many threads as the number of logical cores available.",
-        "autocomplete": true
-    },
-    "grep.fullName": {
-        "deprecated": false,
-        "documentation": "If set to true, enable `--full-name` option by default.",
-        "autocomplete": true
-    },
-    "grep.fallbackToNoIndex": {
-        "deprecated": false,
-        "documentation": "If set to true, fall back to git grep --no-index if git grep is executed outside of a git repository. Defaults to false.",
-        "autocomplete": true
-    },
     "gpg.program": {
         "deprecated": false,
         "documentation": "Use this custom program instead of \"`gpg`\" found on `$PATH` when making or verifying a PGP signature. The program must support the same command-line interface as GPG, namely, to verify a detached signature, \"`gpg --verify $signature - <$file`\" is run, and the program is expected to signal a good signature by exiting with code 0. To generate an ASCII-armored detached signature, the standard input of \"`gpg -bsau $key`\" is fed with the contents to be signed, and the program is expected to send the result to its standard output.",
@@ -1637,6 +1637,41 @@
     "gpg.ssh.revocationFile": {
         "deprecated": false,
         "documentation": "Either a SSH KRL or a list of revoked public keys (without the principal prefix). See ssh-keygen(1) for details. If a public key is found in this file then it will always be treated as having trust level \"never\" and signatures will show as invalid.",
+        "autocomplete": true
+    },
+    "grep.lineNumber": {
+        "deprecated": false,
+        "documentation": "If set to true, enable `-n` option by default.",
+        "autocomplete": true
+    },
+    "grep.column": {
+        "deprecated": false,
+        "documentation": "If set to true, enable the `--column` option by default.",
+        "autocomplete": true
+    },
+    "grep.patternType": {
+        "deprecated": false,
+        "documentation": "Set the default matching behavior. Using a value of _basic_, _extended_, _fixed_, or _perl_ will enable the `--basic-regexp`, `--extended-regexp`, `--fixed-strings`, or `--perl-regexp` option accordingly, while the value _default_ will use the `grep.extendedRegexp` option to choose between _basic_ and _extended_.",
+        "autocomplete": true
+    },
+    "grep.extendedRegexp": {
+        "deprecated": false,
+        "documentation": "If set to true, enable `--extended-regexp` option by default. This option is ignored when the `grep.patternType` option is set to a value other than _default_.",
+        "autocomplete": true
+    },
+    "grep.threads": {
+        "deprecated": false,
+        "documentation": "Number of grep worker threads to use. If unset (or set to 0), Git will use as many threads as the number of logical cores available.",
+        "autocomplete": true
+    },
+    "grep.fullName": {
+        "deprecated": false,
+        "documentation": "If set to true, enable `--full-name` option by default.",
+        "autocomplete": true
+    },
+    "grep.fallbackToNoIndex": {
+        "deprecated": false,
+        "documentation": "If set to true, fall back to `git grep --no-index` if `git grep` is executed outside of a git repository. Defaults to false.",
         "autocomplete": true
     },
     "gui.commitMsgWidth": {
@@ -2071,7 +2106,7 @@
     },
     "interactive.singleKey": {
         "deprecated": false,
-        "documentation": "In interactive commands, allow the user to provide one-letter input with a single key (i.e., without hitting enter). Currently this is used by the `--patch` mode of [git-add\\[1\\]](https://git-scm.com/docs/git-add), [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout), [git-restore\\[1\\]](https://git-scm.com/docs/git-restore), [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), [git-reset\\[1\\]](https://git-scm.com/docs/git-reset), and [git-stash\\[1\\]](https://git-scm.com/docs/git-stash). Note that this setting is silently ignored if portable keystroke input is not available; requires the Perl module Term::ReadKey.",
+        "documentation": "In interactive commands, allow the user to provide one-letter input with a single key (i.e., without hitting enter). Currently this is used by the `--patch` mode of [git-add\\[1\\]](https://git-scm.com/docs/git-add), [git-checkout\\[1\\]](https://git-scm.com/docs/git-checkout), [git-restore\\[1\\]](https://git-scm.com/docs/git-restore), [git-commit\\[1\\]](https://git-scm.com/docs/git-commit), [git-reset\\[1\\]](https://git-scm.com/docs/git-reset), and [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
         "autocomplete": true
     },
     "interactive.diffFilter": {
@@ -2329,9 +2364,9 @@
         "documentation": "When the `--auto-merge` is given, meld will merge all non-conflicting parts automatically, highlight the conflicting parts, and wait for user decision. Setting `mergetool.meld.useAutoMerge` to `true` tells Git to unconditionally use the `--auto-merge` option with `meld`. Setting this value to `auto` makes git detect whether `--auto-merge` is supported and will only use `--auto-merge` when available. A value of `false` avoids using `--auto-merge` altogether, and is the default value.",
         "autocomplete": true
     },
-    "mergetool.vimdiff.layout": {
+    "mergetool.<vimdiff variant>.layout": {
         "deprecated": false,
-        "documentation": "The vimdiff backend uses this variable to control how its split windows appear. Applies even if you are using Neovim (`nvim`) or gVim (`gvim`) as the merge tool. See BACKEND SPECIFIC HINTS section in [git-mergetool\\[1\\]](https://git-scm.com/docs/git-mergetool). for details.",
+        "documentation": "Configure the split window layout for vimdiff’s `<variant>`, which is any of `vimdiff`, `nvimdiff`, `gvimdiff`. Upon launching `git mergetool` with `--tool=<variant>` (or without `--tool` if `merge.tool` is configured as `<variant>`), Git will consult `mergetool.<variant>.layout` to determine the tool’s layout. If the variant-specific configuration is not available, `vimdiff`'s is used as fallback. If that too is not available, a default layout with 4 windows will be used. To configure the layout, see the `BACKEND SPECIFIC HINTS` section in [git-mergetool\\[1\\]](https://git-scm.com/docs/git-mergetool).",
         "autocomplete": true
     },
     "mergetool.hideResolved": {
@@ -2416,7 +2451,7 @@
     },
     "pack.allowPackReuse": {
         "deprecated": false,
-        "documentation": "When true or \"single\", and when reachability bitmaps are enabled, pack-objects will try to send parts of the bitmapped packfile verbatim. When \"multi\", and when a multi-pack reachability bitmap is available, pack-objects will try to send parts of all packs in the MIDX.\n\nIf only a single pack bitmap is available, and\n\\`pack.allowPackReuse\\` is set to \"multi\", reuse parts of just the\nbitmapped packfile. This can reduce memory and CPU usage to\nserve fetches, but might result in sending a slightly larger\npack. Defaults to true.",
+        "documentation": "When true or \"single\", and when reachability bitmaps are enabled, pack-objects will try to send parts of the bitmapped packfile verbatim. When \"multi\", and when a multi-pack reachability bitmap is available, pack-objects will try to send parts of all packs in the MIDX.\n\nIf only a single pack bitmap is available, and `pack.allowPackReuse` is set to \"multi\", reuse parts of just the bitmapped packfile. This can reduce memory and CPU usage to serve fetches, but might result in sending a slightly larger pack. Defaults to true.",
         "autocomplete": true
     },
     "pack.island": {
@@ -2661,7 +2696,7 @@
     },
     "receive.autogc": {
         "deprecated": false,
-        "documentation": "By default, git-receive-pack will run \"git-gc --auto\" after receiving data from git-push and updating refs. You can stop it by setting this variable to false.",
+        "documentation": "By default, git-receive-pack will run \"git maintenance run --auto\" after receiving data from git-push and updating refs. You can stop it by setting this variable to false.",
         "autocomplete": true
     },
     "receive.certNonceSeed": {
@@ -2919,7 +2954,7 @@
         "documentation": "See [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) for description. Note that this setting is not subject to the _identity_ mechanism.",
         "autocomplete": true
     },
-    "sendemail.smtpsslcertpath": {
+    "sendemail.smtpSSLCertPath": {
         "deprecated": false,
         "documentation": "Path to ca-certificates (either a directory or a single file). Set it to an empty string to disable certificate verification.",
         "autocomplete": true
@@ -2989,7 +3024,7 @@
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
-    "sendemail.signedoffbycc": {
+    "sendemail.signedOffByCc": {
         "deprecated": false,
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
@@ -2999,7 +3034,7 @@
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
-    "sendemail.suppresscc": {
+    "sendemail.suppressCc": {
         "deprecated": false,
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
@@ -3014,7 +3049,7 @@
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
-    "sendemail.tocmd": {
+    "sendemail.toCmd": {
         "deprecated": false,
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
@@ -3064,9 +3099,9 @@
         "documentation": "These configuration variables all provide a default for [git-send-email\\[1\\]](https://git-scm.com/docs/git-send-email) command-line options. See its documentation for details.",
         "autocomplete": true
     },
-    "sendemail.signedoffcc": {
+    "sendemail.signedOffCc": {
         "deprecated": true,
-        "documentation": "(deprecated) Deprecated alias for `sendemail.signedoffbycc`.",
+        "documentation": "(deprecated) Deprecated alias for `sendemail.signedOffByCc`.",
         "autocomplete": true
     },
     "sendemail.smtpBatchSize": {
@@ -3114,6 +3149,21 @@
         "documentation": "By default, Git determines the command line arguments to use based on the basename of the configured SSH command (configured using the environment variable `GIT_SSH` or `GIT_SSH_COMMAND` or the config setting `core.sshCommand`). If the basename is unrecognized, Git will attempt to detect support of OpenSSH options by first invoking the configured SSH command with the `-G` (print configuration) option and will subsequently use OpenSSH options (if that is successful) or no options besides the host and remote command (if it fails).\n\nThe config variable `ssh.variant` can be set to override this detection. Valid values are `ssh` (to use OpenSSH options), `plink`, `putty`, `tortoiseplink`, `simple` (no options except the host and remote command). The default auto-detection can be explicitly requested using the value `auto`. Any other value is treated as `ssh`. This setting can also be overridden via the environment variable `GIT_SSH_VARIANT`.\n\nThe current command-line parameters used for each variant are as follows:\n\n*   `ssh` - \\[-p port\\] \\[-4\\] \\[-6\\] \\[-o option\\] \\[username@\\]host command\n    \n*   `simple` - \\[username@\\]host command\n    \n*   `plink` or `putty` - \\[-P port\\] \\[-4\\] \\[-6\\] \\[username@\\]host command\n    \n*   `tortoiseplink` - \\[-P port\\] \\[-4\\] \\[-6\\] -batch \\[username@\\]host command\n    \n\nExcept for the `simple` variant, command-line parameters are likely to change as git gains new features.",
         "autocomplete": true
     },
+    "stash.showIncludeUntracked": {
+        "deprecated": false,
+        "documentation": "If this is set to true, the `git stash show` command will show the untracked files of a stash entry. Defaults to false. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
+        "autocomplete": true
+    },
+    "stash.showPatch": {
+        "deprecated": false,
+        "documentation": "If this is set to true, the `git stash show` command without an option will show the stash entry in patch form. Defaults to false. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
+        "autocomplete": true
+    },
+    "stash.showStat": {
+        "deprecated": false,
+        "documentation": "If this is set to true, the `git stash show` command without an option will show a diffstat of the stash entry. Defaults to true. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
+        "autocomplete": true
+    },
     "status.relativePaths": {
         "deprecated": false,
         "documentation": "By default, [git-status\\[1\\]](https://git-scm.com/docs/git-status) shows paths relative to the current directory. Setting this variable to `false` shows paths relative to the repository root (this was the default for Git prior to v1.5.4).",
@@ -3156,27 +3206,12 @@
     },
     "status.showUntrackedFiles": {
         "deprecated": false,
-        "documentation": "By default, [git-status\\[1\\]](https://git-scm.com/docs/git-status) and [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) show files which are not currently tracked by Git. Directories which contain only untracked files, are shown with the directory name only. Showing untracked files means that Git needs to lstat() all the files in the whole repository, which might be slow on some systems. So, this variable controls how the commands display the untracked files. Possible values are:\n\n*   `no` - Show no untracked files.\n    \n*   `normal` - Show untracked files and directories.\n    \n*   `all` - Show also individual files in untracked directories.\n    \n\nIf this variable is not specified, it defaults to _normal_. This variable can be overridden with the -u|--untracked-files option of [git-status\\[1\\]](https://git-scm.com/docs/git-status) and [git-commit\\[1\\]](https://git-scm.com/docs/git-commit).",
+        "documentation": "By default, [git-status\\[1\\]](https://git-scm.com/docs/git-status) and [git-commit\\[1\\]](https://git-scm.com/docs/git-commit) show files which are not currently tracked by Git. Directories which contain only untracked files, are shown with the directory name only. Showing untracked files means that Git needs to lstat() all the files in the whole repository, which might be slow on some systems. So, this variable controls how the commands display the untracked files. Possible values are:\n\n*   `no` - Show no untracked files.\n    \n*   `normal` - Show untracked files and directories.\n    \n*   `all` - Show also individual files in untracked directories.\n    \n\nIf this variable is not specified, it defaults to _normal_. All usual spellings for Boolean value `true` are taken as `normal` and `false` as `no`. This variable can be overridden with the -u|--untracked-files option of [git-status\\[1\\]](https://git-scm.com/docs/git-status) and [git-commit\\[1\\]](https://git-scm.com/docs/git-commit).",
         "autocomplete": true
     },
     "status.submoduleSummary": {
         "deprecated": false,
         "documentation": "Defaults to false. If this is set to a non-zero number or true (identical to -1 or an unlimited number), the submodule summary will be enabled and a summary of commits for modified submodules will be shown (see --summary-limit option of [git-submodule\\[1\\]](https://git-scm.com/docs/git-submodule)). Please note that the summary output command will be suppressed for all submodules when `diff.ignoreSubmodules` is set to _all_ or only for those submodules where `submodule.<name>.ignore=all`. The only exception to that rule is that status and commit will show staged submodule changes. To also view the summary for ignored submodules you can either use the --ignore-submodules=dirty command-line option or the _git submodule summary_ command, which shows a similar output but does not honor these settings.",
-        "autocomplete": true
-    },
-    "stash.showIncludeUntracked": {
-        "deprecated": false,
-        "documentation": "If this is set to true, the `git stash show` command will show the untracked files of a stash entry. Defaults to false. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
-        "autocomplete": true
-    },
-    "stash.showPatch": {
-        "deprecated": false,
-        "documentation": "If this is set to true, the `git stash show` command without an option will show the stash entry in patch form. Defaults to false. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
-        "autocomplete": true
-    },
-    "stash.showStat": {
-        "deprecated": false,
-        "documentation": "If this is set to true, the `git stash show` command without an option will show a diffstat of the stash entry. Defaults to true. See the description of the _show_ command in [git-stash\\[1\\]](https://git-scm.com/docs/git-stash).",
         "autocomplete": true
     },
     "submodule.<name>.url": {
@@ -3342,6 +3377,11 @@
     "transfer.bundleURI": {
         "deprecated": false,
         "documentation": "When `true`, local `git clone` commands will request bundle information from the remote server (if advertised) and download bundles before continuing the clone through the Git protocol. Defaults to `false`.",
+        "autocomplete": true
+    },
+    "transfer.advertiseObjectInfo": {
+        "deprecated": false,
+        "documentation": "When `true`, the `object-info` capability is advertised by servers. Defaults to false.",
         "autocomplete": true
     },
     "uploadarchive.allowUnreachable": {
